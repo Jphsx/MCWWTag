@@ -10,23 +10,23 @@
 
 using namespace lcio;
 
-	/** MCWTag:<br>
+	/** MCWWTag:<br>
  *
  * 
  * @author Justin Anguiano, University of Kansas
  * 
  */
 
- class MCWTag : public marlin::Processor {
+ class MCWWTag : public marlin::Processor {
 
  public:
 
- virtual marlin::Processor*  newProcessor() { return new MCWTag ; }
+ virtual marlin::Processor*  newProcessor() { return new MCWWTag ; }
 
-  MCWTag(const MCWTag&) = delete ;
-  MCWTag& operator=(const MCWTag&) = delete ;
+  MCWWTag(const MCWWTag&) = delete ;
+  MCWWTag& operator=(const MCWWTag&) = delete ;
 
-  MCWTag() ;
+  MCWWTag() ;
 
   /** Called at the beginning of the job before anything is read.
    *  Use to initialize the proscessor, e.g. book histograms.

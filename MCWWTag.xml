@@ -11,7 +11,7 @@
 
 <marlin>
 	<execute>
-   	<processor name="MyMCWTag"/>
+   	<processor name="MyMCWWTag"/>
  	</execute>
 
 	<global>
@@ -23,7 +23,7 @@
    		<parameter name="Verbosity"    options= "DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> DEBUG </parameter>
  	</global>
 	
-	<processor name="MyMCWTag" type="MCWTag">   
+	<processor name="MyMCWWTag" type="MCWWTag">   
 
 		<!-- input/output collection names -->
 		<parameter name="McParticleCollectionName" value="MCParticle" />

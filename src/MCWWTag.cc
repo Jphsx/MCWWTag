@@ -77,7 +77,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
  std::cout << "======================================== event " << nEvt << std::endl ;
 
 	for(int i=0; i<_mcpartvec.size(); i++){
-		if( _mcpartvec.at(i)->getNumberOfParents() == 0 ){
+		if( _mcpartvec.at(i)->getParents().size() == 0 ){
 			std::vector<MCParticle*> daughters{};
 			daughters = _mcpartvec.at(i)->getDaughters();
 			

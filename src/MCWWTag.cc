@@ -1,9 +1,9 @@
-#include "MCWTag.h"
+#include "MCWWTag.h"
 
-MCWTag aMCWTag;
+MCWWTag aMCWWTag;
 
 
-MCWTag::MCWTag() : Processor("MCWTag") {
+MCWWTag::MCWWTag() : Processor("MCWWTag") {
 
 
   // register steering parameters: name, description, class-variable, default value
@@ -24,7 +24,7 @@ MCWTag::MCWTag() : Processor("MCWTag") {
 
 }
 
-void MCWTag::init() {
+void MCWWTag::init() {
 
   streamlog_out(DEBUG) << "   init called  " << std::endl;
   // usually a good idea to
@@ -33,11 +33,11 @@ void MCWTag::init() {
 
 }
 
-void MCWTag::processRunHeader( LCRunHeader* run) {
+void MCWWTag::processRunHeader( LCRunHeader* run) {
   streamlog_out(MESSAGE) << " processRunHeader "  << run->getRunNumber() << std::endl ;
 }
 
-bool MCWTag::FindMCParticles( LCEvent* evt ){
+bool MCWWTag::FindMCParticles( LCEvent* evt ){
    
 	bool collectionFound = false;
 
@@ -72,7 +72,7 @@ bool MCWTag::FindMCParticles( LCEvent* evt ){
   	return collectionFound;
 }
 
-void MCWTag::processEvent( LCEvent * evt ) {
+void MCWWTag::processEvent( LCEvent * evt ) {
  FindMCParticles(evt);
  std::cout << "======================================== event " << nEvt << std::endl ;
 
@@ -90,7 +90,7 @@ void MCWTag::processEvent( LCEvent * evt ) {
 
  nEvt++;
 }
-void MCWTag::end(){
+void MCWWTag::end(){
 	
 }
 

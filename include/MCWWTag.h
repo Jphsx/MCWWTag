@@ -1,6 +1,8 @@
 #include "marlin/Processor.h"
 #include "EVENT/MCParticle.h"
-
+#include "IMPL/LCCollectionVec.h"
+#include <marlin/Global.h>
+#include "gear/BField.h"
 #include "lcio.h"
 #include "TFile.h"
 #include <vector>

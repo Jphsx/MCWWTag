@@ -103,11 +103,11 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 		
 		//print junk
 		for(int j=0; j<parentpdgs.size(); j++){
-			std::cout<<parentpdgs.at(j)<<" -> ";
+			std::cout<<parentpdgs.at(j)<<" ";
 		}
-		std::cout<< _mcpartvec.at(i)->getPDG()<<" -> ";
+		std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
 		for(int j=0; j<daughters.size(); j++){
-			std::cout<<daughters.at(i)->getPDG()<<" ";
+			std::cout<<daughters.at(j)->getPDG()<<" ";
 		}
 		std::cout<<std::endl;
 		

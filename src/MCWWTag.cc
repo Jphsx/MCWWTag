@@ -119,7 +119,6 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 
 	
 
-
  		 if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 11) != daughterpdgs.end() ||
 			std::find(daughterpdgs.begin(),daughterpdgs.end(), -11) != daughterpdgs.end() ){
 			nelec++;
@@ -132,7 +131,22 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			std::find(daughterpdgs.begin(),daughterpdgs.end(), -15) != daughterpdgs.end() ){
 			ntau++;
 		}
-
+		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 1) != daughterpdgs.end() ||
+			std::find(daughterpdgs.begin(),daughterpdgs.end(), -1) != daughterpdgs.end() ){
+			ndwn++;
+		}
+		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 2) != daughterpdgs.end() ||
+			std::find(daughterpdgs.begin(),daughterpdgs.end(), -2) != daughterpdgs.end() ){
+			nup++;
+		}
+		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 3) != daughterpdgs.end() ||
+			std::find(daughterpdgs.begin(),daughterpdgs.end(), -3) != daughterpdgs.end() ){
+			nstr++;
+		}
+		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 4) != daughterpdgs.end() ||
+			std::find(daughterpdgs.begin(),daughterpdgs.end(), -4) != daughterpdgs.end() ){
+			nchm++;
+		}
 		 break;
 		}
 
@@ -141,6 +155,8 @@ void MCWWTag::processEvent( LCEvent * evt ) {
  nEvt++;
 }
 void MCWWTag::end(){
+
 	std::cout<<" nelec "<<nelec<<" nmuon "<< nmuon <<" ntau "<< ntau << std::endl;
+	std::cout<<" ndwn "<<ndwn<<" nup "<<nup<<" nstr "<<nstr<<" nchm "<<nchm<<std::endl;
 }
 

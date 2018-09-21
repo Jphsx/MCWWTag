@@ -55,6 +55,11 @@ using namespace lcio;
   int ntau=0;
   int nmuon=0;
   int nelec=0;
+
+   int nup=0;
+   int ndwn=0;
+   int nstr=0;
+   int nchm=0;
   
   //vector to hold the tracks for the event
   std::vector<MCParticle*> _mcpartvec{};

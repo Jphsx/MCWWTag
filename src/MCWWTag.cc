@@ -80,9 +80,9 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 		if( _mcpartvec.at(i)->getParents().size() == 0 ){
 			std::vector<MCParticle*> daughters{};
 			daughters = _mcpartvec.at(i)->getDaughters();
-			
+				std::cout<<_mcpartvec.at(i)->isCreatedInSimulation()<<" "<<_mcpartvec.at(i)->getPDG()<<" -> ";
 			for(int j=0; j<daughters.size(); j++){
-				std::cout<<_mcpartvec.at(i)->isCreatedInSimulation()<<" "<<_mcpartvec.at(i)->getPDG()<<" -> "<< daughters.at(j)->getPDG() << " ";
+				 std::cout<<daughters.at(j)->getPDG() << " ";
 			}
 			std::cout<<std::endl;
 		}

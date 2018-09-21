@@ -92,7 +92,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 
 		//allowed quarks
 		std::vector<int> quarks{ 1, 2, 3, 4, 5, 6, -1, -2, -3, -4, -5, -6};
-		std::vector<int> leptons{11, 12, 13, 14, 15, 16, 17, 18, -11, -12, -13, -14, -15, -16, -17, -18};
+		std::vector<int> leptons{11, 12, 13, 14, 15, 16, -11, -12, -13, -14, -15, -16};
 		//we require exactly 2 elements from leptons and 2 from quarks
 		int lep=0;
 		int qrk=0;
@@ -116,6 +116,23 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			std::cout<<daughters.at(j)->getPDG()<<" ";
 		}
 		std::cout<<std::endl;
+
+	
+
+		it = find (myvector.begin(), myvector.end(), 30);
+ 		 if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 11) != daughterpdgs.end() ||
+			std::find(daughterpdgs.begin(),daughterpdgs.end(), -11) != daughterpdgs.end() ){
+			nelec++;
+		}
+		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ||
+			std::find(daughterpdgs.begin(),daughterpdgs.end(), -13) != daughterpdgs.end() ){
+			nmuon++;
+		}
+		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ||
+			std::find(daughterpdgs.begin(),daughterpdgs.end(), -15) != daughterpdgs.end() ){
+			ntau++;
+		}
+
 		 break;
 		}
 
@@ -124,6 +141,6 @@ void MCWWTag::processEvent( LCEvent * evt ) {
  nEvt++;
 }
 void MCWWTag::end(){
-	
+	std::cout<<" nelec "<<nelec<<" nmuon "<< nmuon <<" ntau "<< ntau << std::endl;
 }
 

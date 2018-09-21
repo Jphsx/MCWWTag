@@ -52,6 +52,9 @@ using namespace lcio;
 
   protected:
   int nEvt{};
+  int ntau=0;
+  int nmuon=0;
+  int nelec=0;
   
   //vector to hold the tracks for the event
   std::vector<MCParticle*> _mcpartvec{};

@@ -106,8 +106,8 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			std::cout<<parentpdgs.at(j)<<" -> ";
 		}
 		std::cout<< _mcpartvec.at(i)->getPDG()<<" -> ";
-		for(int j=0; j<daughters.size; j++){
-			std::cout<<daughters->getPDG()<<" ";
+		for(int j=0; j<daughters.size(); j++){
+			std::cout<<daughters.at(i)->getPDG()<<" ";
 		}
 		std::cout<<std::endl;
 		

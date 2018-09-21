@@ -76,8 +76,13 @@ void MCWWTag::processEvent( LCEvent * evt ) {
  FindMCParticles(evt);
  std::cout << "======================================== event " << nEvt << std::endl ;
 
+
 	for(int i=0; i<_mcpartvec.size(); i++){
-		if( _mcpartvec.at(i)->getParents().size() == 0 ){
+		std::vector<int> parentpdgs{};
+		std::vector<MCParticle*> mcparents{};
+		std::vector<MCParticle*> daughters{};
+		daughters = _mcpartvec.at(i)->getDaughters();
+		/*//if( _mcpartvec.at(i)->getParents().size() == 0 ){
 			std::vector<MCParticle*> daughters{};
 			daughters = _mcpartvec.at(i)->getDaughters();
 				std::cout<<_mcpartvec.at(i)->isCreatedInSimulation()<<" "<<_mcpartvec.at(i)->getPDG()<<" -> ";
@@ -85,7 +90,29 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 				 std::cout<<daughters.at(j)->getPDG() << " ";
 			}
 			std::cout<<std::endl;
+		//}*/
+		if(_mcpartvec.at(i)->getParents().size() == 0 ){
+			parentpdgs.push_back(-0);
 		}
+		else{
+			mcparents = _mcpartvec.at(i)->getParents();
+			for(int j=0; j< mcparents.size(); j++){
+				parentpdgs.push_back( mcparents.at(j)->getPDG() );
+			}
+		}
+		
+		//print junk
+		for(int j=0; j<parentpdgs.size(); j++){
+			std::cout<<parentpdgs.at(j)<<" -> ";
+		}
+		std::cout<< _mcpartvec.at(i)->getPDG()<<" -> ";
+		for(int j=0; j<daughters.size; j++){
+			std::cout<<daughters->getPDG()<<" ";
+		}
+		std::cout<<std::endl;
+		
+
+
 	}
 
  nEvt++;

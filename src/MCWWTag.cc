@@ -102,7 +102,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			for(int k=0; k<quarks.size(); k++){
 				qrk += std::count(daughterpdgs.begin(),daughterpdgs.end(),quarks.at(k));
 			}
-			for(int k=0; k<quarks.size(); k++){
+			for(int k=0; k<leptons.size(); k++){
 				lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
 			}
 		} 

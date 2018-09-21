@@ -87,7 +87,14 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			daughterpdgs.push_back(daughters.at(j)->getPDG());
 			
 		}
-		
+		for(int j=0; j<parentpdgs.size(); j++){
+			std::cout<<parentpdgs.at(j)<<" ";
+		}
+		std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
+		for(int j=0; j<daughters.size(); j++){
+			std::cout<<daughters.at(j)->getPDG()<<" ";
+		}
+		std::cout<<std::endl;
 	
 
 		//allowed quarks
@@ -98,25 +105,17 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 		int qrk=0;
 
 		
-		for(int j=0; j< daughters.size(); j++){
+	
 			for(int k=0; k<quarks.size(); k++){
 				qrk += std::count(daughterpdgs.begin(),daughterpdgs.end(),quarks.at(k));
 			}
 			for(int k=0; k<leptons.size(); k++){
 				lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
 			}
-		} 
 
 		if( qrk == 2 && lep == 2){
 		//found the proper set 
-		for(int j=0; j<parentpdgs.size(); j++){
-			std::cout<<parentpdgs.at(j)<<" ";
-		}
-		std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
-		for(int j=0; j<daughters.size(); j++){
-			std::cout<<daughters.at(j)->getPDG()<<" ";
-		}
-		std::cout<<std::endl;
+		std::cout<<"FOUND"<<std::endl;
 		 break;
 		}
 

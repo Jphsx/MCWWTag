@@ -119,7 +119,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 
 	
 
-		it = find (myvector.begin(), myvector.end(), 30);
+
  		 if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 11) != daughterpdgs.end() ||
 			std::find(daughterpdgs.begin(),daughterpdgs.end(), -11) != daughterpdgs.end() ){
 			nelec++;

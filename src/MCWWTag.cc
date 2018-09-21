@@ -88,39 +88,11 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			
 		}
 		
-		/*//if( _mcpartvec.at(i)->getParents().size() == 0 ){
-			std::vector<MCParticle*> daughters{};
-			daughters = _mcpartvec.at(i)->getDaughters();
-				std::cout<<_mcpartvec.at(i)->isCreatedInSimulation()<<" "<<_mcpartvec.at(i)->getPDG()<<" -> ";
-			for(int j=0; j<daughters.size(); j++){
-				 std::cout<<daughters.at(j)->getPDG() << " ";
-			}
-			std::cout<<std::endl;
-		//}*/
-	/*	if(_mcpartvec.at(i)->getParents().size() == 0 ){
-			parentpdgs.push_back(-0);
-		}
-		else{
-			mcparents = _mcpartvec.at(i)->getParents();
-			for(int j=0; j< mcparents.size(); j++){
-				parentpdgs.push_back( mcparents.at(j)->getPDG() );
-			}
-		}
-		
-		//print junk
-		for(int j=0; j<parentpdgs.size(); j++){
-			std::cout<<parentpdgs.at(j)<<" ";
-		}
-		std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
-		for(int j=0; j<daughters.size(); j++){
-			std::cout<<daughters.at(j)->getPDG()<<" ";
-		}
-		std::cout<<std::endl;
-	*/
+	
 
 		//allowed quarks
 		std::vector<int> quarks{ 1, 2, 3, 4, 5, 6, -1, -2, -3, -4, -5, -6};
-,		std::vector<int> leptons{11, 12, 13, 14, 15, 16, 17, 18, -11, -12, -13, -14, -15, -16, -17, -18};
+		std::vector<int> leptons{11, 12, 13, 14, 15, 16, 17, 18, -11, -12, -13, -14, -15, -16, -17, -18};
 		//we require exactly 2 elements from leptons and 2 from quarks
 		int lep=0;
 		int qrk=0;

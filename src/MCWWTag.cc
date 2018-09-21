@@ -82,7 +82,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			daughters = _mcpartvec.at(i)->getDaughters();
 			
 			for(int j=0; j<daughters.size(); j++){
-				std::cout<< daughters.at(j)->getPDG() << " ";
+				std::cout<<_mcpartvec.at(i)->isCreatedInSimulation()<<" "<<_mcpartvec.at(i)->getPDG()<<" -> "<< daughters.at(j)->getPDG() << " ";
 			}
 			std::cout<<std::endl;
 		}

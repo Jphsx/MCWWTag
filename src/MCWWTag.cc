@@ -79,9 +79,15 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 
 	for(int i=0; i<_mcpartvec.size(); i++){
 		std::vector<int> parentpdgs{};
+		std::vector<int> daughterpdgs{};
 		std::vector<MCParticle*> mcparents{};
 		std::vector<MCParticle*> daughters{};
 		daughters = _mcpartvec.at(i)->getDaughters();
+		for(int j = 0; j<daughters.size(); j++){
+			daughterpdgs.push_back(daughters.at(j)->getPDG());
+			
+		}
+		
 		/*//if( _mcpartvec.at(i)->getParents().size() == 0 ){
 			std::vector<MCParticle*> daughters{};
 			daughters = _mcpartvec.at(i)->getDaughters();
@@ -91,7 +97,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			}
 			std::cout<<std::endl;
 		//}*/
-		if(_mcpartvec.at(i)->getParents().size() == 0 ){
+	/*	if(_mcpartvec.at(i)->getParents().size() == 0 ){
 			parentpdgs.push_back(-0);
 		}
 		else{
@@ -110,8 +116,37 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			std::cout<<daughters.at(j)->getPDG()<<" ";
 		}
 		std::cout<<std::endl;
-		
+	*/
 
+		//allowed quarks
+		std::vector<int> quarks{ 1, 2, 3, 4, 5, 6, -1, -2, -3, -4, -5, -6};
+,		std::vector<int> leptons{11, 12, 13, 14, 15, 16, 17, 18, -11, -12, -13, -14, -15, -16, -17, -18};
+		//we require exactly 2 elements from leptons and 2 from quarks
+		int lep=0;
+		int qrk=0;
+
+		
+		for(int j=0; j< daughters.size(); j++){
+			for(int k=0; k<quarks.size(); k++){
+				qrk += std::count(daughterpdgs.begin(),daughterpdgs.end(),quarks.at(k));
+			}
+			for(int k=0; k<quarks.size(); k++){
+				lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
+			}
+		} 
+
+		if( qrk == 2 && lep == 2){
+		//found the proper set 
+		for(int j=0; j<parentpdgs.size(); j++){
+			std::cout<<parentpdgs.at(j)<<" ";
+		}
+		std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
+		for(int j=0; j<daughters.size(); j++){
+			std::cout<<daughters.at(j)->getPDG()<<" ";
+		}
+		std::cout<<std::endl;
+		 break;
+		}
 
 	}
 

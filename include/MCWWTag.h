@@ -6,6 +6,7 @@
 #include "lcio.h"
 #include "TFile.h"
 #include <vector>
+#include <algorithm>
 
 #include <iostream>
 #include <fstream>

@@ -49,6 +49,10 @@ using namespace lcio;
   virtual void end() ;
 
   bool FindMCParticles( LCEvent* evt );
+  bool FindJets( LCEvent* evt ) ;
+
+  int identifyLeptonJet( std::vector<ReconstructedParticle*> jets);
+  int getLeptonJetCharge( ReconstructedParticle* ljet );
 
   protected:
   int nEvt{};
@@ -60,11 +64,36 @@ using namespace lcio;
    int ndwn=0;
    int nstr=0;
    int nchm=0;
+
+  //how many times do we get the proper lepton charge?
+  //for muons and for leptons separately
+  int muonqmatch=0;
+  int tauqmatch=0;
   
-  //vector to hold the tracks for the event
+  //vector to hold the particles for the event
   std::vector<MCParticle*> _mcpartvec{};
+  std::vector<ReconstructedParticle*> _jets{};
   int   _printing{};
 
   std::string _inputMcParticleCollectionName{};
+  std::string _inputJetCollectionName{};
+
+
+  /* histograms */
+
+
+	TH1D* WmassMuon;
+	TH1D* WmassTau;
+	TH1D* WEMuon;
+	TH1D* WETau;
+	TH1D* Wm_cosTheta;
+
+
+
+
+
+
+
+ /* end histograms */
 
 };

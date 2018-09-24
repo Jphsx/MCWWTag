@@ -20,7 +20,13 @@ MCWWTag::MCWWTag() : Processor("MCWWTag") {
 				_inputMcParticleCollectionName,
 				inputMcParticleCollectionName);
 
-	
+	//input collection parameters
+	std::string inputJetCollectionName = "x";
+  	registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
+			     	"InputJetCollectionName" , 
+			     	"Input Jet Collection Name "  ,
+			     	_inputJetCollectionName,
+			      	inputJetCollectionName);
 
 }
 
@@ -72,10 +78,89 @@ bool MCWWTag::FindMCParticles( LCEvent* evt ){
   	return collectionFound;
 }
 
+bool MCWWTag::FindJets( LCEvent* evt ) {
+
+	bool collectionFound = false;
+
+  	// clear old global pfovector
+	_jets.clear();
+  	typedef const std::vector<std::string> StringVec ;
+  	StringVec* strVec = evt->getCollectionNames() ;
+	
+	//iterate over collections, find the matching name
+  	for(StringVec::const_iterator itname=strVec->begin(); itname!=strVec->end(); itname++){
+     
+		//if found print name and number of elements
+    		if(*itname==_inputJetCollectionName){ 
+			LCCollection* collection = evt->getCollection(*itname);
+			std::cout<< "Located Jets Collection "<< *itname<< " with "<< collection->getNumberOfElements() << " elements " <<std::endl;
+			collectionFound = true;
+
+ 			//add the collection elements to the global vector
+      			for(int i=0; i<collection->getNumberOfElements(); i++){
+				ReconstructedParticle* recoPart = dynamic_cast<ReconstructedParticle*>(collection->getElementAt(i));
+				_jets.push_back(recoPart);
+      			}
+    		}
+  	}
+	
+	if(!collectionFound){
+		std::cout<<"Jet Collection "<< _inputJetCollectionName << "not found"<<std::endl;
+	}
+
+   
+	return collectionFound;
+}
+int MCWWTag::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
+
+	//maybe the lepton is the jet with the least particles
+	int indexofminjet = -1;
+	int nparticles = 999999;
+	for(int i=0; i<_jets.size(); i++){
+		std::cout<<"jet "<<i<<" has "<< _jets.at(i)->getParticles().size() << " particles "<<std::endl;
+		if( _jets.at(i)->getParticles.size() < nparticles ){
+			indexofminjet = i;
+			nparticles = _jets.at(i)->getParticles.size();
+		}
+	}
+	
+	return indexofminjet;
+
+}
+int MCWWTag::getLeptonJetCharge( ReconstructedParticle* ljet ){
+	//assign by leading track charge? or charge sum of reco parts?
+	std::vector<ReconstructedParticle*> jetparts = ljet->getParticles();
+	int totalcharge = 0;
+	int leadingcharge = 0;
+	double maxP = 0;
+	for(int i=0; i<jetparts.size(); i++){
+		//method 1
+		totalcharge += jetparts.at(i)->getCharge();
+
+		//method 2
+		double* p = jetparts.at(i)->getMomentum();
+		double P = std::sqrt( p[0]*p[0] + p[1]*p[1] + p[2]*p[2] );
+		if(P > maxP){
+			maxP = P;
+			leadingcharge = jetparts.at(i)->getCharge(); 
+		}
+	}
+
+	return totalcharge;
+	//return leadingcharge;
+
+}
+
 void MCWWTag::processEvent( LCEvent * evt ) {
  FindMCParticles(evt);
+ FindJets(evt);
  std::cout << "======================================== event " << nEvt << std::endl ;
 
+	//bools to characterize the lepton decay for this event
+	bool isTau = false;
+	bool isMuon = false;
+	//the true lepton charge
+	int trueq;
 
 	for(int i=0; i<_mcpartvec.size(); i++){
 		std::vector<int> parentpdgs{};
@@ -97,6 +182,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 		int lep=0;
 		int qrk=0;
 
+		//categorize the event for plotting
 		
 	
 			for(int k=0; k<quarks.size(); k++){
@@ -126,10 +212,29 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ||
 			std::find(daughterpdgs.begin(),daughterpdgs.end(), -13) != daughterpdgs.end() ){
 			nmuon++;
+			//identify event containing muon
+			isMuon = true;
+			//get true charge of the muon
+			if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ){
+				trueq = -1;
+			}
+			else{
+				trueq = 1;
+			}
 		}
 		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ||
 			std::find(daughterpdgs.begin(),daughterpdgs.end(), -15) != daughterpdgs.end() ){
 			ntau++;
+			//identify event containing a tau
+			isTau = true;
+			//identify the true charge of the lepton
+			if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ){
+				trueq = -1;
+			}
+			else{
+				trueq = 1;
+			}
+				
 		}
 		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 1) != daughterpdgs.end() ||
 			std::find(daughterpdgs.begin(),daughterpdgs.end(), -1) != daughterpdgs.end() ){
@@ -148,9 +253,24 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 			nchm++;
 		}
 		 break;
-		}
 
+		}//end if 2 qrks and 2 lep
+
+	}//end mcpartvec loop
+
+	//now asses jets
+	int ljet_index = identifyLeptonJet( _jets );
+	int lq = getLeptonJetCharge( _jets.at(ljet_index) );
+
+	if( trueq == lq){
+		std::cout<<" got correct lepton charge "<<std::endl;
+		if(isTau) tauqmatch++;
+		if(isMuon) muonqmatch++;
 	}
+	else{ 
+		std::cout<<" charge wrong "<<std::endl;
+	}
+	
 
  nEvt++;
 }
@@ -158,5 +278,7 @@ void MCWWTag::end(){
 
 	std::cout<<" nelec "<<nelec<<" nmuon "<< nmuon <<" ntau "<< ntau << std::endl;
 	std::cout<<" ndwn "<<ndwn<<" nup "<<nup<<" nstr "<<nstr<<" nchm "<<nchm<<std::endl;
+
+	std::cout<<" nevents "<< nEvt << " mu q match "<< muonqmatch <<  " tau q match "<< tauqmatch <<std::endl;
 }
 

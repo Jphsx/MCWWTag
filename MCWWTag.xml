@@ -27,6 +27,7 @@
 
 		<!-- input/output collection names -->
 		<parameter name="McParticleCollectionName" value="MCParticle" />
+		<parameter name="InputJetCollectionName" value="FastJets" />
 		
  	</processor>
 

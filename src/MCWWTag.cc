@@ -146,8 +146,8 @@ int MCWWTag::getLeptonJetCharge( ReconstructedParticle* ljet ){
 		}
 	}
 
-	return totalcharge;
-	//return leadingcharge;
+	//return totalcharge;
+	return leadingcharge;
 
 }
 

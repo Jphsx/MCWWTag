@@ -118,9 +118,9 @@ int MCWWTag::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
 	int nparticles = 999999;
 	for(int i=0; i<_jets.size(); i++){
 		std::cout<<"jet "<<i<<" has "<< _jets.at(i)->getParticles().size() << " particles "<<std::endl;
-		if( _jets.at(i)->getParticles.size() < nparticles ){
+		if( _jets.at(i)->getParticles().size() < nparticles ){
 			indexofminjet = i;
-			nparticles = _jets.at(i)->getParticles.size();
+			nparticles = _jets.at(i)->getParticles().size();
 		}
 	}
 	
@@ -138,7 +138,7 @@ int MCWWTag::getLeptonJetCharge( ReconstructedParticle* ljet ){
 		totalcharge += jetparts.at(i)->getCharge();
 
 		//method 2
-		double* p = jetparts.at(i)->getMomentum();
+		const double* p = jetparts.at(i)->getMomentum();
 		double P = std::sqrt( p[0]*p[0] + p[1]*p[1] + p[2]*p[2] );
 		if(P > maxP){
 			maxP = P;

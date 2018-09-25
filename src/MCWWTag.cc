@@ -285,7 +285,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 	//put jets into tlvs
 	std::vector<TLorentzVector> jets{};
 	for(int i=0; i<_jets.size(); i++){
-		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(getMass)->i() );
+		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
 	}
 
 	TLorentzVector dijet;

@@ -9,6 +9,7 @@
 #include "TH1D.h"
 #include <vector>
 #include <algorithm>
+#include "TLorentzVector.h"
 
 #include <iostream>
 #include <fstream>
@@ -82,13 +83,16 @@ using namespace lcio;
 
 
   /* histograms */
-
+	TFile* file;
 
 	TH1D* WmassMuon;
 	TH1D* WmassTau;
 	TH1D* WEMuon;
 	TH1D* WETau;
 	TH1D* Wm_cosTheta;
+
+	TH1D* LjetMassMuon;
+	TH1D* LjetMassTau;
 
 
 

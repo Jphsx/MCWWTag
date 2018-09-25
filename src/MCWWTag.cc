@@ -36,6 +36,17 @@ void MCWWTag::init() {
   // usually a good idea to
   printParameters() ;
   nEvt = 0;
+	
+	file = new TFile("file.root","RECREATE");
+
+	/* init histograms */
+	WmassMuon = new TH1D("Wmassmuon","W mass, mass of dijet or lepton jet from muon event",100, 50.0, 120.0 );
+	WmassTau new TH1D("Wmasstau","W mass, mass of dijet or lepton jet from tau event",100, 50.0, 120.0 );
+	WEMuon = new TH1D("WEmuon","W Energy, energy of dijet or lepton jet from muon event",100, 50.0, 250.0);
+	WETau = new TH1D("WEtau","W Energy,energy of dijet or lepton jet from tau event",100, 50.0, 250.0 );
+	//TH1D* Wm_cosTheta;
+	LjetMassMuon=new TH1D("Ljetmassmuon","ljet mass, mass of lepton jet from muon event",100, 0.0, 20.0 );
+	LjetMassTau=new TH1D("Ljetmasstau","ljet mass, mass of lepton jet from tau event",100, 0.0, 20.0 );
 
 }
 
@@ -270,7 +281,44 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 	else{ 
 		std::cout<<" charge wrong "<<std::endl;
 	}
+
+	//put jets into tlvs
+	std::vector<TLorentzVector> jets{};
+	for(int i=0; i<_jets.size(); i++){
+		jets.at(i).setXYZM(_jets.at(i).getMomentum()[0], _jets.at(i).getMomentum()[1], _jets.at(i).getMomentum()[2], _jets.at(i).getMass() );
+	}
+
+	TLorentzVector dijet;
+	TLorentzVector ljet;
+
+	for(int i=0; i<jets.size(); i++){
+		if( i == ljet_index ){
+			ljet = jets.at(i);
+		}
+		else{
+			dijet += jets.at(i);
+		}
+	}
 	
+	if( isTau ){
+		WmassTau->Fill( dijet.M() );
+		WmassTau->Fill(ljet.M() );
+		WETau->Fill->(dijet.E() );
+		WETau->Fill->(ljet.E() );
+
+		LjetMassTau->Fill( ljet.M() );
+	}
+	if( isMuon) {
+		WmassMuon->Fill( dijet.M() );
+		WmassMuon->Fill(ljet.M() );
+		WEMuon->Fill->(dijet.E() );
+		WEMuon->Fill->(ljet.E() );
+
+		LjetMassMuon->Fill( ljet.M() );
+	
+	}
+
+
 
  nEvt++;
 }
@@ -280,5 +328,7 @@ void MCWWTag::end(){
 	std::cout<<" ndwn "<<ndwn<<" nup "<<nup<<" nstr "<<nstr<<" nchm "<<nchm<<std::endl;
 
 	std::cout<<" nevents "<< nEvt << " mu q match "<< muonqmatch <<  " tau q match "<< tauqmatch <<std::endl;
+
+	file->Write();
 }
 

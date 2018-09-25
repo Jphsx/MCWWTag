@@ -42,11 +42,11 @@ void MCWWTag::init() {
 	/* init histograms */
 	WmassMuon = new TH1D("Wmassmuon","W mass, mass of dijet or lepton jet from muon event",100, 50.0, 120.0 );
 	WmassTau = new TH1D("Wmasstau","W mass, mass of dijet or lepton jet from tau event",100, 50.0, 120.0 );
-	WEMuon = new TH1D("WEmuon","W Energy, energy of dijet or lepton jet from muon event",100, 50.0, 250.0);
+	WEMuon = new TH1D("WEmuon","W Energy, energy of dijet or lepton jet from muon event",100, 25.0, 300.0);
 	WETau = new TH1D("WEtau","W Energy,energy of dijet or lepton jet from tau event",100, 50.0, 250.0 );
 	//TH1D* Wm_cosTheta;
-	LjetMassMuon=new TH1D("Ljetmassmuon","ljet mass, mass of lepton jet from muon event",100, 0.0, 20.0 );
-	LjetMassTau=new TH1D("Ljetmasstau","ljet mass, mass of lepton jet from tau event",100, 0.0, 20.0 );
+	LjetMassMuon=new TH1D("Ljetmassmuon","ljet mass, mass of lepton jet from muon event",100, 0.0 ,3.0 );
+	LjetMassTau=new TH1D("Ljetmasstau","ljet mass, mass of lepton jet from tau event",100, 0.0, 5.0 );
 
 }
 

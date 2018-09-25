@@ -41,7 +41,7 @@ void MCWWTag::init() {
 
 	/* init histograms */
 	WmassMuon = new TH1D("Wmassmuon","W mass, mass of dijet or lepton jet from muon event",100, 50.0, 120.0 );
-	WmassTau new TH1D("Wmasstau","W mass, mass of dijet or lepton jet from tau event",100, 50.0, 120.0 );
+	WmassTau = new TH1D("Wmasstau","W mass, mass of dijet or lepton jet from tau event",100, 50.0, 120.0 );
 	WEMuon = new TH1D("WEmuon","W Energy, energy of dijet or lepton jet from muon event",100, 50.0, 250.0);
 	WETau = new TH1D("WEtau","W Energy,energy of dijet or lepton jet from tau event",100, 50.0, 250.0 );
 	//TH1D* Wm_cosTheta;
@@ -285,7 +285,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 	//put jets into tlvs
 	std::vector<TLorentzVector> jets{};
 	for(int i=0; i<_jets.size(); i++){
-		jets.at(i).setXYZM(_jets.at(i).getMomentum()[0], _jets.at(i).getMomentum()[1], _jets.at(i).getMomentum()[2], _jets.at(i).getMass() );
+		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(getMass)->i() );
 	}
 
 	TLorentzVector dijet;
@@ -303,16 +303,16 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 	if( isTau ){
 		WmassTau->Fill( dijet.M() );
 		WmassTau->Fill(ljet.M() );
-		WETau->Fill->(dijet.E() );
-		WETau->Fill->(ljet.E() );
+		WETau->Fill(dijet.E() );
+		WETau->Fill(ljet.E() );
 
 		LjetMassTau->Fill( ljet.M() );
 	}
 	if( isMuon) {
 		WmassMuon->Fill( dijet.M() );
 		WmassMuon->Fill(ljet.M() );
-		WEMuon->Fill->(dijet.E() );
-		WEMuon->Fill->(ljet.E() );
+		WEMuon->Fill(dijet.E() );
+		WEMuon->Fill(ljet.E() );
 
 		LjetMassMuon->Fill( ljet.M() );
 	

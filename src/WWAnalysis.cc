@@ -42,7 +42,7 @@ void WWAnalysis::init() {
 	for(int i=0; i<= ncuts; i++){
 		 char cuts[100];
          sprintf(cuts, "_%d", i);
-         std::string cutnum(ptbins);
+         std::string cutnum(cuts);
 
 		/* init histograms */
 		WmassMuon[i] = new TH1D("Wmassmuon"+cutnum,"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );

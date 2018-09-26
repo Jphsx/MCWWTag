@@ -62,6 +62,22 @@ using namespace lcio;
   int identifyLeptonJet( std::vector<ReconstructedParticle*> jets);
   int getLeptonJetCharge( ReconstructedParticle* ljet );
 
+  //classify the type of lepton decay and retrieve the
+  //mcparticles for qqlnu
+  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq);
+
+  //populate local datastructures (TLVS)
+  void populateTLVs(int lindex);
+  void populateCMTLVs();
+
+  //helper function to get production angle of W-
+  double getCosThetaW();
+
+  //functions to populate histograms
+  void FillHistos(int histNumber);
+  void FillMuonHistos(int histNumber);
+  void FillTauHistos(int histNumber);
+
   protected:
 //event number
   int nEvt{};

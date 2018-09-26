@@ -14,6 +14,8 @@
 #include <iostream>
 #include <fstream>
 
+#define ncuts = 1
+
 using namespace lcio;
 
 	/** WWAnalysis:<br>
@@ -85,7 +87,7 @@ using namespace lcio;
   int nelec=0;
 
 //the total number of unique cuts applied (for histogram indexing)
-  int ncuts = 1;
+//  int ncuts = 1;
 
   //how many times do we get the proper lepton charge?
   //for muons and for leptons separately

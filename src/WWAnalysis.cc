@@ -301,12 +301,12 @@ void WWAnalysis::populateCMTLVs(){
 	Wlboost = -Wlboost;
 
 	for(int i=0; i<jets.size(); i++){
-		CMjets.push_back(jets.at(i));
+		CMJets.push_back(jets.at(i));
 		if(i == ljet_index){
-			CMjets.at(i).Boost(wlboost);
+			CMJets.at(i).Boost(wlboost);
 		}
 		else{
-			CMjets.at(i).Boost(wqqboost);
+			CMJets.at(i).Boost(wqqboost);
 		}
 	}
 	//boost the neutrino into CM
@@ -349,7 +349,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	WEMuon[histNumber]->Fill(Wqq.E() );
 	WEMuon[histNumber]->Fill(Wl.E() );
 
-	LjetMassMuon->Fill( jets.at(ljet_index ).M() );
+	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index ).M() );
 
 	//TGC stuff
 	costhetawMuon[histNumber]->Fill(getCosThetaW());

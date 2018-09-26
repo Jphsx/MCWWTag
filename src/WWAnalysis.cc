@@ -428,11 +428,11 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	populateCMTLVs();
 
 	//fill base histograms and produce histos with sequential cuts hist0 is always no cuts
-	FillHistos(0);
+//	FillHistos(0);
 	//cut #1 trueq == lq, lepton sign is correctly assessed
-	if(trueq == lq){
-		FillHistos(1);
-	}
+//	if(trueq == lq){
+//		FillHistos(1);
+//	}
 
 
 

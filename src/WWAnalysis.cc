@@ -45,27 +45,27 @@ void WWAnalysis::init() {
          std::string cutnum(cuts);
 
 		/* init histograms */
-		WmassMuon[i] = new TH1D("Wmassmuon"+cutnum,"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
-		WmassTau[i] = new TH1D("Wmasstau"+cutnum,"W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
-		WEMuon[i] = new TH1D("WEmuon"+cutnum,"W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
-		WETau[i] = new TH1D("WEtau"+cutnum,"W^{#pm} Energy, with true #tau ",100, 50.0, 250.0 );
-		EtotalMuon[i] = new TH1D("EtotalMuon"+cutnum,"WW Total Energy, with true #mu",100,10,300); 
-		EtotalTau[i] = new TH1D("EtotalTau"+cutnum,"WW Total Energy, with true #tau",100,10,300);
+		WmassMuon[i] = new TH1D(("Wmassmuon"+cutnum).c_str(),"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
+		WmassTau[i] = new TH1D(("Wmasstau"+cutnum).c_str(),"W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
+		WEMuon[i] = new TH1D(("WEmuon"+cutnum).c_str(),"W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
+		WETau[i] = new TH1D(("WEtau"+cutnum).c_str(),"W^{#pm} Energy, with true #tau ",100, 50.0, 250.0 );
+		EtotalMuon[i] = new TH1D(("EtotalMuon"+cutnum).c_str(),"WW Total Energy, with true #mu",100,10,300); 
+		EtotalTau[i] = new TH1D(("EtotalTau"+cutnum).c_str(),"WW Total Energy, with true #tau",100,10,300);
 		//TH1D* Wm_cosTheta;
-		LjetMassMuon[i]=new TH1D("Ljetmassmuon"+cutnum,"Mass of Lepton Jet with true #mu",100, 0.0 ,3.0 );
-		LjetMassTau[i]=new TH1D("Ljetmasstau"+cutnum,"Mass of Lepton Jet with ture #tau",100, 0.0, 5.0 );
+		LjetMassMuon[i]=new TH1D(("Ljetmassmuon"+cutnum).c_str(),"Mass of Lepton Jet with true #mu",100, 0.0 ,3.0 );
+		LjetMassTau[i]=new TH1D(("Ljetmasstau"+cutnum).c_str(),"Mass of Lepton Jet with ture #tau",100, 0.0, 5.0 );
 
-		costhetawMuon[i] = new TH1D("costhetawMuon"+cutnum, "production angle of W^- in Muon event",100,-1.0,1.0);
-		thetaLMuon[i] = new TH1D("thetaLMuon"+cutnum, "polar angle of CM lepton in Muon event",100, 0.0, 3.14);
-		phiLMuon[i] = new TH1D("phiLMuon"+cutnum, "azimuthal angle of CM Lepton in Muon event", 100,-3.14,3.14);
-		thetaHMuon[i] = new TH1D("thetaHMuon"+cutnum, "polar angle of CM quark in Muon event",100,0.0,3.14);
-		phiHMuon[i] = new TH1D("phiHMuon"+cutnum,"azimuthal angle of CM quark in Muon event", 100,-3.14,3.14);
+		costhetawMuon[i] = new TH1D(("costhetawMuon"+cutnum).c_str(), "production angle of W^- in Muon event",100,-1.0,1.0);
+		thetaLMuon[i] = new TH1D(("thetaLMuon"+cutnum).c_str(), "polar angle of CM lepton in Muon event",100, 0.0, 3.14);
+		phiLMuon[i] = new TH1D(("phiLMuon"+cutnum).c_str(), "azimuthal angle of CM Lepton in Muon event", 100,-3.14,3.14);
+		thetaHMuon[i] = new TH1D(("thetaHMuon"+cutnum).c_str(), "polar angle of CM quark in Muon event",100,0.0,3.14);
+		phiHMuon[i] = new TH1D(("phiHMuon"+cutnum).c_str(),"azimuthal angle of CM quark in Muon event", 100,-3.14,3.14);
 
-		costhetawTau[i] = new TH1D("costhetawTau"+cutnum, "production angle of W^- in Tau event",100,-1.0,1.0);
-		thetaLTau[i] = new TH1D("thetaLTau"+cutnum, "polar angle of CM lepton in Tau event",100, 0.0, 3.14);
-		phiLTau[i] = new TH1D("phiLTau"+cutnum, "azimuthal angle of CM Lepton in Tau event", 100,-3.14,3.14);
-		thetaHTau[i] = new TH1D("thetaHTau"+cutnum, "polar angle of CM quark in Tau event",100,0.0,3.14);
-		phiHTau[i] = new TH1D("phiHTau"+cutnum,"azimuthal angle of CM quark in Tau event", 100,-3.14,3.14);
+		costhetawTau[i] = new TH1D(("costhetawTau"+cutnum).c_str(), "production angle of W^- in Tau event",100,-1.0,1.0);
+		thetaLTau[i] = new TH1D(("thetaLTau"+cutnum).c_str(), "polar angle of CM lepton in Tau event",100, 0.0, 3.14);
+		phiLTau[i] = new TH1D(("phiLTau"+cutnum).c_str(), "azimuthal angle of CM Lepton in Tau event", 100,-3.14,3.14);
+		thetaHTau[i] = new TH1D(("thetaHTau"+cutnum).c_str(), "polar angle of CM quark in Tau event",100,0.0,3.14);
+		phiHTau[i] = new TH1D(("phiHTau"+cutnum).c_str(),"azimuthal angle of CM quark in Tau event", 100,-3.14,3.14);
 	
 		/* end init histograms */
 	}

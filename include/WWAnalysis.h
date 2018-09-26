@@ -51,67 +51,83 @@ using namespace lcio;
    */
   virtual void end() ;
 
+ //collection gathering
   bool FindMCParticles( LCEvent* evt );
   bool FindJets( LCEvent* evt ) ;
 
+
+  // lepton jet functions
   int identifyLeptonJet( std::vector<ReconstructedParticle*> jets);
   int getLeptonJetCharge( ReconstructedParticle* ljet );
 
   protected:
+//event number
   int nEvt{};
+
+//MC information
+ //the true parent that contains qqlnu
+  MCParticle* parent;
+ //bools to characterize the true lepton decay for this event
+  bool isTau;
+  bool isMuon;
+ //the true lepton charge
+  int trueq;
+
+//Lepton Jet variables
+ //index of the identified lepton on jet vector
+  int ljet_index;
+ //the assigned charge for identifed lepton jet
+  int lq;
+
+//tallies for the number of each type of true lepton per event
   int ntau=0;
   int nmuon=0;
   int nelec=0;
 
-   int nup=0;
-   int ndwn=0;
-   int nstr=0;
-   int nchm=0;
+//the total number of unique cuts applied (for histogram indexing)
+  int ncuts = 1;
 
   //how many times do we get the proper lepton charge?
   //for muons and for leptons separately
   int muonqmatch=0;
   int tauqmatch=0;
   
+
   //vector to hold the particles for the event
   std::vector<MCParticle*> _mcpartvec{};
   std::vector<ReconstructedParticle*> _jets{};
-  int   _printing{};
+  
+  //useful structures for calculation/ readability
+  std::vector<TLorentzVector> jets{};
+  TLorentzVector Wl; //l+nu
+  TLorentzVector Wqq; //q+q
+  TLorentzVector nu; //made from missing p with m=0
+  std::vector<TLorentzVector> CMjets{}; //qql boosted into W rest frame
+  TLorentzVector CMnu;//nu boosted into W restframe
 
+	int   _printing{};
+
+  //input collections
   std::string _inputMcParticleCollectionName{};
   std::string _inputJetCollectionName{};
 
 
-  /* histograms */
+  /* histograms split between muon/tau true events */
 	TFile* file;
 
-	TH1D* WmassMuon;
-	TH1D* WmassTau;
-	TH1D* WEMuon;
-	TH1D* WETau;
-	TH1D* Wm_cosTheta;
+	TH1D* WmassMuon[ncuts+1], WmassTau[ncuts+1];
+	TH1D* WEMuon[ncuts+1], WETau[ncuts+1], EtotalMuon[ncuts+1], EtotalTau[ncuts+1];
+	TH1D* Wm_cosTheta[ncuts+1];
 
-	TH1D* LjetMassMuon;
-	TH1D* LjetMassTau;
+	TH1D* LjetMassMuon[ncuts+1], LjetMassTau[ncuts+1];
 
 	//tgc hists
-	TH1D* costhetawMuon;
-	TH1D* thetaLMuon;
-	TH1D* phiLMuon;
-	TH1D* thetaHMuon;
-	TH1D* phiHMuon;
+	TH1D* costhetawMuon[ncuts+1] , costhetawTau[ncuts+1];
+	TH1D* thetaLMuon[ncuts+1], thetaLTau[ncuts+1];
+	TH1D* phiLMuon[ncuts+1], phiLTau[ncuts+1];
+	TH1D* thetaHMuon[ncuts+1], thetaHTau[ncuts+1];
+	TH1D* phiHMuon[ncuts+1], phiHTau[ncuts+1];
 	
-	TH1D* costhetawTau;
-	TH1D* thetaLTau;
-	TH1D* phiLTau;
-	TH1D* thetaHTau;
-	TH1D* phiHTau;
-
-
-
-
-
-
- /* end histograms */
+ 	/* end histograms */
 
 };

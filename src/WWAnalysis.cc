@@ -38,27 +38,33 @@ void WWAnalysis::init() {
   nEvt = 0;
 	
 	file = new TFile("file.root","RECREATE");
+ 
+	for(int i=0; i<= ncuts; i++){
+		/* init histograms */
+		WmassMuon[i] = new TH1D("Wmassmuon","W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
+		WmassTau[i] = new TH1D("Wmasstau","W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
+		WEMuon[i] = new TH1D("WEmuon","W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
+		WETau[i] = new TH1D("WEtau","W^{#pm} Energy, with true #tau ",100, 50.0, 250.0 );
+		EtotalMuon[i] = new TH1D("EtotalMuon","WW Total Energy, with true #mu",100,10,300); 
+		EtotalTau[i] = new TH1D("EtotalTau","WW Total Energy, with true #tau",100,10,300);
+		//TH1D* Wm_cosTheta;
+		LjetMassMuon[i]=new TH1D("Ljetmassmuon","Mass of Lepton Jet with true #mu",100, 0.0 ,3.0 );
+		LjetMassTau[i]=new TH1D("Ljetmasstau","Mass of Lepton Jet with ture #tau",100, 0.0, 5.0 );
 
-	/* init histograms */
-	WmassMuon = new TH1D("Wmassmuon","W mass, mass of dijet or lepton jet from muon event",100, 50.0, 120.0 );
-	WmassTau = new TH1D("Wmasstau","W mass, mass of dijet or lepton jet from tau event",100, 50.0, 120.0 );
-	WEMuon = new TH1D("WEmuon","W Energy, energy of dijet or lepton jet from muon event",100, 25.0, 300.0);
-	WETau = new TH1D("WEtau","W Energy,energy of dijet or lepton jet from tau event",100, 50.0, 250.0 );
-	//TH1D* Wm_cosTheta;
-	LjetMassMuon=new TH1D("Ljetmassmuon","ljet mass, mass of lepton jet from muon event",100, 0.0 ,3.0 );
-	LjetMassTau=new TH1D("Ljetmasstau","ljet mass, mass of lepton jet from tau event",100, 0.0, 5.0 );
+		costhetawMuon[i] = new TH1D("costhetawMuon", "production angle of W^- in Muon event",100,-1.0,1.0);
+		thetaLMuon[i] = new TH1D("thetaLMuon", "polar angle of CM lepton in Muon event",100, 0.0, 3.14);
+		phiLMuon[i] = new TH1D("phiLMuon", "azimuthal angle of CM Lepton in Muon event", 100,-3.14,3.14);
+		thetaHMuon[i] = new TH1D("thetaHMuon", "polar angle of CM quark in Muon event",100,0.0,3.14);
+		phiHMuon[i] = new TH1D("phiHMuon","azimuthal angle of CM quark in Muon event", 100,-3.14,3.14);
 
-	costhetawMuon = new TH1D("costhetawMuon", "production angle of W- in Muon event",100,-1.0,1.0);
-	thetaLMuon = new TH1D("thetaLMuon", "polar angle of CM lepton in Muon event",100, 0.0, 3.14);
-	phiLMuon = new TH1D("phiLMuon", "azimuthal angle of CM Lepton in Muon event", 100,-3.14,3.14);
-	thetaHMuon = new TH1D("thetaHMuon", "polar angle of CM quark in Muon event",100,0.0,3.14);
-	phiHMuon = new TH1D("phiHMuon","azimuthal angle of CM quark in Muon event", 100,-3.14,3.14);
-
-	costhetawTau = new TH1D("costhetawTau", "production angle of W- in Tau event",100,-1.0,1.0);
-	thetaLTau = new TH1D("thetaLTau", "polar angle of CM lepton in Tau event",100, 0.0, 3.14);
-	phiLTau = new TH1D("phiLTau", "azimuthal angle of CM Lepton in Tau event", 100,-3.14,3.14);
-	thetaHTau = new TH1D("thetaHTau", "polar angle of CM quark in Tau event",100,0.0,3.14);
-	phiHTau = new TH1D("phiHTau","azimuthal angle of CM quark in Tau event", 100,-3.14,3.14);
+		costhetawTau[i] = new TH1D("costhetawTau", "production angle of W^- in Tau event",100,-1.0,1.0);
+		thetaLTau[i] = new TH1D("thetaLTau", "polar angle of CM lepton in Tau event",100, 0.0, 3.14);
+		phiLTau[i] = new TH1D("phiLTau", "azimuthal angle of CM Lepton in Tau event", 100,-3.14,3.14);
+		thetaHTau[i] = new TH1D("thetaHTau", "polar angle of CM quark in Tau event",100,0.0,3.14);
+		phiHTau[i] = new TH1D("phiHTau","azimuthal angle of CM quark in Tau event", 100,-3.14,3.14);
+	
+		/* end init histograms */
+	}
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {
@@ -133,6 +139,7 @@ bool WWAnalysis::FindJets( LCEvent* evt ) {
    
 	return collectionFound;
 }
+/* identifies the lepton jet with the minimum particle multiplicity */
 int WWAnalysis::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
 
 	//maybe the lepton is the jet with the least particles
@@ -149,6 +156,7 @@ int WWAnalysis::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
 	return indexofminjet;
 
 }
+/* identifies Lepton jet charge by taking the charge of the leading track from the jet */
 int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	//assign by leading track charge? or charge sum of reco parts?
 	std::vector<ReconstructedParticle*> jetparts = ljet->getParticles();
@@ -172,18 +180,11 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	return leadingcharge;
 
 }
-
-void WWAnalysis::processEvent( LCEvent * evt ) {
- FindMCParticles(evt);
- FindJets(evt);
- std::cout << "======================================== event " << nEvt << std::endl ;
-
-	//bools to characterize the lepton decay for this event
-	bool isTau = false;
-	bool isMuon = false;
-	//the true lepton charge
-	int trueq;
-
+/* classify the the event based on the type of lepton in MCParticle info, also set the true charge for that lepton */
+/* also tallies the number of muon/electron/tau events */
+/* also retrieves the mcparticle which has daughters qqlnu */
+MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
+	
 	for(int i=0; i<_mcpartvec.size(); i++){
 		std::vector<int> parentpdgs{};
 		std::vector<int> daughterpdgs{};
@@ -194,98 +195,221 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 			daughterpdgs.push_back(daughters.at(j)->getPDG());
 			
 		}
-		
-	
-
 		//allowed quarks
-		std::vector<int> quarks{ 1, 2, 3, 4, 5, 6, -1, -2, -3, -4, -5, -6};
+		std::vector<int> quarks{ 1, 2, 3, 4, -1, -2, -3, -4};
 		std::vector<int> leptons{11, 12, 13, 14, 15, 16, -11, -12, -13, -14, -15, -16};
 		//we require exactly 2 elements from leptons and 2 from quarks
 		int lep=0;
 		int qrk=0;
 
 		//categorize the event for plotting
-		
-	
-			for(int k=0; k<quarks.size(); k++){
-				qrk += std::count(daughterpdgs.begin(),daughterpdgs.end(),quarks.at(k));
-			}
-			for(int k=0; k<leptons.size(); k++){
-				lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
-			}
+		for(int k=0; k<quarks.size(); k++){
+			qrk += std::count(daughterpdgs.begin(),daughterpdgs.end(),quarks.at(k));
+		}
+		for(int k=0; k<leptons.size(); k++){
+			lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
+		}
 
 		if( qrk == 2 && lep == 2){
-		//found the proper set 
-		for(int j=0; j<parentpdgs.size(); j++){
-			std::cout<<parentpdgs.at(j)<<" ";
-		}
-		std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
-		for(int j=0; j<daughters.size(); j++){
-			std::cout<<daughters.at(j)->getPDG()<<" ";
-		}
-		std::cout<<std::endl;
+			//found the proper set 
+			for(int j=0; j<parentpdgs.size(); j++){
+				std::cout<<parentpdgs.at(j)<<" ";
+			}
+			std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
+			for(int j=0; j<daughters.size(); j++){
+				std::cout<<daughters.at(j)->getPDG()<<" ";
+			}
+			std::cout<<std::endl;
 
 	
 
- 		 if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 11) != daughterpdgs.end() ||
-			std::find(daughterpdgs.begin(),daughterpdgs.end(), -11) != daughterpdgs.end() ){
-			nelec++;
-		}
-		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ||
-			std::find(daughterpdgs.begin(),daughterpdgs.end(), -13) != daughterpdgs.end() ){
-			nmuon++;
-			//identify event containing muon
-			isMuon = true;
-			//get true charge of the muon
-			if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ){
-				trueq = -1;
+ 		 	if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 11) != daughterpdgs.end() ||
+				std::find(daughterpdgs.begin(),daughterpdgs.end(), -11) != daughterpdgs.end() ){
+				nelec++;
 			}
-			else{
-				trueq = 1;
+			if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ||
+				std::find(daughterpdgs.begin(),daughterpdgs.end(), -13) != daughterpdgs.end() ){
+				nmuon++;
+				//identify event containing muon
+				isMuon = true;
+				//get true charge of the muon
+				if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ){
+					trueq = -1;
+				}
+				else{
+					trueq = 1;
+				}
 			}
-		}
-		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ||
-			std::find(daughterpdgs.begin(),daughterpdgs.end(), -15) != daughterpdgs.end() ){
-			ntau++;
-			//identify event containing a tau
-			isTau = true;
-			//identify the true charge of the lepton
-			if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ){
-				trueq = -1;
+			if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ||
+				std::find(daughterpdgs.begin(),daughterpdgs.end(), -15) != daughterpdgs.end() ){
+				ntau++;
+				//identify event containing a tau
+				isTau = true;
+				//identify the true charge of the lepton
+				if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ){
+					trueq = -1;
+				}
+				else{
+					trueq = 1;
+				}	
 			}
-			else{
-				trueq = 1;
-			}
-				
-		}
-		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 1) != daughterpdgs.end() ||
-			std::find(daughterpdgs.begin(),daughterpdgs.end(), -1) != daughterpdgs.end() ){
-			ndwn++;
-		}
-		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 2) != daughterpdgs.end() ||
-			std::find(daughterpdgs.begin(),daughterpdgs.end(), -2) != daughterpdgs.end() ){
-			nup++;
-		}
-		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 3) != daughterpdgs.end() ||
-			std::find(daughterpdgs.begin(),daughterpdgs.end(), -3) != daughterpdgs.end() ){
-			nstr++;
-		}
-		if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 4) != daughterpdgs.end() ||
-			std::find(daughterpdgs.begin(),daughterpdgs.end(), -4) != daughterpdgs.end() ){
-			nchm++;
-		}
-		 break;
-
-		}//end if 2 qrks and 2 lep
+			//if we have found the true decay set break out of the mcpart vec loop
+			break;
+		}//end if 2qrk & 2 lep
 
 	}//end mcpartvec loop
 
-	//now asses jets
-	int ljet_index = identifyLeptonJet( _jets );
-	int lq = getLeptonJetCharge( _jets.at(ljet_index) );
+}
+/* populate the tlvs based on the identified lepton jet */
+void WWAnalysis::populateTLVs(int lindex){
+	
+	for(int i=0; i<_jets.size(); i++){
+		TLorentzVector j;
+		jets.push_back(j);
+		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
+	}
 
+	//loop over the new tlv jets and make wl and wqq
+	for(int i=0; i<jets.size(); i++){
+		if( i == lindex ){
+			//right not Wl will be missing its neutrino
+			Wl = jets.at(i);
+		}
+		else{
+			Wqq += jets.at(i);
+		}
+	}
+
+	//figure out the muon 
+	double missingPx= Wl.Px() - Wqq.Px();
+	double missingPy= Wl.Py() - Wqq.Py();
+	double missingPz= Wl.Pz() - Wqq.Pz();
+
+	//create the tlv neutrino
+	nu.SetXYZM(missingPx, missingPy, missingPz, 0.0);
+
+	//add the neutrino to complete the leptonic W
+	Wl += nu;
+
+}
+//populate W rest fram versions of the jets to access TGC observables
+void WWAnalysis::populateCMTLVs(){
+	TVector3 Wqqboost(Wqq.Px(),Wqq.Py(),Wqq.Pz());
+	TVector3 Wlboost(Wl.Px(),Wl.Py(),Wl.Pz());
+
+	Wqqboost = -Wqqboost;
+	Wlboost = -Wlboost;
+
+	for(int i=0; i<jets.size(); i++){
+		CMjets.push_back(jets.at(i));
+		if(i == ljet_index){
+			CMjets.at(i).Boost(wlboost);
+		}
+		else{
+			CMjets.at(i).Boost(wqqboost);
+		}
+	}
+	//boost the neutrino into CM
+	CMnu = nu;
+	CMnu.Boost(wlboost);
+	
+}
+//get the production angle for W-  (W- . z)
+double WWAnalysis::getCosThetaW(){
+	
+	//our unit z vector along the beam axis
+	TVector3 z(0.0,0.0,1.0);
+	if(lq <0 ){
+		//W- is the lepton
+		TVector3 Wm(Wl.Px(),Wl.Py(),Wl.Pz());
+		Wm = Wm * (1/Wm.Mag());
+		return Wm.Dot(z);
+		
+	}
+	else{
+		//infer qq charge to be W-
+		TVector3 Wm(Wqq.Px(),Wqq.Py(),Wqq.Pz());
+		Wm = Wm * (1/Wm.Mag());
+		return Wm.Dot(z);
+	}
+
+}
+void WWAnalysis::FillHistos(int histNumber){
+	if(isTau){
+		FillTauHistos(histNumber);
+	}
+	if(isMuon){
+		FillMuonHistos(histNumber);
+	}
+}
+void WWAnalysis::FillMuonHistos(int histNumber){
+
+	WmassMuon[histNumber]->Fill( Wqq.M() );
+	WmassMuon[histNumber]->Fill(Wl.M() );
+	WEMuon[histNumber]->Fill(Wqq.E() );
+	WEMuon[histNumber]->Fill(Wl.E() );
+
+	LjetMassMuon->Fill( jets.at(ljet_index ).M() );
+
+	//TGC stuff
+	costhetawMuon[histNumber]->Fill(getCosThetaW());
+	thetaLMuon[histNumber]->Fill( CMJets.at(ljet_index).Theta());
+	phiLMuon[histNumber]->Fill( CMJets.at(ljet_index).Phi());
+	for(int i=0; i<CMJets.size(); i++){
+		if( i != ljet_index ){
+			thetaHMuon[histNumber]->Fill( CMJets.at(i).Theta()); 
+			phiHMuon[histNumber]->Fill( CMJets.at(i).Phi());
+		}
+	}
+		
+}
+void WWAnalysis::FillTauHistos(int histNumber){
+
+	WmassTau[histNumber]->Fill( Wqq.M() );
+	WmassTau[histNumber]->Fill( Wl.M() );
+	WETau[histNumber]->Fill( Wqq.E() );
+	WETau[histNumber]->Fill(Wl.E() );
+
+	LjetMassTau[histNumber]->Fill( jets.at(ljet_index).M() );
+
+	//TGC stuff
+	costhetawTau[histNumber]->Fill(getCosThetaW());
+	thetaLTau[histNumber]->Fill( CMJets.at(ljet_index).Theta());
+	phiLTau[histNumber]->Fill( CMJets.at(ljet_index).Phi());
+	for(int i=0; i<CMJets.size(); i++){
+		if( i != ljet_index ){
+			thetaHTau[histNumber]->Fill( CMJets.at(i).Theta()); 
+			phiHTau[histNumber]->Fill( CMJets.at(i).Phi());
+		}
+	}
+}
+
+void WWAnalysis::processEvent( LCEvent * evt ) {
+
+ FindMCParticles(evt);
+ FindJets(evt);
+ std::cout << "======================================== event " << nEvt << std::endl ;
+
+
+	//bools to characterize the true lepton decay for this event
+	isTau = false;
+	isMuon = false;
+
+	//from the mcparticles find what the type of semileptonic decay is present
+	parent = classifyEvent(isTau, isMuon, trueq);
+
+	//now asses jets
+	//keep the index on _jets of the jet we consider to be the lepton
+	ljet_index = identifyLeptonJet( _jets );
+
+	//get the charge of the lepton jet
+	lq = getLeptonJetCharge( _jets.at(ljet_index) );
+
+
+	//check if the assessed charge matches the true charge of the lepton
 	if( trueq == lq){
 		std::cout<<" got correct lepton charge "<<std::endl;
+		//count the number of times we get it right
 		if(isTau) tauqmatch++;
 		if(isMuon) muonqmatch++;
 	}
@@ -293,77 +417,17 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 		std::cout<<" charge wrong "<<std::endl;
 	}
 
-	//put jets into tlvs
-	std::vector<TLorentzVector> jets{};
-	for(int i=0; i<_jets.size(); i++){
-		TLorentzVector j;
-		jets.push_back(j);
-		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
-	}
+	//build up all the different tlvs for calculation
+  	populateTLVs(ljet_index);
 
-	TLorentzVector dijet;
-	TLorentzVector ljet;
+    //boost jets to cm for TGC observables
+	populateCMTLVs();
 
-	for(int i=0; i<jets.size(); i++){
-		if( i == ljet_index ){
-			ljet = jets.at(i);
-		}
-		else{
-			dijet += jets.at(i);
-		}
-	}
-	
-
-	//figure out the muon 
-	double missingPx= ljet.Px() - dijet.Px();
-	double missingPy= ljet.Py() - dijet.Py();
-	double missingPz= ljet.Pz() - dijet.Pz();
-
-	TLorentzVector neutrino;
-	neutrino.SetXYZM(missingPx, missingPy, missingPz, 0.0);
-
-	TLorentzVector Wh= dijet;
-	TLorentzVector Wl = neutrino + ljet;
-
-	TVector3 Whboost(Wh.Px(),Wh.Py(),Wh.Pz());
-	TVector3 Wlboost(Wl.Px(),Wl.Py(),Wl.Pz());
-
-	Whboost = -Whboost;
-	Wlboost = -Wlboost;
-
-	std::vector<TLorentzVector> CMjets{};
-	for(int i=0; i<jets.size(); i++){
-		CMjets.push_back(jets.at(i));
-		if(i == ljet_index){
-			CMjets.at(i).Boost(wlboost);
-		}
-		else{
-			CMjets.at(i).Boost(whboost);
-		}
-	}
-
-	if( isTau ){
-		WmassTau->Fill( dijet.M() );
-		WmassTau->Fill(ljet.M() );
-		WETau->Fill(dijet.E() );
-		WETau->Fill(ljet.E() );
-		LjetMassTau->Fill( ljet.M() );
-
-		//+ events, take prod angle from qq
-		if(lq> 0){
-			
-		}else{
-
-		}
-	}
-	if( isMuon) {
-		WmassMuon->Fill( dijet.M() );
-		WmassMuon->Fill(ljet.M() );
-		WEMuon->Fill(dijet.E() );
-		WEMuon->Fill(ljet.E() );
-
-		LjetMassMuon->Fill( ljet.M() );
-	
+	//fill base histograms and produce histos with sequential cuts hist0 is always no cuts
+	FillHistos(0);
+	//cut #1 trueq == lq, lepton sign is correctly assessed
+	if(trueq == lq){
+		FillHistos(1);
 	}
 
 
@@ -372,9 +436,8 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 }
 void WWAnalysis::end(){
 
+	/* print out stuff */
 	std::cout<<" nelec "<<nelec<<" nmuon "<< nmuon <<" ntau "<< ntau << std::endl;
-	std::cout<<" ndwn "<<ndwn<<" nup "<<nup<<" nstr "<<nstr<<" nchm "<<nchm<<std::endl;
-
 	std::cout<<" nevents "<< nEvt << " mu q match "<< muonqmatch <<  " tau q match "<< tauqmatch <<std::endl;
 
 	file->Write();

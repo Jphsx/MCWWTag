@@ -1,9 +1,9 @@
-#include "MCWWTag.h"
+#include "WWAnalysis.h"
 
-MCWWTag aMCWWTag;
+WWAnalysis aWWAnalysis;
 
 
-MCWWTag::MCWWTag() : Processor("MCWWTag") {
+WWAnalysis::WWAnalysis() : Processor("WWAnalysis") {
 
 
   // register steering parameters: name, description, class-variable, default value
@@ -30,7 +30,7 @@ MCWWTag::MCWWTag() : Processor("MCWWTag") {
 
 }
 
-void MCWWTag::init() {
+void WWAnalysis::init() {
 
   streamlog_out(DEBUG) << "   init called  " << std::endl;
   // usually a good idea to
@@ -48,13 +48,24 @@ void MCWWTag::init() {
 	LjetMassMuon=new TH1D("Ljetmassmuon","ljet mass, mass of lepton jet from muon event",100, 0.0 ,3.0 );
 	LjetMassTau=new TH1D("Ljetmasstau","ljet mass, mass of lepton jet from tau event",100, 0.0, 5.0 );
 
+	costhetawMuon = new TH1D("costhetawMuon", "production angle of W- in Muon event",100,-1.0,1.0);
+	thetaLMuon = new TH1D("thetaLMuon", "polar angle of CM lepton in Muon event",100, 0.0, 3.14);
+	phiLMuon = new TH1D("phiLMuon", "azimuthal angle of CM Lepton in Muon event", 100,-3.14,3.14);
+	thetaHMuon = new TH1D("thetaHMuon", "polar angle of CM quark in Muon event",100,0.0,3.14);
+	phiHMuon = new TH1D("phiHMuon","azimuthal angle of CM quark in Muon event", 100,-3.14,3.14);
+
+	costhetawTau = new TH1D("costhetawTau", "production angle of W- in Tau event",100,-1.0,1.0);
+	thetaLTau = new TH1D("thetaLTau", "polar angle of CM lepton in Tau event",100, 0.0, 3.14);
+	phiLTau = new TH1D("phiLTau", "azimuthal angle of CM Lepton in Tau event", 100,-3.14,3.14);
+	thetaHTau = new TH1D("thetaHTau", "polar angle of CM quark in Tau event",100,0.0,3.14);
+	phiHTau = new TH1D("phiHTau","azimuthal angle of CM quark in Tau event", 100,-3.14,3.14);
 }
 
-void MCWWTag::processRunHeader( LCRunHeader* run) {
+void WWAnalysis::processRunHeader( LCRunHeader* run) {
   streamlog_out(MESSAGE) << " processRunHeader "  << run->getRunNumber() << std::endl ;
 }
 
-bool MCWWTag::FindMCParticles( LCEvent* evt ){
+bool WWAnalysis::FindMCParticles( LCEvent* evt ){
    
 	bool collectionFound = false;
 
@@ -89,7 +100,7 @@ bool MCWWTag::FindMCParticles( LCEvent* evt ){
   	return collectionFound;
 }
 
-bool MCWWTag::FindJets( LCEvent* evt ) {
+bool WWAnalysis::FindJets( LCEvent* evt ) {
 
 	bool collectionFound = false;
 
@@ -122,7 +133,7 @@ bool MCWWTag::FindJets( LCEvent* evt ) {
    
 	return collectionFound;
 }
-int MCWWTag::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
+int WWAnalysis::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
 
 	//maybe the lepton is the jet with the least particles
 	int indexofminjet = -1;
@@ -138,7 +149,7 @@ int MCWWTag::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
 	return indexofminjet;
 
 }
-int MCWWTag::getLeptonJetCharge( ReconstructedParticle* ljet ){
+int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	//assign by leading track charge? or charge sum of reco parts?
 	std::vector<ReconstructedParticle*> jetparts = ljet->getParticles();
 	int totalcharge = 0;
@@ -162,7 +173,7 @@ int MCWWTag::getLeptonJetCharge( ReconstructedParticle* ljet ){
 
 }
 
-void MCWWTag::processEvent( LCEvent * evt ) {
+void WWAnalysis::processEvent( LCEvent * evt ) {
  FindMCParticles(evt);
  FindJets(evt);
  std::cout << "======================================== event " << nEvt << std::endl ;
@@ -302,13 +313,48 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 		}
 	}
 	
+
+	//figure out the muon 
+	double missingPx= ljet.Px() - dijet.Px();
+	double missingPy= ljet.Py() - dijet.Py();
+	double missingPz= ljet.Pz() - dijet.Pz();
+
+	TLorentzVector neutrino;
+	neutrino.SetXYZM(missingPx, missingPy, missingPz, 0.0);
+
+	TLorentzVector Wh= dijet;
+	TLorentzVector Wl = neutrino + ljet;
+
+	TVector3 Whboost(Wh.Px(),Wh.Py(),Wh.Pz());
+	TVector3 Wlboost(Wl.Px(),Wl.Py(),Wl.Pz());
+
+	Whboost = -Whboost;
+	Wlboost = -Wlboost;
+
+	std::vector<TLorentzVector> CMjets{};
+	for(int i=0; i<jets.size(); i++){
+		CMjets.push_back(jets.at(i));
+		if(i == ljet_index){
+			CMjets.at(i).Boost(wlboost);
+		}
+		else{
+			CMjets.at(i).Boost(whboost);
+		}
+	}
+
 	if( isTau ){
 		WmassTau->Fill( dijet.M() );
 		WmassTau->Fill(ljet.M() );
 		WETau->Fill(dijet.E() );
 		WETau->Fill(ljet.E() );
-
 		LjetMassTau->Fill( ljet.M() );
+
+		//+ events, take prod angle from qq
+		if(lq> 0){
+			
+		}else{
+
+		}
 	}
 	if( isMuon) {
 		WmassMuon->Fill( dijet.M() );
@@ -324,7 +370,7 @@ void MCWWTag::processEvent( LCEvent * evt ) {
 
  nEvt++;
 }
-void MCWWTag::end(){
+void WWAnalysis::end(){
 
 	std::cout<<" nelec "<<nelec<<" nmuon "<< nmuon <<" ntau "<< ntau << std::endl;
 	std::cout<<" ndwn "<<ndwn<<" nup "<<nup<<" nstr "<<nstr<<" nchm "<<nchm<<std::endl;

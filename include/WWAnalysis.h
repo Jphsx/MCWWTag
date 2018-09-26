@@ -16,23 +16,23 @@
 
 using namespace lcio;
 
-	/** MCWWTag:<br>
+	/** WWAnalysis:<br>
  *
  * 
  * @author Justin Anguiano, University of Kansas
  * 
  */
 
- class MCWWTag : public marlin::Processor {
+ class WWAnalysis : public marlin::Processor {
 
  public:
 
- virtual marlin::Processor*  newProcessor() { return new MCWWTag ; }
+ virtual marlin::Processor*  newProcessor() { return new WWAnalysis ; }
 
-  MCWWTag(const MCWWTag&) = delete ;
-  MCWWTag& operator=(const MCWWTag&) = delete ;
+  WWAnalysis(const WWAnalysis&) = delete ;
+  WWAnalysis& operator=(const WWAnalysis&) = delete ;
 
-  MCWWTag() ;
+  WWAnalysis() ;
 
   /** Called at the beginning of the job before anything is read.
    *  Use to initialize the proscessor, e.g. book histograms.
@@ -94,6 +94,18 @@ using namespace lcio;
 	TH1D* LjetMassMuon;
 	TH1D* LjetMassTau;
 
+	//tgc hists
+	TH1D* costhetawMuon;
+	TH1D* thetaLMuon;
+	TH1D* phiLMuon;
+	TH1D* thetaHMuon;
+	TH1D* phiHMuon;
+	
+	TH1D* costhetawTau;
+	TH1D* thetaLTau;
+	TH1D* phiLTau;
+	TH1D* thetaHTau;
+	TH1D* phiHTau;
 
 
 

@@ -12,7 +12,7 @@
 <marlin>
 	<execute>
 	<processor name="MyFastJetProcessor" />
-   	<processor name="MyMCWWTag"/>
+   	<processor name="MyWWAnalysis"/>
  	</execute>
 
 	<global>
@@ -46,7 +46,7 @@
   </processor>
 
 
-	<processor name="MyMCWWTag" type="MCWWTag">   
+	<processor name="MyWWAnalysis" type="WWAnalysis">   
 
 		<!-- input/output collection names -->
 		<parameter name="McParticleCollectionName" value="MCParticle" />

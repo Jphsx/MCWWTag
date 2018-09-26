@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 
-#define ncuts = 1
+#define ncuts 1
 
 using namespace lcio;
 

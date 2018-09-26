@@ -104,7 +104,7 @@ using namespace lcio;
   TLorentzVector Wl; //l+nu
   TLorentzVector Wqq; //q+q
   TLorentzVector nu; //made from missing p with m=0
-  std::vector<TLorentzVector> CMjets{}; //qql boosted into W rest frame
+  std::vector<TLorentzVector> CMjets{}; //q,q,l boosted into W rest frame
   TLorentzVector CMnu;//nu boosted into W restframe
 
 	int   _printing{};
@@ -117,18 +117,18 @@ using namespace lcio;
   /* histograms split between muon/tau true events */
 	TFile* file;
 
-	TH1D* WmassMuon[ncuts+1], WmassTau[ncuts+1];
-	TH1D* WEMuon[ncuts+1], WETau[ncuts+1], EtotalMuon[ncuts+1], EtotalTau[ncuts+1];
-	TH1D* Wm_cosTheta[ncuts+1];
+	TH1D *WmassMuon[ncuts+1], *WmassTau[ncuts+1];
+	TH1D *WEMuon[ncuts+1], *WETau[ncuts+1], *EtotalMuon[ncuts+1], *EtotalTau[ncuts+1];
+	TH1D *Wm_cosTheta[ncuts+1];
 
-	TH1D* LjetMassMuon[ncuts+1], LjetMassTau[ncuts+1];
+	TH1D *LjetMassMuon[ncuts+1], *LjetMassTau[ncuts+1];
 
 	//tgc hists
-	TH1D* costhetawMuon[ncuts+1] , costhetawTau[ncuts+1];
-	TH1D* thetaLMuon[ncuts+1], thetaLTau[ncuts+1];
-	TH1D* phiLMuon[ncuts+1], phiLTau[ncuts+1];
-	TH1D* thetaHMuon[ncuts+1], thetaHTau[ncuts+1];
-	TH1D* phiHMuon[ncuts+1], phiHTau[ncuts+1];
+	TH1D *costhetawMuon[ncuts+1] , *costhetawTau[ncuts+1];
+	TH1D *thetaLMuon[ncuts+1], *thetaLTau[ncuts+1];
+	TH1D *phiLMuon[ncuts+1], *phiLTau[ncuts+1];
+	TH1D *thetaHMuon[ncuts+1], *thetaHTau[ncuts+1];
+	TH1D *phiHMuon[ncuts+1], *phiHTau[ncuts+1];
 	
  	/* end histograms */
 

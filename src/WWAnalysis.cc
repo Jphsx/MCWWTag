@@ -303,15 +303,15 @@ void WWAnalysis::populateCMTLVs(){
 	for(int i=0; i<jets.size(); i++){
 		CMJets.push_back(jets.at(i));
 		if(i == ljet_index){
-			CMJets.at(i).Boost(wlboost);
+			CMJets.at(i).Boost(Wlboost);
 		}
 		else{
-			CMJets.at(i).Boost(wqqboost);
+			CMJets.at(i).Boost(Wqqboost);
 		}
 	}
 	//boost the neutrino into CM
 	CMnu = nu;
-	CMnu.Boost(wlboost);
+	CMnu.Boost(Wlboost);
 	
 }
 //get the production angle for W-  (W- . z)

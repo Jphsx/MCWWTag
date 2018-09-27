@@ -327,17 +327,26 @@ void WWAnalysis::populateCMTLVs(){
 	Wqqboost = -Wqqboost;
 	Wlboost = -Wlboost;
 
-	std::vector<TLorentzVector*> cmtemp(_jets.size());
+	Wqqboost.Print();
+	Wlboost.Print();
+
+	std::vector<TLorentzVector> cmtempvec(_jets.size());
+	TLorentzVector cmtemp;
 	for(int i=0; i<cmtemp.size(); i++){
-		cmtemp.at(i) = (jets.at(i));
+		cmtemp = *(jets.at(i));
 		if(i == ljet_index){
-			cmtemp.at(i)->Boost(Wlboost);
+			cmtemp.Boost(Wlboost);
 		}
 		else{
-			cmtemp.at(i)->Boost(Wqqboost);
+			cmtemp.Boost(Wqqboost);
 		}
+		cmtempvec.at(i) = new TLorentzVector(cmtemp);
 	}
-	CMJets = cmtemp;
+	std::cout<<"cm"<<std::endl;
+	for(int i=0; i<cmtempvec.size(); i++){
+		std::cout<<cmtempvec.at(i)->Px()<<" "<<cmtempvec.at(i)->Py()<<" "<<cmptempvec.at(i)->Pz()<<" "<<cmptempvec.ati)->M()<<std::endl;
+	}
+	CMJets = cmtempvec;
 	//boost the neutrino into CM
 	CMnu = nu;
 	CMnu->Boost(Wlboost);

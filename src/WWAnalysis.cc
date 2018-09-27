@@ -53,8 +53,8 @@ void WWAnalysis::init() {
 		qqmassTau[i] = new TH1D(("qqmasstau"+cutnum).c_str(),"qq Mass, with true #tau",100,50.0,120.0);
 		WEMuon[i] = new TH1D(("WEmuon"+cutnum).c_str(),"W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
 		WETau[i] = new TH1D(("WEtau"+cutnum).c_str(),"W^{#pm} Energy, with true #tau ",100, 25.0, 300.0 );
-		EtotalMuon[i] = new TH1D(("EtotalMuon"+cutnum).c_str(),"WW Total Energy, with true #mu",100,10,300); 
-		EtotalTau[i] = new TH1D(("EtotalTau"+cutnum).c_str(),"WW Total Energy, with true #tau",100,10,300);
+		EtotalMuon[i] = new TH1D(("EtotalMuon"+cutnum).c_str(),"WW Total Energy, with true #mu",100,100,550); 
+		EtotalTau[i] = new TH1D(("EtotalTau"+cutnum).c_str(),"WW Total Energy, with true #tau",100,100,550);
 		//TH1D* Wm_cosTheta;
 		LjetMassMuon[i]=new TH1D(("Ljetmassmuon"+cutnum).c_str(),"Mass of Lepton Jet with true #mu",100, 0.0 ,20.0 );
 		LjetMassTau[i]=new TH1D(("Ljetmasstau"+cutnum).c_str(),"Mass of Lepton Jet with true #tau",100, 0.0, 20.0 );
@@ -394,7 +394,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	WEMuon[histNumber]->Fill(Wl->E() );
 	EtotalMuon[histNumber]->Fill(Wqq->E() + Wl->E() );
 
-	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index )->M() );
+	LjetMassMuon[histNumber]->Fill( _jets.at( ljet_index )->M() );
 
 	//TGC stuff
 	costhetawMuon[histNumber]->Fill(getCosThetaW());
@@ -417,7 +417,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	WETau[histNumber]->Fill(Wl->E() );
 	EtotalTau[histNumber]->Fill(Wqq->E() + Wl->E());
 
-	LjetMassTau[histNumber]->Fill( jets.at(ljet_index)->M() );
+	LjetMassTau[histNumber]->Fill( _jets.at(ljet_index)->M() );
 
 	//TGC stuff
 	costhetawTau[histNumber]->Fill(getCosThetaW());

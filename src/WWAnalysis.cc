@@ -313,8 +313,6 @@ void WWAnalysis::populateTLVs(int lindex){
 	temp2 = *Wl + *nu;
 	Wl->SetXYZM(temp2.Px(), temp2.Py(), temp2.Pz(), temp2.M());
 
-	std::cout<<"WL and wqq at fn scope ";
-	std::cout<<Wqq->Px()<<" "<<Wqq->Py()<<" "<<Wqq->Pz()<<" "<<Wqq->M()<<std::endl;
 
 }
 //populate W rest fram versions of the jets to access TGC observables
@@ -444,8 +442,6 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 	//build up all the different tlvs for calculation
   	populateTLVs(ljet_index);
-	std::cout<<"Wl at process scope"<<std::endl;
-	std::cout<<Wqq->Px()<<" "<<Wqq->Py()<<" "<<Wqq->Pz()<<" "<<Wqq->M()<<std::endl;
 
     //boost jets to cm for TGC observables
 	populateCMTLVs();

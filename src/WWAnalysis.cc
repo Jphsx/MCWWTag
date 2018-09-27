@@ -48,7 +48,7 @@ void WWAnalysis::init() {
 		WmassMuon[i] = new TH1D(("Wmassmuon"+cutnum).c_str(),"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
 		WmassTau[i] = new TH1D(("Wmasstau"+cutnum).c_str(),"W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
 		WEMuon[i] = new TH1D(("WEmuon"+cutnum).c_str(),"W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
-		WETau[i] = new TH1D(("WEtau"+cutnum).c_str(),"W^{#pm} Energy, with true #tau ",100, 50.0, 250.0 );
+		WETau[i] = new TH1D(("WEtau"+cutnum).c_str(),"W^{#pm} Energy, with true #tau ",100, 25.0, 300.0 );
 		EtotalMuon[i] = new TH1D(("EtotalMuon"+cutnum).c_str(),"WW Total Energy, with true #mu",100,10,300); 
 		EtotalTau[i] = new TH1D(("EtotalTau"+cutnum).c_str(),"WW Total Energy, with true #tau",100,10,300);
 		//TH1D* Wm_cosTheta;
@@ -370,14 +370,14 @@ void WWAnalysis::FillHistos(int histNumber){
 void WWAnalysis::FillMuonHistos(int histNumber){
 
 	WmassMuon[histNumber]->Fill( Wqq->M() );
-	//WmassMuon[histNumber]->Fill(Wl.M() );
+	WmassMuon[histNumber]->Fill(Wl.M() );
 	WEMuon[histNumber]->Fill(Wqq->E() );
-	//WEMuon[histNumber]->Fill(Wl.E() );
+	WEMuon[histNumber]->Fill(Wl.E() );
 
 	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index )->M() );
 
 	//TGC stuff
-/*	//costhetawMuon[histNumber]->Fill(getCosThetaW());
+	costhetawMuon[histNumber]->Fill(getCosThetaW());
 	thetaLMuon[histNumber]->Fill( CMJets.at(ljet_index).Theta());
 	phiLMuon[histNumber]->Fill( CMJets.at(ljet_index).Phi());
 	for(int i=0; i<CMJets.size(); i++){
@@ -385,20 +385,20 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 			thetaHMuon[histNumber]->Fill( CMJets.at(i).Theta()); 
 			phiHMuon[histNumber]->Fill( CMJets.at(i).Phi());
 		}
-	} */
+	} 
 		
 }
 void WWAnalysis::FillTauHistos(int histNumber){
 
 	WmassTau[histNumber]->Fill( Wqq->M() );
-	//WmassTau[histNumber]->Fill( Wl.M() );
+	WmassTau[histNumber]->Fill( Wl.M() );
 	WETau[histNumber]->Fill( Wqq->E() );
-	//WETau[histNumber]->Fill(Wl.E() );
+	WETau[histNumber]->Fill(Wl.E() );
 
 	LjetMassTau[histNumber]->Fill( jets.at(ljet_index)->M() );
 
 	//TGC stuff
-/*	//costhetawTau[histNumber]->Fill(getCosThetaW());
+	costhetawTau[histNumber]->Fill(getCosThetaW());
 	thetaLTau[histNumber]->Fill( CMJets.at(ljet_index).Theta());
 	phiLTau[histNumber]->Fill( CMJets.at(ljet_index).Phi());
 	for(int i=0; i<CMJets.size(); i++){
@@ -406,7 +406,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 			thetaHTau[histNumber]->Fill( CMJets.at(i).Theta()); 
 			phiHTau[histNumber]->Fill( CMJets.at(i).Phi());
 		}
-	} */
+	} 
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {

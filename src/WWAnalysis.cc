@@ -270,7 +270,7 @@ void WWAnalysis::populateTLVs(int lindex){
 	for(int i=0; i<_jets.size(); i++){
 
 		TLorentzVector* j = new TLorentzVector();
-		j.SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
+		j->SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
 		jets.push_back(j);
 	}
 	
@@ -284,7 +284,7 @@ void WWAnalysis::populateTLVs(int lindex){
 			Wl = jets.at(i);
 		}
 		else{
-			Wqq = &(*Wqq + *jets.at(i));
+			Wqq = *Wqq + *jets.at(i);
 		}
 	}
 	
@@ -301,7 +301,7 @@ void WWAnalysis::populateTLVs(int lindex){
 	nu.SetXYZM(missingPx, missingPy, missingPz, 0.0);
 
 	//add the neutrino to complete the leptonic W
-	Wl = &(*Wl + *nu);
+	Wl = *Wl + *nu;
 
 	std::cout<<"WL and wqq at fn scope ";
 	std::cout<<Wqq->Px()<<" "<<Wqq->Py()<<" "<<Wqq->Pz()<<" "<<Wqq->M()<<std::endl;
@@ -309,8 +309,8 @@ void WWAnalysis::populateTLVs(int lindex){
 }
 //populate W rest fram versions of the jets to access TGC observables
 void WWAnalysis::populateCMTLVs(){
-	TVector3 Wqqboost(Wqq.Px(),Wqq.Py(),Wqq.Pz());
-	TVector3 Wlboost(Wl.Px(),Wl.Py(),Wl.Pz());
+	TVector3 Wqqboost(Wqq->Px(),Wqq->Py(),Wqq->Pz());
+	TVector3 Wlboost(Wl->Px(),Wl->Py(),Wl->Pz());
 
 	Wqqboost = -Wqqboost;
 	Wlboost = -Wlboost;
@@ -318,15 +318,15 @@ void WWAnalysis::populateCMTLVs(){
 	for(int i=0; i<jets.size(); i++){
 		CMJets.push_back(jets.at(i));
 		if(i == ljet_index){
-			CMJets.at(i).Boost(Wlboost);
+			CMJets.at(i)->Boost(Wlboost);
 		}
 		else{
-			CMJets.at(i).Boost(Wqqboost);
+			CMJets.at(i)->Boost(Wqqboost);
 		}
 	}
 	//boost the neutrino into CM
 	CMnu = nu;
-	CMnu.Boost(Wlboost);
+	CMnu->Boost(Wlboost);
 	
 }
 //get the production angle for W-  (W- . z)
@@ -336,14 +336,14 @@ double WWAnalysis::getCosThetaW(){
 	TVector3 z(0.0,0.0,1.0);
 	if(lq <0 ){
 		//W- is the lepton
-		TVector3 Wm(Wl.Px(),Wl.Py(),Wl.Pz());
+		TVector3 Wm(Wl->Px(),Wl->Py(),Wl->Pz());
 		Wm = Wm * (1/Wm.Mag());
 		return Wm.Dot(z);
 		
 	}
 	else{
 		//infer qq charge to be W-
-		TVector3 Wm(Wqq.Px(),Wqq.Py(),Wqq.Pz());
+		TVector3 Wm(Wqq->Px(),Wqq->Py(),Wqq->Pz());
 		Wm = Wm * (1/Wm.Mag());
 		return Wm.Dot(z);
 	}

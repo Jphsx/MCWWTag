@@ -375,7 +375,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 
 	WmassMuon[histNumber]->Fill( Wqq->M() );
 	WmassMuon[histNumber]->Fill(Wl->M() );
-	qqmassMuon[histnumber]->Fill(Wqq->M() );
+	qqmassMuon[histNumber]->Fill(Wqq->M() );
 	WEMuon[histNumber]->Fill(Wqq->E() );
 	WEMuon[histNumber]->Fill(Wl->E() );
 	EtotalMuon[histNumber]->Fill(Wqq->E() + Wl->E() );

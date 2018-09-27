@@ -282,6 +282,8 @@ void WWAnalysis::populateTLVs(int lindex){
 	TLorentzVector temp1;
 	//loop over the new tlv jets and make wl and wqq
 	for(int i=0; i<jets.size(); i++){
+		std::cout<<"jet size "<<jets.size()<<std::endl;
+		std::cout<<"lindex "<<lindex<<std::endl;
 		if( i == lindex ){
 			//right not Wl will be missing its neutrino
 			Wl = jets.at(i);

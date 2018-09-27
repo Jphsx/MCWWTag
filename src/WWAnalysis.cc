@@ -269,6 +269,7 @@ void WWAnalysis::populateTLVs(int lindex){
 
 	for(int i=0; i<_jets.size(); i++){
 
+	std::cout<< "_jets size "<<_jets.size()<<std::endl;
 		TLorentzVector* j = new TLorentzVector();
 		j->SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
 		jets.push_back(j);

@@ -344,7 +344,7 @@ void WWAnalysis::populateCMTLVs(){
 	}
 	std::cout<<"cm"<<std::endl;
 	for(int i=0; i<cmtempvec.size(); i++){
-		std::cout<<cmtempvec.at(i)->Px()<<" "<<cmtempvec.at(i)->Py()<<" "<<cmtempvec.at(i)->Pz()<<" "<<cmtempvec.ati)->M()<<std::endl;
+		std::cout<<cmtempvec.at(i)->Px()<<" "<<cmtempvec.at(i)->Py()<<" "<<cmtempvec.at(i)->Pz()<<" "<<cmtempvec.at(i)->M()<<std::endl;
 	}
 	CMJets = cmtempvec;
 	//boost the neutrino into CM

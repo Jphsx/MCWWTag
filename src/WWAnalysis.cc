@@ -370,20 +370,20 @@ void WWAnalysis::FillHistos(int histNumber){
 void WWAnalysis::FillMuonHistos(int histNumber){
 
 	WmassMuon[histNumber]->Fill( Wqq->M() );
-	WmassMuon[histNumber]->Fill(Wl.M() );
+	WmassMuon[histNumber]->Fill(Wl->M() );
 	WEMuon[histNumber]->Fill(Wqq->E() );
-	WEMuon[histNumber]->Fill(Wl.E() );
+	WEMuon[histNumber]->Fill(Wl->E() );
 
 	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index )->M() );
 
 	//TGC stuff
 	costhetawMuon[histNumber]->Fill(getCosThetaW());
-	thetaLMuon[histNumber]->Fill( CMJets.at(ljet_index).Theta());
-	phiLMuon[histNumber]->Fill( CMJets.at(ljet_index).Phi());
+	thetaLMuon[histNumber]->Fill( CMJets.at(ljet_index)->Theta());
+	phiLMuon[histNumber]->Fill( CMJets.at(ljet_index)->Phi());
 	for(int i=0; i<CMJets.size(); i++){
 		if( i != ljet_index ){
-			thetaHMuon[histNumber]->Fill( CMJets.at(i).Theta()); 
-			phiHMuon[histNumber]->Fill( CMJets.at(i).Phi());
+			thetaHMuon[histNumber]->Fill( CMJets.at(i)->Theta()); 
+			phiHMuon[histNumber]->Fill( CMJets.at(i)->Phi());
 		}
 	} 
 		
@@ -391,20 +391,20 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 void WWAnalysis::FillTauHistos(int histNumber){
 
 	WmassTau[histNumber]->Fill( Wqq->M() );
-	WmassTau[histNumber]->Fill( Wl.M() );
+	WmassTau[histNumber]->Fill( Wl->M() );
 	WETau[histNumber]->Fill( Wqq->E() );
-	WETau[histNumber]->Fill(Wl.E() );
+	WETau[histNumber]->Fill(Wl->E() );
 
 	LjetMassTau[histNumber]->Fill( jets.at(ljet_index)->M() );
 
 	//TGC stuff
 	costhetawTau[histNumber]->Fill(getCosThetaW());
-	thetaLTau[histNumber]->Fill( CMJets.at(ljet_index).Theta());
-	phiLTau[histNumber]->Fill( CMJets.at(ljet_index).Phi());
+	thetaLTau[histNumber]->Fill( CMJets.at(ljet_index)->Theta());
+	phiLTau[histNumber]->Fill( CMJets.at(ljet_index)->Phi());
 	for(int i=0; i<CMJets.size(); i++){
 		if( i != ljet_index ){
-			thetaHTau[histNumber]->Fill( CMJets.at(i).Theta()); 
-			phiHTau[histNumber]->Fill( CMJets.at(i).Phi());
+			thetaHTau[histNumber]->Fill( CMJets.at(i)->Theta()); 
+			phiHTau[histNumber]->Fill( CMJets.at(i)->Phi());
 		}
 	} 
 }

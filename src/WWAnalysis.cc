@@ -267,20 +267,24 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 /* populate the tlvs based on the identified lepton jet */
 void WWAnalysis::populateTLVs(int lindex){
 
+	std::vector<TLorentzVector*> tempjets(_jets.size());
 	for(int i=0; i<_jets.size(); i++){
-
+	
 	std::cout<< "_jets size "<<_jets.size()<<std::endl;
 		TLorentzVector* j = new TLorentzVector();
 		j->SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
-		jets.push_back(j);
+		tempjets.at(i) = j;
 
 		std::cout<<_jets.at(i)->getMomentum()[0]<<" "<< _jets.at(i)->getMomentum()[1]<<" "<<_jets.at(i)->getMomentum()[2]<< " "<< _jets.at(i)->getMass()<<std::endl;
 	}
 	
+	//save the tlv vector globally
+	jets = tempjets;
 	
 	//Wl = new TLorentzVector();
 	Wqq = new TLorentzVector();
 	TLorentzVector temp1;
+
 	//loop over the new tlv jets and make wl and wqq
 	for(int i=0; i<jets.size(); i++){
 		std::cout<<"jet size "<<jets.size()<<std::endl;

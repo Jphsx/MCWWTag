@@ -321,8 +321,11 @@ void WWAnalysis::populateTLVs(int lindex){
 }
 //populate W rest fram versions of the jets to access TGC observables
 void WWAnalysis::populateCMTLVs(){
-	TVector3 Wqqboost(Wqq->Px(),Wqq->Py(),Wqq->Pz());
-	TVector3 Wlboost(Wl->Px(),Wl->Py(),Wl->Pz());
+	//TVector3 Wqqboost(Wqq->Px(),Wqq->Py(),Wqq->Pz());
+	//TVector3 Wlboost(Wl->Px(),Wl->Py(),Wl->Pz());
+
+	TVector3 Wqqboost = Wqq.BoostVector();
+	TVector3 Wlboost = Wl.BoostVector();
 
 	Wqqboost = -Wqqboost;
 	Wlboost = -Wlboost;

@@ -289,13 +289,14 @@ void WWAnalysis::populateTLVs(int lindex){
 	TLorentzVector temp1;
 
 	//loop over the new tlv jets and make wl and wqq
-	for(int i=0; i<jets.size(); i++){
+	for(int i=0; i<tempjets.size(); i++){
 		if( i == lindex ){
-			//right not Wl will be missing its neutrino
-			Wl = jets.at(i);
+			//right now Wl will be missing its neutrino
+			Wl = new TLorentzVector();
+			Wl->SetWYZM( tempjets.at(i)->Px(), tempjets.at(i)->Py(), tempjets.at(i)->Pz(), tempjets.at(i)->M());
 		}
 		else{
-			temp1 += *jets.at(i);
+			temp1 += *tempjets.at(i);
 		}
 	}
 	Wqq->SetXYZM(temp1.Px(), temp1.Py(), temp1.Pz(), temp1.M() );

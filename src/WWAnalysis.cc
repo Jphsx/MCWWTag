@@ -277,6 +277,7 @@ void WWAnalysis::populateTLVs(int lindex){
 	
 	Wl = new TLorentzVector();
 	Wqq = new TLorentzVector();
+	TLorentzVector temp1;
 	//loop over the new tlv jets and make wl and wqq
 	for(int i=0; i<jets.size(); i++){
 		if( i == lindex ){
@@ -284,9 +285,10 @@ void WWAnalysis::populateTLVs(int lindex){
 			Wl = jets.at(i);
 		}
 		else{
-			Wqq = *Wqq + *jets.at(i);
+			temp1 += *jets.at(i);
 		}
 	}
+	Wqq->SetXYZM(temp1.Px(), temp1.Py(), temp1.Pz(), temp1,M() );
 	
 	
 
@@ -298,10 +300,12 @@ void WWAnalysis::populateTLVs(int lindex){
 	std::cout<<"missing P "<< missingPx<<" "<<missingPy<<" "<<missingPz<<std::endl;
 	//create the tlv neutrino
 	nu = new TLorentzVector();
-	nu.SetXYZM(missingPx, missingPy, missingPz, 0.0);
+	nu->SetXYZM(missingPx, missingPy, missingPz, 0.0);
 
 	//add the neutrino to complete the leptonic W
-	Wl = *Wl + *nu;
+	TLorentzVector temp2;
+	temp2 = *Wl + *nu;
+	Wl->SetXYZM(temp2.Px(), temp2.Py(), temp2.Pz(), temp2.M());
 
 	std::cout<<"WL and wqq at fn scope ";
 	std::cout<<Wqq->Px()<<" "<<Wqq->Py()<<" "<<Wqq->Pz()<<" "<<Wqq->M()<<std::endl;

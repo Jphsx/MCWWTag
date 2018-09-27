@@ -273,6 +273,7 @@ void WWAnalysis::populateTLVs(int lindex){
 		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
 	}
 
+
 	//loop over the new tlv jets and make wl and wqq
 	for(int i=0; i<jets.size(); i++){
 		if( i == lindex ){
@@ -283,6 +284,8 @@ void WWAnalysis::populateTLVs(int lindex){
 			Wqq += jets.at(i);
 		}
 	}
+	
+	
 
 	//figure out the muon 
 	double missingPx= Wl.Px() - Wqq.Px();
@@ -294,6 +297,9 @@ void WWAnalysis::populateTLVs(int lindex){
 
 	//add the neutrino to complete the leptonic W
 	Wl += nu;
+
+	std::cout<<"WL and wqq at fn scope ";
+	std::cout<<Wl.Px()<<" "<<Wl.Py()<<" "<<Wl.Pz()<<" "<<Wl.M()<<std::endl;
 
 }
 //populate W rest fram versions of the jets to access TGC observables
@@ -356,7 +362,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index ).M() );
 
 	//TGC stuff
-	/*costhetawMuon[histNumber]->Fill(getCosThetaW());
+	//costhetawMuon[histNumber]->Fill(getCosThetaW());
 	thetaLMuon[histNumber]->Fill( CMJets.at(ljet_index).Theta());
 	phiLMuon[histNumber]->Fill( CMJets.at(ljet_index).Phi());
 	for(int i=0; i<CMJets.size(); i++){
@@ -364,7 +370,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 			thetaHMuon[histNumber]->Fill( CMJets.at(i).Theta()); 
 			phiHMuon[histNumber]->Fill( CMJets.at(i).Phi());
 		}
-	}*/
+	}
 		
 }
 void WWAnalysis::FillTauHistos(int histNumber){
@@ -377,7 +383,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	LjetMassTau[histNumber]->Fill( jets.at(ljet_index).M() );
 
 	//TGC stuff
-	/*costhetawTau[histNumber]->Fill(getCosThetaW());
+	//costhetawTau[histNumber]->Fill(getCosThetaW());
 	thetaLTau[histNumber]->Fill( CMJets.at(ljet_index).Theta());
 	phiLTau[histNumber]->Fill( CMJets.at(ljet_index).Phi());
 	for(int i=0; i<CMJets.size(); i++){
@@ -385,7 +391,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 			thetaHTau[histNumber]->Fill( CMJets.at(i).Theta()); 
 			phiHTau[histNumber]->Fill( CMJets.at(i).Phi());
 		}
-	}*/
+	}
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {
@@ -423,6 +429,8 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 	//build up all the different tlvs for calculation
   	populateTLVs(ljet_index);
+	std::cout<<"Wl at process scope"<<std::endl;
+	std::cout<<Wl.Px()<<" "<<Wl.Py()<<" "<<Wl.Pz()<<" "<<Wl.M()<<std::endl;
 
     //boost jets to cm for TGC observables
 	populateCMTLVs();

@@ -327,7 +327,7 @@ void WWAnalysis::populateCMTLVs(){
 	Wqqboost = -Wqqboost;
 	Wlboost = -Wlboost;
 
-	std::<TLorentzVector*> cmtemp(_jets.size());
+	std::vector<TLorentzVector*> cmtemp(_jets.size());
 	for(int i=0; i<cmtemp.size(); i++){
 		cmtemp.at(i) = (jets.at(i));
 		if(i == ljet_index){

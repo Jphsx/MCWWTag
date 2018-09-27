@@ -271,6 +271,8 @@ void WWAnalysis::populateTLVs(int lindex){
 		TLorentzVector j;
 		jets.push_back(j);
 		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
+
+		std::cout<<_jets.at(i)->getMomentum()[0]<<" "<< _jets.at(i)->getMomentum()[1]<<" "<<_jets.at(i)->getMomentum()[2]<<" "<<_jets.at(i)->getMass()<<std::endl;
 	}
 
 
@@ -362,7 +364,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index ).M() );
 
 	//TGC stuff
-	//costhetawMuon[histNumber]->Fill(getCosThetaW());
+/*	//costhetawMuon[histNumber]->Fill(getCosThetaW());
 	thetaLMuon[histNumber]->Fill( CMJets.at(ljet_index).Theta());
 	phiLMuon[histNumber]->Fill( CMJets.at(ljet_index).Phi());
 	for(int i=0; i<CMJets.size(); i++){
@@ -370,7 +372,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 			thetaHMuon[histNumber]->Fill( CMJets.at(i).Theta()); 
 			phiHMuon[histNumber]->Fill( CMJets.at(i).Phi());
 		}
-	}
+	} */
 		
 }
 void WWAnalysis::FillTauHistos(int histNumber){
@@ -383,7 +385,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	LjetMassTau[histNumber]->Fill( jets.at(ljet_index).M() );
 
 	//TGC stuff
-	//costhetawTau[histNumber]->Fill(getCosThetaW());
+/*	//costhetawTau[histNumber]->Fill(getCosThetaW());
 	thetaLTau[histNumber]->Fill( CMJets.at(ljet_index).Theta());
 	phiLTau[histNumber]->Fill( CMJets.at(ljet_index).Phi());
 	for(int i=0; i<CMJets.size(); i++){
@@ -391,7 +393,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 			thetaHTau[histNumber]->Fill( CMJets.at(i).Theta()); 
 			phiHTau[histNumber]->Fill( CMJets.at(i).Phi());
 		}
-	}
+	} */
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {

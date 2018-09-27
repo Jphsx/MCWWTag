@@ -266,16 +266,17 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 }
 /* populate the tlvs based on the identified lepton jet */
 void WWAnalysis::populateTLVs(int lindex){
-	
+	TLorentzVector j2 = new TLorentzVector();
 	for(int i=0; i<_jets.size(); i++){
 		TLorentzVector j;
 		j.SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
+		j2.SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass());
 		jets.push_back(j);
 
 		std::cout<<_jets.at(i)->getMomentum()[0]<<" "<< _jets.at(i)->getMomentum()[1]<<" "<<_jets.at(i)->getMomentum()[2]<<" "<<_jets.at(i)->getMass()<<std::endl;
 	}
 	
-
+	
 
 	//loop over the new tlv jets and make wl and wqq
 	for(int i=0; i<jets.size(); i++){
@@ -303,7 +304,7 @@ void WWAnalysis::populateTLVs(int lindex){
 	Wl += nu;
 
 	std::cout<<"WL and wqq at fn scope ";
-	std::cout<<Wqq.Px()<<" "<<Wqq.Py()<<" "<<Wqq.Pz()<<" "<<Wqq.M()<<std::endl;
+	std::cout<<j2.Px()<<" "<<j2.Py()<<" "<<j2.Pz()<<" "<<j2.M()<<std::endl;
 
 }
 //populate W rest fram versions of the jets to access TGC observables

@@ -122,9 +122,9 @@ using namespace lcio;
   TLorentzVector Wl; //l+nu
   TLorentzVector Wqq; //q+q
   //need a new way to go about this
- // TLorentzVector nu; //made from missing p with m=0
+  TLorentzVector nu; //made from missing p with m=0
   std::vector<TLorentzVector> CMJets{}; //q,q,l boosted into W rest frame
-  //TLorentzVector CMnu;//nu boosted into W restframe
+  TLorentzVector CMnu;//nu boosted into W restframe
 
 	int   _printing{};
 

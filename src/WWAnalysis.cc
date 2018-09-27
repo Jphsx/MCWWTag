@@ -294,6 +294,7 @@ void WWAnalysis::populateTLVs(int lindex){
 	double missingPy= Wl.Py() - Wqq.Py();
 	double missingPz= Wl.Pz() - Wqq.Pz();
 
+	std::cout<<"missing P "<< missingPx<<" "<<missingPy<<" "<<missingPz<<std::endl;
 	//create the tlv neutrino
 	nu.SetXYZM(missingPx, missingPy, missingPz, 0.0);
 

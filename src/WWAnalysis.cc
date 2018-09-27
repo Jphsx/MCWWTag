@@ -38,6 +38,8 @@ void WWAnalysis::init() {
   nEvt = 0;
 	
 	file = new TFile("file.root","RECREATE");
+	double pi = 3.142;
+
  
 	for(int i=0; i<= ncuts; i++){
 		 char cuts[100];
@@ -47,25 +49,27 @@ void WWAnalysis::init() {
 		/* init histograms */
 		WmassMuon[i] = new TH1D(("Wmassmuon"+cutnum).c_str(),"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
 		WmassTau[i] = new TH1D(("Wmasstau"+cutnum).c_str(),"W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
+        qqmassMuon[i] = new TH1D(("qqmassmuon"+cutnum).c_str(),"qq Mass, with true #mu",100,50.0,120.0);
+		qqmassTau[i] = new TH1D(("qqmasstau"+cutnum).c_str(),"qq Mass, with true #tau",100,50.0,120.0);
 		WEMuon[i] = new TH1D(("WEmuon"+cutnum).c_str(),"W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
 		WETau[i] = new TH1D(("WEtau"+cutnum).c_str(),"W^{#pm} Energy, with true #tau ",100, 25.0, 300.0 );
 		EtotalMuon[i] = new TH1D(("EtotalMuon"+cutnum).c_str(),"WW Total Energy, with true #mu",100,10,300); 
 		EtotalTau[i] = new TH1D(("EtotalTau"+cutnum).c_str(),"WW Total Energy, with true #tau",100,10,300);
 		//TH1D* Wm_cosTheta;
-		LjetMassMuon[i]=new TH1D(("Ljetmassmuon"+cutnum).c_str(),"Mass of Lepton Jet with true #mu",100, 0.0 ,3.0 );
-		LjetMassTau[i]=new TH1D(("Ljetmasstau"+cutnum).c_str(),"Mass of Lepton Jet with ture #tau",100, 0.0, 5.0 );
+		LjetMassMuon[i]=new TH1D(("Ljetmassmuon"+cutnum).c_str(),"Mass of Lepton Jet with true #mu",100, 0.0 ,20.0 );
+		LjetMassTau[i]=new TH1D(("Ljetmasstau"+cutnum).c_str(),"Mass of Lepton Jet with true #tau",100, 0.0, 20.0 );
 
 		costhetawMuon[i] = new TH1D(("costhetawMuon"+cutnum).c_str(), "production angle of W^- in Muon event",100,-1.0,1.0);
-		thetaLMuon[i] = new TH1D(("thetaLMuon"+cutnum).c_str(), "polar angle of CM lepton in Muon event",100, 0.0, 3.14);
-		phiLMuon[i] = new TH1D(("phiLMuon"+cutnum).c_str(), "azimuthal angle of CM Lepton in Muon event", 100,-3.14,3.14);
-		thetaHMuon[i] = new TH1D(("thetaHMuon"+cutnum).c_str(), "polar angle of CM quark in Muon event",100,0.0,3.14);
-		phiHMuon[i] = new TH1D(("phiHMuon"+cutnum).c_str(),"azimuthal angle of CM quark in Muon event", 100,-3.14,3.14);
+		thetaLMuon[i] = new TH1D(("thetaLMuon"+cutnum).c_str(), "polar angle of CM lepton in Muon event",100, 0.0, 2*pi);
+		phiLMuon[i] = new TH1D(("phiLMuon"+cutnum).c_str(), "azimuthal angle of CM Lepton in Muon event", 100,-pi,pi);
+		thetaHMuon[i] = new TH1D(("thetaHMuon"+cutnum).c_str(), "polar angle of CM quark in Muon event",100,0.0,2*pi);
+		phiHMuon[i] = new TH1D(("phiHMuon"+cutnum).c_str(),"azimuthal angle of CM quark in Muon event", 100,-pi,pi);
 
 		costhetawTau[i] = new TH1D(("costhetawTau"+cutnum).c_str(), "production angle of W^- in Tau event",100,-1.0,1.0);
-		thetaLTau[i] = new TH1D(("thetaLTau"+cutnum).c_str(), "polar angle of CM lepton in Tau event",100, 0.0, 3.14);
-		phiLTau[i] = new TH1D(("phiLTau"+cutnum).c_str(), "azimuthal angle of CM Lepton in Tau event", 100,-3.14,3.14);
-		thetaHTau[i] = new TH1D(("thetaHTau"+cutnum).c_str(), "polar angle of CM quark in Tau event",100,0.0,3.14);
-		phiHTau[i] = new TH1D(("phiHTau"+cutnum).c_str(),"azimuthal angle of CM quark in Tau event", 100,-3.14,3.14);
+		thetaLTau[i] = new TH1D(("thetaLTau"+cutnum).c_str(), "polar angle of CM lepton in Tau event",100, 0.0, 2*pi);
+		phiLTau[i] = new TH1D(("phiLTau"+cutnum).c_str(), "azimuthal angle of CM Lepton in Tau event", 100,-pi,pi);
+		thetaHTau[i] = new TH1D(("thetaHTau"+cutnum).c_str(), "polar angle of CM quark in Tau event",100,0.0,2*pi);
+		phiHTau[i] = new TH1D(("phiHTau"+cutnum).c_str(),"azimuthal angle of CM quark in Tau event", 100,-pi,pi);
 	
 		/* end init histograms */
 	}
@@ -323,15 +327,17 @@ void WWAnalysis::populateCMTLVs(){
 	Wqqboost = -Wqqboost;
 	Wlboost = -Wlboost;
 
-	for(int i=0; i<jets.size(); i++){
-		CMJets.push_back(jets.at(i));
+	std::<TLorentzVector*> cmtemp(_jets.size());
+	for(int i=0; i<cmtemp.size(); i++){
+		cmtemp.at(i) = (jets.at(i));
 		if(i == ljet_index){
-			CMJets.at(i)->Boost(Wlboost);
+			cmtemp.at(i)->Boost(Wlboost);
 		}
 		else{
-			CMJets.at(i)->Boost(Wqqboost);
+			cmtemp.at(i)->Boost(Wqqboost);
 		}
 	}
+	CMJets = cmtemp;
 	//boost the neutrino into CM
 	CMnu = nu;
 	CMnu->Boost(Wlboost);
@@ -369,8 +375,10 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 
 	WmassMuon[histNumber]->Fill( Wqq->M() );
 	WmassMuon[histNumber]->Fill(Wl->M() );
+	qqmassMuon[histnumber]->Fill(Wqq->M() );
 	WEMuon[histNumber]->Fill(Wqq->E() );
 	WEMuon[histNumber]->Fill(Wl->E() );
+	EtotalMuon[histNumber]->Fill(Wqq->E() + Wl->E() );
 
 	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index )->M() );
 
@@ -390,8 +398,10 @@ void WWAnalysis::FillTauHistos(int histNumber){
 
 	WmassTau[histNumber]->Fill( Wqq->M() );
 	WmassTau[histNumber]->Fill( Wl->M() );
+	qqmassTau[histNumber]->Fill( Wqq->M() );
 	WETau[histNumber]->Fill( Wqq->E() );
 	WETau[histNumber]->Fill(Wl->E() );
+	EtotalTau[histNumber]->Fill(Wqq->E() + Wl->E());
 
 	LjetMassTau[histNumber]->Fill( jets.at(ljet_index)->M() );
 

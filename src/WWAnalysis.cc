@@ -293,7 +293,7 @@ void WWAnalysis::populateTLVs(int lindex){
 		if( i == lindex ){
 			//right now Wl will be missing its neutrino
 			Wl = new TLorentzVector();
-			Wl->SetWYZM( tempjets.at(i)->Px(), tempjets.at(i)->Py(), tempjets.at(i)->Pz(), tempjets.at(i)->M());
+			Wl->SetXYZM( tempjets.at(i)->Px(), tempjets.at(i)->Py(), tempjets.at(i)->Pz(), tempjets.at(i)->M());
 		}
 		else{
 			temp1 += *tempjets.at(i);

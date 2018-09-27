@@ -341,7 +341,7 @@ void WWAnalysis::populateCMTLVs(){
 			cmtemp.Boost(Wqqboost.X(),Wqqboost.Y(),Wqqboost.Z());
 		}
 		cmtempvec.at(i) = new TLorentzVector();
-		cmtempvec.at(i)->setXYZM(cmtemp.Px(),cmtemp.Py(),cmtemp.Pz(),cmtemp.M());
+		cmtempvec.at(i)->SetXYZM(cmtemp.Px(),cmtemp.Py(),cmtemp.Pz(),cmtemp.M());
 	}
 	std::cout<<"cm"<<std::endl;
 	for(int i=0; i<cmtempvec.size(); i++){

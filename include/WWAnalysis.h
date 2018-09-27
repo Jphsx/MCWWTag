@@ -134,7 +134,7 @@ using namespace lcio;
   /* histograms split between muon/tau true events */
 	TFile* file;
 
-	TH1D *WmassMuon[ncuts+1], *WmassTau[ncuts+1], qqmassMuon[ncuts+1], qqmassTau[ncuts+1];
+	TH1D *WmassMuon[ncuts+1], *WmassTau[ncuts+1], *qqmassMuon[ncuts+1], *qqmassTau[ncuts+1];
 	TH1D *WEMuon[ncuts+1], *WETau[ncuts+1], *EtotalMuon[ncuts+1], *EtotalTau[ncuts+1];
 	TH1D *Wm_cosTheta[ncuts+1];
 

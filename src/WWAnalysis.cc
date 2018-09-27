@@ -266,18 +266,17 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 }
 /* populate the tlvs based on the identified lepton jet */
 void WWAnalysis::populateTLVs(int lindex){
-	TLorentzVector* j2 = new TLorentzVector();
-	for(int i=0; i<_jets.size(); i++){
-		TLorentzVector j;
-		j.SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
-		j2->SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass());
-		jets.push_back(j);
 
-		std::cout<<_jets.at(i)->getMomentum()[0]<<" "<< _jets.at(i)->getMomentum()[1]<<" "<<_jets.at(i)->getMomentum()[2]<<" "<<_jets.at(i)->getMass()<<std::endl;
+	for(int i=0; i<_jets.size(); i++){
+
+		TLorentzVector* j = new TLorentzVector();
+		j.SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
+		jets.push_back(j);
 	}
 	
 	
-
+	Wl = new TLorentzVector();
+	Wqq = new TLorentzVector();
 	//loop over the new tlv jets and make wl and wqq
 	for(int i=0; i<jets.size(); i++){
 		if( i == lindex ){
@@ -285,26 +284,27 @@ void WWAnalysis::populateTLVs(int lindex){
 			Wl = jets.at(i);
 		}
 		else{
-			Wqq += jets.at(i);
+			Wqq = &(*Wqq + *jets.at(i));
 		}
 	}
 	
 	
 
 	//figure out the muon 
-	double missingPx= Wl.Px() - Wqq.Px();
-	double missingPy= Wl.Py() - Wqq.Py();
-	double missingPz= Wl.Pz() - Wqq.Pz();
+	double missingPx= Wl->Px() - Wqq->Px();
+	double missingPy= Wl->Py() - Wqq->Py();
+	double missingPz= Wl->Pz() - Wqq->Pz();
 
 	std::cout<<"missing P "<< missingPx<<" "<<missingPy<<" "<<missingPz<<std::endl;
 	//create the tlv neutrino
+	nu = new TLorentzVector();
 	nu.SetXYZM(missingPx, missingPy, missingPz, 0.0);
 
 	//add the neutrino to complete the leptonic W
-	Wl += nu;
+	Wl = &(*Wl + *nu);
 
 	std::cout<<"WL and wqq at fn scope ";
-	std::cout<<j2->Px()<<" "<<j2->Py()<<" "<<j2->Pz()<<" "<<j2->M()<<std::endl;
+	std::cout<<Wqq->Px()<<" "<<Wqq->Py()<<" "<<Wqq->Pz()<<" "<<Wqq->M()<<std::endl;
 
 }
 //populate W rest fram versions of the jets to access TGC observables
@@ -359,12 +359,12 @@ void WWAnalysis::FillHistos(int histNumber){
 }
 void WWAnalysis::FillMuonHistos(int histNumber){
 
-	WmassMuon[histNumber]->Fill( Wqq.M() );
+	WmassMuon[histNumber]->Fill( Wqq->M() );
 	//WmassMuon[histNumber]->Fill(Wl.M() );
-	WEMuon[histNumber]->Fill(Wqq.E() );
+	WEMuon[histNumber]->Fill(Wqq->E() );
 	//WEMuon[histNumber]->Fill(Wl.E() );
 
-	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index ).M() );
+	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index )->M() );
 
 	//TGC stuff
 /*	//costhetawMuon[histNumber]->Fill(getCosThetaW());
@@ -380,12 +380,12 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 }
 void WWAnalysis::FillTauHistos(int histNumber){
 
-	WmassTau[histNumber]->Fill( Wqq.M() );
+	WmassTau[histNumber]->Fill( Wqq->M() );
 	//WmassTau[histNumber]->Fill( Wl.M() );
-	WETau[histNumber]->Fill( Wqq.E() );
+	WETau[histNumber]->Fill( Wqq->E() );
 	//WETau[histNumber]->Fill(Wl.E() );
 
-	LjetMassTau[histNumber]->Fill( jets.at(ljet_index).M() );
+	LjetMassTau[histNumber]->Fill( jets.at(ljet_index)->M() );
 
 	//TGC stuff
 /*	//costhetawTau[histNumber]->Fill(getCosThetaW());
@@ -435,7 +435,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//build up all the different tlvs for calculation
   	populateTLVs(ljet_index);
 	std::cout<<"Wl at process scope"<<std::endl;
-	std::cout<<Wqq.Px()<<" "<<Wqq.Py()<<" "<<Wqq.Pz()<<" "<<Wqq.M()<<std::endl;
+	std::cout<<Wqq->Px()<<" "<<Wqq->Py()<<" "<<Wqq->Pz()<<" "<<Wqq->M()<<std::endl;
 
     //boost jets to cm for TGC observables
 	populateCMTLVs();

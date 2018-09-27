@@ -288,7 +288,7 @@ void WWAnalysis::populateTLVs(int lindex){
 			temp1 += *jets.at(i);
 		}
 	}
-	Wqq->SetXYZM(temp1.Px(), temp1.Py(), temp1.Pz(), temp1,M() );
+	Wqq->SetXYZM(temp1.Px(), temp1.Py(), temp1.Pz(), temp1.M() );
 	
 	
 

@@ -118,11 +118,13 @@ using namespace lcio;
   
   //useful structures for calculation/ readability
   std::vector<TLorentzVector> jets{};
+  TLorentzVector l; //lepton
   TLorentzVector Wl; //l+nu
   TLorentzVector Wqq; //q+q
-  TLorentzVector nu; //made from missing p with m=0
+  //need a new way to go about this
+ // TLorentzVector nu; //made from missing p with m=0
   std::vector<TLorentzVector> CMJets{}; //q,q,l boosted into W rest frame
-  TLorentzVector CMnu;//nu boosted into W restframe
+  //TLorentzVector CMnu;//nu boosted into W restframe
 
 	int   _printing{};
 

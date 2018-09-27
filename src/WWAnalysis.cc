@@ -301,7 +301,7 @@ void WWAnalysis::populateTLVs(int lindex){
 	Wl += nu;
 
 	std::cout<<"WL and wqq at fn scope ";
-	std::cout<<Wl.Px()<<" "<<Wl.Py()<<" "<<Wl.Pz()<<" "<<Wl.M()<<std::endl;
+	std::cout<<Wqq.Px()<<" "<<Wqq.Py()<<" "<<Wqq.Pz()<<" "<<Wqq.M()<<std::endl;
 
 }
 //populate W rest fram versions of the jets to access TGC observables
@@ -357,9 +357,9 @@ void WWAnalysis::FillHistos(int histNumber){
 void WWAnalysis::FillMuonHistos(int histNumber){
 
 	WmassMuon[histNumber]->Fill( Wqq.M() );
-	WmassMuon[histNumber]->Fill(Wl.M() );
+	//WmassMuon[histNumber]->Fill(Wl.M() );
 	WEMuon[histNumber]->Fill(Wqq.E() );
-	WEMuon[histNumber]->Fill(Wl.E() );
+	//WEMuon[histNumber]->Fill(Wl.E() );
 
 	LjetMassMuon[histNumber]->Fill( jets.at(ljet_index ).M() );
 
@@ -378,9 +378,9 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 void WWAnalysis::FillTauHistos(int histNumber){
 
 	WmassTau[histNumber]->Fill( Wqq.M() );
-	WmassTau[histNumber]->Fill( Wl.M() );
+	//WmassTau[histNumber]->Fill( Wl.M() );
 	WETau[histNumber]->Fill( Wqq.E() );
-	WETau[histNumber]->Fill(Wl.E() );
+	//WETau[histNumber]->Fill(Wl.E() );
 
 	LjetMassTau[histNumber]->Fill( jets.at(ljet_index).M() );
 
@@ -432,7 +432,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//build up all the different tlvs for calculation
   	populateTLVs(ljet_index);
 	std::cout<<"Wl at process scope"<<std::endl;
-	std::cout<<Wl.Px()<<" "<<Wl.Py()<<" "<<Wl.Pz()<<" "<<Wl.M()<<std::endl;
+	std::cout<<Wqq.Px()<<" "<<Wqq.Py()<<" "<<Wqq.Pz()<<" "<<Wqq.M()<<std::endl;
 
     //boost jets to cm for TGC observables
 	populateCMTLVs();

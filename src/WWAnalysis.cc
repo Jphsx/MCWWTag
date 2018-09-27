@@ -394,7 +394,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	WEMuon[histNumber]->Fill(Wl->E() );
 	EtotalMuon[histNumber]->Fill(Wqq->E() + Wl->E() );
 
-	LjetMassMuon[histNumber]->Fill( _jets.at( ljet_index )->M() );
+	LjetMassMuon[histNumber]->Fill( _jets.at( ljet_index )->getMass() );
 
 	//TGC stuff
 	costhetawMuon[histNumber]->Fill(getCosThetaW());
@@ -417,7 +417,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	WETau[histNumber]->Fill(Wl->E() );
 	EtotalTau[histNumber]->Fill(Wqq->E() + Wl->E());
 
-	LjetMassTau[histNumber]->Fill( _jets.at(ljet_index)->M() );
+	LjetMassTau[histNumber]->Fill( _jets.at(ljet_index)->getMass() );
 
 	//TGC stuff
 	costhetawTau[histNumber]->Fill(getCosThetaW());

@@ -288,7 +288,7 @@ void WWAnalysis::populateTLVs(int lindex){
 		}
 		else{
 			temp1 += *jets.at(i);
-		std::cout<<temp1->Px()<<" "<<temp1->Py()<<" "<<temp1->Pz()<<" "<<temp1->M()<<std::endl;
+		std::cout<<temp1.Px()<<" "<<temp1.Py()<<" "<<temp1.Pz()<<" "<<temp1.M()<<std::endl;
 		}
 	}
 	Wqq->SetXYZM(temp1.Px(), temp1.Py(), temp1.Pz(), temp1.M() );

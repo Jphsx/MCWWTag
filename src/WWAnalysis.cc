@@ -270,7 +270,6 @@ void WWAnalysis::populateTLVs(int lindex){
 	std::vector<TLorentzVector*> tempjets(_jets.size());
 	for(int i=0; i<_jets.size(); i++){
 	
-	std::cout<< "_jets size "<<_jets.size()<<std::endl;
 		TLorentzVector* j = new TLorentzVector();
 		j->SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
 		tempjets.at(i) = j;
@@ -287,15 +286,12 @@ void WWAnalysis::populateTLVs(int lindex){
 
 	//loop over the new tlv jets and make wl and wqq
 	for(int i=0; i<jets.size(); i++){
-		std::cout<<"jet size "<<jets.size()<<std::endl;
-		std::cout<<"lindex "<<lindex<<std::endl;
 		if( i == lindex ){
 			//right not Wl will be missing its neutrino
 			Wl = jets.at(i);
 		}
 		else{
 			temp1 += *jets.at(i);
-		std::cout<<temp1.Px()<<" "<<temp1.Py()<<" "<<temp1.Pz()<<" "<<temp1.M()<<std::endl;
 		}
 	}
 	Wqq->SetXYZM(temp1.Px(), temp1.Py(), temp1.Pz(), temp1.M() );
@@ -303,9 +299,9 @@ void WWAnalysis::populateTLVs(int lindex){
 	
 
 	//figure out the muon 
-	double missingPx= Wl->Px() - Wqq->Px();
-	double missingPy= Wl->Py() - Wqq->Py();
-	double missingPz= Wl->Pz() - Wqq->Pz();
+	double missingPx= -(Wl->Px() + Wqq->Px());
+	double missingPy= -(Wl->Py() + Wqq->Py());
+	double missingPz= -(Wl->Pz() + Wqq->Pz());
 
 	std::cout<<"missing P "<< missingPx<<" "<<missingPy<<" "<<missingPz<<std::endl;
 	//create the tlv neutrino

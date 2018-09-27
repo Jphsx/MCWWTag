@@ -269,11 +269,12 @@ void WWAnalysis::populateTLVs(int lindex){
 	
 	for(int i=0; i<_jets.size(); i++){
 		TLorentzVector j;
+		j.SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
 		jets.push_back(j);
-		jets.at(i).SetXYZM(_jets.at(i)->getMomentum()[0], _jets.at(i)->getMomentum()[1], _jets.at(i)->getMomentum()[2], _jets.at(i)->getMass() );
 
 		std::cout<<_jets.at(i)->getMomentum()[0]<<" "<< _jets.at(i)->getMomentum()[1]<<" "<<_jets.at(i)->getMomentum()[2]<<" "<<_jets.at(i)->getMass()<<std::endl;
 	}
+	
 
 
 	//loop over the new tlv jets and make wl and wqq

@@ -38,7 +38,7 @@ void WWAnalysis::init() {
   nEvt = 0;
 	
 	file = new TFile("file.root","RECREATE");
-	double pi = 3.142;
+	double pi = 3.1416;
 
  
 	for(int i=0; i<= ncuts; i++){

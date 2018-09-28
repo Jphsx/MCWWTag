@@ -443,10 +443,10 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	isTau = false;
 	isMuon = false;
 
-	//from the mcparticles find what the type of semileptonic decay is present
+	//from the MCParticles find what type of semileptonic decay is present
 	parent = classifyEvent(isTau, isMuon, trueq);
 
-	//now asses jets
+	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton
 	ljet_index = identifyLeptonJet( _jets );
 

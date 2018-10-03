@@ -128,7 +128,6 @@ using namespace lcio;
   //jet matching and jet multiplicity variables
   int lnparts; // number of particles in lepton jet
   int lntracks; // number of tracks in lepton jet
-
   int lnmcparts; //true n daughters of lepton
   int lnmctracks; //true n daughter tracks of lepton
 

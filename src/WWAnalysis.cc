@@ -38,7 +38,7 @@ void WWAnalysis::init() {
   nEvt = 0;
 	
 	file = new TFile("file.root","RECREATE");
-	double pi = 3.142;
+	double pi = 3.1416;
 
  
 	for(int i=0; i<= ncuts; i++){
@@ -443,10 +443,9 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	isTau = false;
 	isMuon = false;
 
-	//from the mcparticles find what the type of semileptonic decay is present
+	//from the MCParticles find what type of semileptonic decay is present
 	parent = classifyEvent(isTau, isMuon, trueq);
 
-	//assess
 
 	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton

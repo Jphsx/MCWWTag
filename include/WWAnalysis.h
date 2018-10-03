@@ -124,6 +124,14 @@ using namespace lcio;
   std::vector<TLorentzVector*> CMJets{}; //q,q,l boosted into W rest frame
   TLorentzVector* CMnu;//nu boosted into W restframe
 
+
+  //jet matching and jet multiplicity variables
+  int lnparts; // number of particles in lepton jet
+  int lntracks; // number of tracks in lepton jet
+
+  int lnmcparts; //true n daughters of lepton
+  int lnmctracks; //true n daughter tracks of lepton
+
 	int   _printing{};
 
   //input collections

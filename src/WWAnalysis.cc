@@ -297,7 +297,8 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 				}	
 			}
 			//if we have found the true decay set break out of the mcpart vec loop
-			break;
+			return _mcpartvec.at(i);
+			//break;
 		}//end if 2qrk & 2 lep
 
 	}//end mcpartvec loop
@@ -479,6 +480,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	isMuon = false;
 
 	//from the MCParticles find what type of semileptonic decay is present
+    //return the parent mcparticle that has the qqlnu decay
 	parent = classifyEvent(isTau, isMuon, trueq);
 
 

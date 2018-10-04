@@ -188,6 +188,37 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	return leadingcharge;
 
 }
+//looks at the number of charged particles/ total particles in the lepton identified jet
+//looks at the number of charged particles/ total particles produced directly from the true lepton
+void WWAnalysis::getJetMultiplicities(){
+
+
+  //get the number of particles/tracks for the jet identified as a lepton
+  lnparts = _jets.at(ljet_index)->getParticles().size();
+  std::vector<ReconstructedParticle*> lparts = _jets.at(ljet_index)->getParticles();
+  lntracks = 0;
+  for(int i=0; i< lparts.size(); i++){
+	if( lparts.at(i)->getCharge() != 0 ){
+		lntracks++;
+	}
+  }
+
+  //use the globally stored parent particle, our true lepton is a daughter of the mcparent
+  std::vector<MCParticle*> daughters = parent->getDaughters();
+  //find the lepton and look at what it directly produces
+  for(int i=0; i<daughters.size(); i++){
+	if(daughters.at(i)->getPDG() == lpdg){
+		//found the lepton
+		std::vector<MCParticle*> ldaughters = daughters.at(i)->getDaughters();
+		for(int j=0; j<ldaughters.size(); j++){
+			std::cout<< " l daughters "<< ldaughters.at(j)->getPDG();
+		}
+	}
+  }
+  
+	
+
+}
 /* classify the the event based on the type of lepton in MCParticle info, also set the true charge for that lepton */
 /* also tallies the number of muon/electron/tau events */
 /* also retrieves the mcparticle which has daughters qqlnu */
@@ -243,9 +274,11 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 				//get true charge of the muon
 				if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 13) != daughterpdgs.end() ){
 					trueq = -1;
+					lpdg = 13;
 				}
 				else{
 					trueq = 1;
+					lpdg = -13;
 				}
 			}
 			if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ||
@@ -256,9 +289,11 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 				//identify the true charge of the lepton
 				if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 15) != daughterpdgs.end() ){
 					trueq = -1;
+					lpdg = 15;
 				}
 				else{
 					trueq = 1;
+					lpdg = -15;
 				}	
 			}
 			//if we have found the true decay set break out of the mcpart vec loop
@@ -453,6 +488,10 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 	//get the charge of the lepton jet
 	lq = getLeptonJetCharge( _jets.at(ljet_index) );
+
+	//assess jet multiplicity
+	//fill variables pertaining to leptonic jet numbers of particles
+	getLeptonMultiplicities(); 
 
 
 	//check if the assessed charge matches the true charge of the lepton

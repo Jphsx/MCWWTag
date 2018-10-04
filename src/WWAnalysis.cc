@@ -491,7 +491,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 	//assess jet multiplicity
 	//fill variables pertaining to leptonic jet numbers of particles
-	getLeptonMultiplicities(); 
+	getJetMultiplicities(); 
 
 
 	//check if the assessed charge matches the true charge of the lepton

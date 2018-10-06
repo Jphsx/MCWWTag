@@ -14,6 +14,7 @@
 	<processor name="MyFastJetProcessor" />
 	<processor name="mytruejet"/>
    	<processor name="MyWWAnalysis"/>
+    <processor name="MyLCIOOutputProcessor"/>
  	</execute>
 
 	<global>
@@ -71,6 +72,13 @@
 		<parameter name="InputJetCollectionName" value="FastJets" />
 		
  	</processor>
+
+   <processor name="MyLCIOOutputProcessor" type="LCIOOutputProcessor">
+                <!--   standard output: full reconstruction keep all collections -->
+                <parameter name="LCIOOutputFile" type="string" > ./jets.slcio </parameter>
+                <parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
+                <parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit Cluster SimTrackerHit TrackerHitPlane TrackerHit ReconstructedParticle Vertex  </parameter> 
+    </processor>
 
 
 </marlin>

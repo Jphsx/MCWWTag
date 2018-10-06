@@ -12,9 +12,9 @@
 <marlin>
 	<execute>
 	<processor name="MyFastJetProcessor" />
-	<processor name="mytruejet"/>
+<!--	<processor name="mytruejet"/> -->
    	<processor name="MyWWAnalysis"/>
-    <processor name="MyLCIOOutputProcessor"/>
+<!--    <processor name="MyLCIOOutputProcessor"/> -->
  	</execute>
 
 	<global>

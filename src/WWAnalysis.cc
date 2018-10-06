@@ -206,10 +206,7 @@ void WWAnalysis::getJetMultiplicities(){
 		std::cout<<"PARENT IS NULL!!!"<<std::endl;
 		return;
 	}
-	if(parent->getDaughters() == NULL){
-		std::cout<<"DAUGHTERS IS NULL!!"<<std::endl;
-		return;
-	}
+	
 
   //use the globally stored parent particle, our true lepton is a daughter of the mcparent
   std::vector<MCParticle*> daughters = parent->getDaughters();

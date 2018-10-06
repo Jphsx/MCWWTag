@@ -245,7 +245,7 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 			
 		}
 		//allowed quarks
-		std::vector<int> quarks{ 1, 2, 3, 4, -1, -2, -3, -4};
+		std::vector<int> quarks{ 1, 2, 3, 4, 5, -1, -2, -3, -4, -5};
 		std::vector<int> leptons{11, 12, 13, 14, 15, 16, -11, -12, -13, -14, -15, -16};
 		//we require exactly 2 elements from leptons and 2 from quarks
 		int lep=0;
@@ -312,6 +312,9 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 		}//end if 2qrk & 2 lep
 
 	}//end mcpartvec loop
+
+	//if nothing is found return nulll
+	return NULL;
 
 }
 /* populate the tlvs based on the identified lepton jet */

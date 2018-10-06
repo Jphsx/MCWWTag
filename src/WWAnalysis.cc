@@ -188,45 +188,68 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	return leadingcharge;
 
 }
+//recursive function to go through and look at the decay chain of a particle
+//look at specifically charged particles
+void WWAnalysis::exploreDaughterTracks(MCParticle* p){
+	if(p->isCreatedInSimulation()) return;
+
+	std::cout<<p->id()<<" ";
+	std::cout<<p->getPDG()<<" -> ";
+	std::vector<MCParticle*> d = p->getDaughters();
+	for(int i=0; i< d.size(); i++){
+		if( !d->isCreatedInSimulation() ){
+			std::cout<< d->getPDG() <<" ";
+		}
+	}
+	std::cout<<std::endl;
+	for(int i=0; i<d.size(); i++){
+		exploreDaughterTracks(d.at(i));
+	}
+		
+}
+//look at all particles
+void WWAnalysis::exploreDaughterParticles(){
+
+}
 //looks at the number of charged particles/ total particles in the lepton identified jet
 //looks at the number of charged particles/ total particles produced directly from the true lepton
 void WWAnalysis::getJetMultiplicities(){
 
-	std::cout<<"in jet mult"<<std::endl;
+
 
   //get the number of particles/tracks for the jet identified as a lepton
   lnparts = _jets.at(ljet_index)->getParticles().size();
-std::cout<<"1"<<std::endl;
+
   std::vector<ReconstructedParticle*> lparts = _jets.at(ljet_index)->getParticles();
   lntracks = 0;
-std::cout<<"2"<<std::endl;
+
   for(int i=0; i< lparts.size(); i++){
 	if( lparts.at(i)->getCharge() != 0 ){
 		lntracks++;
 	}
   }
-std::cout<<"3"<<std::endl;
-	if(parent== NULL){
-		std::cout<<"PARENT IS NULL!!!"<<std::endl;
-		return;
-	}
 	
 
   //use the globally stored parent particle, our true lepton is a daughter of the mcparent
   std::vector<MCParticle*> daughters = parent->getDaughters();
   //find the lepton and look at what it directly produces
-std::cout<<"4"<<std::endl;
+
+  
   for(int i=0; i<daughters.size(); i++){
 	if(daughters.at(i)->getPDG() == lpdg){
 		//found the lepton
+		exploreDaughterTracks(daughters.at(i) );
 		std::vector<MCParticle*> ldaughters = daughters.at(i)->getDaughters();
 		for(int j=0; j<ldaughters.size(); j++){
 			std::cout<< " l daughters "<< ldaughters.at(j)->getPDG();
 		}
 	}
+	
   }
+
   
-	std::cout<<"5"<<std::endl;
+  
+
 
 }
 /* classify the the event based on the type of lepton in MCParticle info, also set the true charge for that lepton */

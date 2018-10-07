@@ -207,7 +207,7 @@ void WWAnalysis::exploreDaughterTracks(MCParticle* p , std::vector<MCParticle*>&
 	}
 	std::cout<<std::endl;
 	for(int i=0; i<d.size(); i++){
-		exploreDaughterTracks(d.at(i));
+		exploreDaughterTracks(d.at(i), FSP);
 	}
 		
 }

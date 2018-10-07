@@ -208,7 +208,7 @@ void WWAnalysis::exploreDaughterTracks(MCParticle* p , std::vector<MCParticle*>&
 	std::vector<MCParticle*> d = p->getDaughters();
 	
 	for(int i=0; i< d.size(); i++){
-		if( !( d.at(i)->isCreatedInSimulation() ) && ( allChildrenAreSimulation(d.at(i)) || (d.at(i)->getDaughters.size()==0)  ) ){
+		if( (! d.at(i)->isCreatedInSimulation() ) && ( allChildrenAreSimulation(d.at(i)) || (d.at(i)->getDaughters().size()==0)  ) ){
 		//this is an initial final state particle
 			FSP.push_back(d.at(i));
 		}

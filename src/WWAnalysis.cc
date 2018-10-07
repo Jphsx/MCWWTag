@@ -254,15 +254,15 @@ void WWAnalysis::getJetMultiplicities(){
 	int pdg = daughters.at(i)->getPDG();
 	if(pdg == lpdg){
 		//found the lepton
-		exploreDaughterTracks(daughters.at(i), lmcFSP );
+		exploreDaughterParticles(daughters.at(i), lmcFSP );
 	}
 	else if( abs(pdg) != 12 || abs(pdg) != 14 || abs(pdg) != 16 ){
 		//found a quark
 		if(q1FSP.size()==0){
-			exploreDaughterTracks( daughters.at(i), q1FSP );
+			exploreDaughterParticles( daughters.at(i), q1FSP );
 		}
 		else{
-			exploreDaughterTracks( daughters.at(i), q2FSP );
+			exploreDaughterParticles( daughters.at(i), q2FSP );
 		}
 	}
 	

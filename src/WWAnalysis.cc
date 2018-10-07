@@ -198,7 +198,7 @@ void WWAnalysis::exploreDaughterTracks(MCParticle* p){
 	std::vector<MCParticle*> d = p->getDaughters();
 	for(int i=0; i< d.size(); i++){
 		if( ! d.at(i)->isCreatedInSimulation() ){
-			std::cout<< d->getPDG() <<" ";
+			std::cout<< d.at(i)->getPDG() <<" ";
 		}
 	}
 	std::cout<<std::endl;

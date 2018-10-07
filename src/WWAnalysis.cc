@@ -188,6 +188,16 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	return leadingcharge;
 
 }
+bool WWAnalysis::allChildrenAreSimulation(MCParticle* p){
+	std::vector<MCParticle*> d = p->getDaughters();
+	bool flag = true;
+	for(int i=0; d->size(); i++){
+		if( ! d.at(i)->isCreatedInSimulation() ){
+			flag= false;
+		}
+	}
+	return flag;
+}
 //recursive function to go through and look at the decay chain of a particle
 //look at specifically charged particles
 void WWAnalysis::exploreDaughterTracks(MCParticle* p , std::vector<MCParticle*>& FSP){
@@ -196,8 +206,9 @@ void WWAnalysis::exploreDaughterTracks(MCParticle* p , std::vector<MCParticle*>&
 	std::cout<<p->id()<<" ";
 	std::cout<<p->getPDG()<<" -> ";
 	std::vector<MCParticle*> d = p->getDaughters();
+	
 	for(int i=0; i< d.size(); i++){
-		if( ( d.at(i)->isCreatedInSimulation() ) ){
+		if( !( d.at(i)->isCreatedInSimulation() ) && ( allChildrenAreSimulation(d.at(i)) || (d.at(i)->getDaughters.size()==0)  ) ){
 		//this is an initial final state particle
 			FSP.push_back(d.at(i));
 		}

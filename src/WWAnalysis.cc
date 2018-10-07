@@ -197,8 +197,8 @@ void WWAnalysis::exploreDaughterTracks(MCParticle* p){
 	std::cout<<p->getPDG()<<" -> ";
 	std::vector<MCParticle*> d = p->getDaughters();
 	for(int i=0; i< d.size(); i++){
-		if( ! d.at(i)->isCreatedInSimulation() ){
-			std::cout<< d.at(i)->getPDG() <<" ";
+		if( (! d.at(i)->isCreatedInSimulation()) && (d.at(i)->getCharge() != 0) ){
+			std::cout<< "( "<< d.at(i)->id()<<" "<<d.at(i)->getPDG() <<" "<< d.at(i)->isDecayedInTracker()<<" ) ";
 		}
 	}
 	std::cout<<std::endl;

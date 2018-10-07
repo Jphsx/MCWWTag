@@ -298,7 +298,12 @@ void WWAnalysis::getJetMultiplicities(){
   int countparts=0;
   int counttracks=0;
   for(int i=0; i<lmcFSP.size(); i++){
-		if( (abs(lmcFSP.at(i)->getPDG()) != 12) || (abs(lmcFSP.at(i)->getPDG()) != 14) || (abs(lmcFSP.at(i)->getPDG()) != 16)){
+		if( (abs(lmcFSP.at(i)->getPDG()) == 12) || (abs(lmcFSP.at(i)->getPDG()) == 14) || (abs(lmcFSP.at(i)->getPDG()) == 16)){
+			std::cout<<"neut skipped"<<std::endl;
+			continue;
+		}
+		else{
+			
 			//not a neutrino
 			if(lmcFSP.at(i)->getCharge() != 0){
 				counttracks++;
@@ -306,9 +311,6 @@ void WWAnalysis::getJetMultiplicities(){
 			//count tracks and neutrals
 			countparts++;
 			std::cout<<"part counted"<<std::endl;
-		}
-		else{
-			std::cout<<"neut skipped"<<std::endl;
 		}
   }
 

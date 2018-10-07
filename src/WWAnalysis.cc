@@ -70,6 +70,22 @@ void WWAnalysis::init() {
 		phiLTau[i] = new TH1D(("phiLTau"+cutnum).c_str(), "azimuthal angle of CM Lepton in Tau event", 100,-pi,pi);
 		thetaHTau[i] = new TH1D(("thetaHTau"+cutnum).c_str(), "polar angle of CM quark in Tau event",100,0.0,pi);
 		phiHTau[i] = new TH1D(("phiHTau"+cutnum).c_str(),"azimuthal angle of CM quark in Tau event", 100,-pi,pi);
+
+        
+	 //jet information histograms
+   		leptonMCNPartsMuon[i] = new TH1D(("leptonMCNPartsMuon"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Muon Event", 20,1,20);
+		leptonMCNTracksMuon[i] = new TH1D(("leptonMCNTracksMuon"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Muon Event",20,1,20);
+		jetNpartsMuon[i] = new TH1D(("jetNpartsMuon"+cutnum).c_str(), "Visible Particles per Jet in Muon Event",50,1,50);
+		minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Muon Event",50,1,25);
+        jetNtracksMuon[i] = new TH1D(("jetNtracksMuon"+cutnum).c_str(), "Visible Tracks per Jet in Muon Event", 50,1,50);
+		minjetNtracksMuon[i] = new TH1D(("minjetNtracksMuon"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Muon Event",50,1,25);
+
+		leptonMCNPartsTau[i] = new TH1D(("leptonMCNPartsTau"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Tau Event", 20,1,20);
+		leptonMCNTracksTau[i] = new TH1D(("leptonMCNTracksTau"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Tau Event",20,1,20);
+		jetNpartsTau[i] = new TH1D(("jetNpartsTau"+cutnum).c_str(), "Visible Particles per Jet in Tau Event",50,1,50);
+		minjetNpartsTau[i] = new TH1D(("minjetNpartsTau"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Tau Event",50,1,25);
+        jetNtracksTau[i] = new TH1D(("jetNtracksTau"+cutnum).c_str(), "Visible Tracks per Jet in Tau Event", 50,1,50);
+		minjetNtracksTau[i] = new TH1D(("minjetNtracksTau"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Tau Event",50,1,25);
 	
 		/* end init histograms */
 	}
@@ -246,8 +262,9 @@ void WWAnalysis::getJetMultiplicities(){
   //find the lepton and look at what it directly produces
 
     std::vector<MCParticle*> lmcFSP{};
-    std::vector<MCParticle*> q1FSP{};
-    std::vector<MCParticle*> q2FSP{};
+	//quarks have the same children???
+ //   std::vector<MCParticle*> q1FSP{};
+ //   std::vector<MCParticle*> q2FSP{};
 
   
   for(int i=0; i<daughters.size(); i++){
@@ -256,15 +273,17 @@ void WWAnalysis::getJetMultiplicities(){
 		//found the lepton
 		exploreDaughterParticles(daughters.at(i), lmcFSP );
 	}
-	else if( abs(pdg) != 12 || abs(pdg) != 14 || abs(pdg) != 16 ){
+/*	else if( abs(pdg) != 12 || abs(pdg) != 14 || abs(pdg) != 16 ){
 		//found a quark
 		if(q1FSP.size()==0){
+			
 			exploreDaughterParticles( daughters.at(i), q1FSP );
 		}
 		else{
-			exploreDaughterParticles( daughters.at(i), q2FSP );
+			//exploreDaughterParticles( daughters.at(i), q2FSP );
 		}
 	}
+*/
 	
   }
 	std::cout<<std::endl;
@@ -275,19 +294,23 @@ void WWAnalysis::getJetMultiplicities(){
 
   std::cout<<std::endl;
 
-  std::cout<<"q1fsp ";
-  for(int i=0; i<q1FSP.size(); i++){
-	std::cout<<q1FSP.at(i)->getPDG()<<" ";
+  //loop over visible particles  in lfsp and save jet details
+  int countparts=0;
+  int counttracks=0;
+  for(int i=0; i<lmcFSP.size(); i++){
+		int pdg = lmcFSP.at(i)->getPDG();
+		if(abs(pdg) != 12 || abs(pdg) != 14 || abs(pdg) != 16){
+			//not a neutrino
+			if(lmcFSP.at(i)->getCharge() != 0){
+				counttracks++;
+			}
+			//count tracks and neutrals
+			countparts++;
+		}
   }
 
-  std::cout<<std::endl;
- 
-  std::cout<<"q2fsp ";
-  for(int i=0; i<q2FSP.size(); i++){
-	std::cout<<q2FSP.at(i)->getPDG()<<" ";
-  }
-
-  std::cout<<std::endl;
+  lnmcparts = countparts;;
+  lnmctracks = counttracks;
   
 
 
@@ -519,6 +542,14 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 			phiHMuon[histNumber]->Fill( CMJets.at(i)->Phi());
 		}
 	} 
+
+    //jet details
+    leptonMCNPartsMuon[histNumber]->Fill(lnmcparts);
+	leptonMCNTracksMuon[histNumber]->Fill(lnmctracks); 
+	jetNpartsMuon[histNumber]->Fill(jetNparts);
+	minjetNpartsMuon[histNumber]->Fill(lnparts);
+    jetNtracksMuon[histNumber]->Fill(jetNtracks);
+	minjetNtracksMuon[histNumber]->Fill(lntracks);
 		
 }
 void WWAnalysis::FillTauHistos(int histNumber){
@@ -542,6 +573,14 @@ void WWAnalysis::FillTauHistos(int histNumber){
 			phiHTau[histNumber]->Fill( CMJets.at(i)->Phi());
 		}
 	} 
+	
+	//jet details
+    leptonMCNPartsTau[histNumber]->Fill(lnmcparts);
+	leptonMCNTracksTau[histNumber]->Fill(lnmctracks); 
+	jetNpartsTau[histNumber]->Fill(jetNparts);
+	minjetNpartsTau[histNumber]->Fill(lnparts);
+    jetNtracksTau[histNumber]->Fill(jetNtracks);
+	minjetNtracksTau[histNumber]->Fill(lntracks);
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {

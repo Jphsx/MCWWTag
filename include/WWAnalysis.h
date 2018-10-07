@@ -136,6 +136,8 @@ using namespace lcio;
   int lntracks; // number of tracks in lepton jet
   int lnmcparts; //true n daughters of lepton
   int lnmctracks; //true n daughter tracks of lepton
+  int jetNparts; //number of particles per any jet
+  int jetNtracks; //number of tracks per any jet
   int qnparts;
   int qntracks;
   int qmcparts;
@@ -164,6 +166,11 @@ using namespace lcio;
 	TH1D *phiLMuon[ncuts+1], *phiLTau[ncuts+1];
 	TH1D *thetaHMuon[ncuts+1], *thetaHTau[ncuts+1];
 	TH1D *phiHMuon[ncuts+1], *phiHTau[ncuts+1];
+
+    //jet information histograms
+    TH1D  *leptonMCNPartsMuon[ncuts+1], *leptonMCNTracksMuon[ncuts+1], *leptonMCNPartsTau[ncuts+1], *leptonMCNTracksTau[ncuts+1];
+	TH1D  *jetNpartsMuon[ncuts+1], *minjetNpartsMuon[ncuts+1], *jetNpartsTau[ncuts+1], *minjetNpartsTau[ncuts+1];
+    TH1D  *jetNtracksMuon[ncuts+1], *minjetNtracksMuon[ncuts+1],  *jetNtracksTau[ncuts+1], *minjetNtracksTau[ncuts+1];
 	
  	/* end histograms */
 

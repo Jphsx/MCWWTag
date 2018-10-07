@@ -73,19 +73,19 @@ void WWAnalysis::init() {
 
         
 	 //jet information histograms
-   		leptonMCNPartsMuon[i] = new TH1D(("leptonMCNPartsMuon"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Muon Event", 20,0.5,20.5);
-		leptonMCNTracksMuon[i] = new TH1D(("leptonMCNTracksMuon"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Muon Event",20,0.5,20.5);
-		jetNpartsMuon[i] = new TH1D(("jetNpartsMuon"+cutnum).c_str(), "Visible Particles per Jet in Muon Event",50,0.5,50.5);
-        jetNtracksMuon[i] = new TH1D(("jetNtracksMuon"+cutnum).c_str(), "Visible Tracks per Jet in Muon Event", 50,0.5,50.5);		
-minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Muon Event",50,0.5,25.5);
-		minjetNtracksMuon[i] = new TH1D(("minjetNtracksMuon"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Muon Event",50,0.5,25.5);
+   		leptonMCNPartsMuon[i] = new TH1D(("leptonMCNPartsMuon"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Muon Event", 20,0.49,20.49);
+		leptonMCNTracksMuon[i] = new TH1D(("leptonMCNTracksMuon"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Muon Event",20,0.49,20.49);
+		jetNpartsMuon[i] = new TH1D(("jetNpartsMuon"+cutnum).c_str(), "Visible Particles per Jet in Muon Event",50,0.49,50.49);
+        jetNtracksMuon[i] = new TH1D(("jetNtracksMuon"+cutnum).c_str(), "Visible Tracks per Jet in Muon Event", 50,0.49,50.49);		
+minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Muon Event",50,0.49,25.49);
+		minjetNtracksMuon[i] = new TH1D(("minjetNtracksMuon"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Muon Event",50,0.49,25.49);
 
-		leptonMCNPartsTau[i] = new TH1D(("leptonMCNPartsTau"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Tau Event", 20,0.5,20.5);
-		leptonMCNTracksTau[i] = new TH1D(("leptonMCNTracksTau"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Tau Event",20,0.5,20.5);
-		jetNpartsTau[i] = new TH1D(("jetNpartsTau"+cutnum).c_str(), "Visible Particles per Jet in Tau Event",50,0.5,20.5);
-        jetNtracksTau[i] = new TH1D(("jetNtracksTau"+cutnum).c_str(), "Visible Tracks per Jet in Tau Event", 50,0.5,50.5);
-		minjetNpartsTau[i] = new TH1D(("minjetNpartsTau"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Tau Event",50,0.5,25.5);
-		minjetNtracksTau[i] = new TH1D(("minjetNtracksTau"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Tau Event",50,0.5,25.5);
+		leptonMCNPartsTau[i] = new TH1D(("leptonMCNPartsTau"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Tau Event", 20,0.49,20.49);
+		leptonMCNTracksTau[i] = new TH1D(("leptonMCNTracksTau"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Tau Event",20,0.49,20.49);
+		jetNpartsTau[i] = new TH1D(("jetNpartsTau"+cutnum).c_str(), "Visible Particles per Jet in Tau Event",50,0.49,20.49);
+        jetNtracksTau[i] = new TH1D(("jetNtracksTau"+cutnum).c_str(), "Visible Tracks per Jet in Tau Event", 50,0.49,50.49);
+		minjetNpartsTau[i] = new TH1D(("minjetNpartsTau"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Tau Event",50,0.49,25.49);
+		minjetNtracksTau[i] = new TH1D(("minjetNtracksTau"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Tau Event",50,0.49,25.49);
 	
 		/* end init histograms */
 	}

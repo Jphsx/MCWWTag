@@ -191,7 +191,7 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 bool WWAnalysis::allChildrenAreSimulation(MCParticle* p){
 	std::vector<MCParticle*> d = p->getDaughters();
 	bool flag = true;
-	for(int i=0; d->size(); i++){
+	for(int i=0; i<d.size(); i++){
 		if( ! d.at(i)->isCreatedInSimulation() ){
 			flag= false;
 		}

@@ -299,7 +299,8 @@ void WWAnalysis::getJetMultiplicities(){
   int counttracks=0;
   for(int i=0; i<lmcFSP.size(); i++){
 		int pdg = lmcFSP.at(i)->getPDG();
-		if(abs(pdg) != 12 || abs(pdg) != 14 || abs(pdg) != 16){
+        if(pdg < 0){ pdg = pdg* -1; }
+		if( (pdg != 12) || (pdg != 14) || (pdg != 16)){
 			//not a neutrino
 			if(lmcFSP.at(i)->getCharge() != 0){
 				counttracks++;

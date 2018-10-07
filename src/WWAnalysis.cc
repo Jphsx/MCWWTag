@@ -190,13 +190,17 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 }
 //recursive function to go through and look at the decay chain of a particle
 //look at specifically charged particles
-void WWAnalysis::exploreDaughterTracks(MCParticle* p){
+void WWAnalysis::exploreDaughterTracks(MCParticle* p , std::vector<MCParticle*>& FSP){
 	if(p->isCreatedInSimulation()) return;
 
 	std::cout<<p->id()<<" ";
 	std::cout<<p->getPDG()<<" -> ";
 	std::vector<MCParticle*> d = p->getDaughters();
 	for(int i=0; i< d.size(); i++){
+		if( ( d.at(i)->isCreatedInSimulation() ) ){
+		//this is an initial final state particle
+			FSP.push_back(d.at(i));
+		}
 		if( (! d.at(i)->isCreatedInSimulation()) ){//&& (d.at(i)->getCharge() != 0) ){
 			std::cout<< "( "<< d.at(i)->id()<<" "<<d.at(i)->getPDG() <<" "<< d.at(i)->isDecayedInTracker()<<" "<< d.at(i)->isDecayedInCalorimeter()<<" ) ";
 		}
@@ -234,11 +238,13 @@ void WWAnalysis::getJetMultiplicities(){
   std::vector<MCParticle*> daughters = parent->getDaughters();
   //find the lepton and look at what it directly produces
 
+    std::vector<MCParticle*> lmcFSP{};
+
   
   for(int i=0; i<daughters.size(); i++){
 	if(daughters.at(i)->getPDG() == lpdg){
 		//found the lepton
-		exploreDaughterTracks(daughters.at(i) );
+		exploreDaughterTracks(daughters.at(i), lmcFSP );
 		std::vector<MCParticle*> ldaughters = daughters.at(i)->getDaughters();
 		for(int j=0; j<ldaughters.size(); j++){
 			std::cout<< " l daughters "<< ldaughters.at(j)->getPDG();
@@ -246,8 +252,13 @@ void WWAnalysis::getJetMultiplicities(){
 	}
 	
   }
+	std::cout<<std::endl;
+	std::cout<<"lfsp ";
+  for(int i=0; i<lmcFSP.size(); i++){
+	std::cout<<lmcFSP.at(i)->getPDG()<<" ";
+  }
 
-  
+  std::cout<<std::endl;
   
 
 

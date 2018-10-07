@@ -76,15 +76,15 @@ void WWAnalysis::init() {
    		leptonMCNPartsMuon[i] = new TH1D(("leptonMCNPartsMuon"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Muon Event", 20,0.5,20.5);
 		leptonMCNTracksMuon[i] = new TH1D(("leptonMCNTracksMuon"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Muon Event",20,0.5,20.5);
 		jetNpartsMuon[i] = new TH1D(("jetNpartsMuon"+cutnum).c_str(), "Visible Particles per Jet in Muon Event",50,0.5,50.5);
-		minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Muon Event",50,0.5,25.5);
-        jetNtracksMuon[i] = new TH1D(("jetNtracksMuon"+cutnum).c_str(), "Visible Tracks per Jet in Muon Event", 50,0.5,50.5);
+        jetNtracksMuon[i] = new TH1D(("jetNtracksMuon"+cutnum).c_str(), "Visible Tracks per Jet in Muon Event", 50,0.5,50.5);		
+minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Muon Event",50,0.5,25.5);
 		minjetNtracksMuon[i] = new TH1D(("minjetNtracksMuon"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Muon Event",50,0.5,25.5);
 
 		leptonMCNPartsTau[i] = new TH1D(("leptonMCNPartsTau"+cutnum).c_str(), "True Visible Particles Radiated/Decayed from Lepton in Tau Event", 20,0.5,20.5);
 		leptonMCNTracksTau[i] = new TH1D(("leptonMCNTracksTau"+cutnum).c_str(), "True Visible Tracks Decayed from Lepton in Tau Event",20,0.5,20.5);
 		jetNpartsTau[i] = new TH1D(("jetNpartsTau"+cutnum).c_str(), "Visible Particles per Jet in Tau Event",50,0.5,20.5);
-		minjetNpartsTau[i] = new TH1D(("minjetNpartsTau"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Tau Event",50,0.5,25.5);
         jetNtracksTau[i] = new TH1D(("jetNtracksTau"+cutnum).c_str(), "Visible Tracks per Jet in Tau Event", 50,0.5,50.5);
+		minjetNpartsTau[i] = new TH1D(("minjetNpartsTau"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Tau Event",50,0.5,25.5);
 		minjetNtracksTau[i] = new TH1D(("minjetNtracksTau"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Tau Event",50,0.5,25.5);
 	
 		/* end init histograms */
@@ -315,6 +315,9 @@ void WWAnalysis::getJetMultiplicities(){
   //count all the tracks and particles from fast jets
   int countjetparts=0;
   int countjettracks=0;
+  //temp vectors
+   std::vector<int> nparts(3);
+   std::vector<int> ntrks(3);
   //loop over all jets
   for(int i=0; i<3; i++){
 	std::vector<ReconstructedParticle*> p = _jets.at(i)->getParticles();
@@ -324,12 +327,14 @@ void WWAnalysis::getJetMultiplicities(){
 			countjettracks++;
 		}
 	}
-	jetNparts.at(i) = countjetparts;
-    jetNtracks.at(i) = countjettracks;
+	nparts.at(i) = countjetparts;
+    ntrks.at(i) = countjettracks;
 	countjetparts = 0;
 	countjettracks = 0;
   }
-  
+
+  jetNparts = nparts;
+  jetNtracks = ntrks;
 
 
 }
@@ -564,9 +569,11 @@ void WWAnalysis::FillMuonHistos(int histNumber){
     //jet details
     leptonMCNPartsMuon[histNumber]->Fill(lnmcparts);
 	leptonMCNTracksMuon[histNumber]->Fill(lnmctracks); 
-	jetNpartsMuon[histNumber]->Fill(jetNparts);
+    for(int i=0; i<jetNparts.size(); i++){
+		jetNpartsMuon[histNumber]->Fill(jetNparts.at(i));
+		jetNtracksMuon[histNumber]->Fill(jetNtracks.at(i));
+	}
 	minjetNpartsMuon[histNumber]->Fill(lnparts);
-    jetNtracksMuon[histNumber]->Fill(jetNtracks);
 	minjetNtracksMuon[histNumber]->Fill(lntracks);
 		
 }
@@ -594,10 +601,12 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	
 	//jet details
     leptonMCNPartsTau[histNumber]->Fill(lnmcparts);
-	leptonMCNTracksTau[histNumber]->Fill(lnmctracks); 
-	jetNpartsTau[histNumber]->Fill(jetNparts);
+	leptonMCNTracksTau[histNumber]->Fill(lnmctracks);
+	for(int i=0; i<jetNparts.size(); i++){ 
+		jetNpartsTau[histNumber]->Fill(jetNparts.at(i));
+	    jetNtracksTau[histNumber]->Fill(jetNtracks.at(i));
+	}
 	minjetNpartsTau[histNumber]->Fill(lnparts);
-    jetNtracksTau[histNumber]->Fill(jetNtracks);
 	minjetNtracksTau[histNumber]->Fill(lntracks);
 }
 

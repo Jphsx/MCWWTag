@@ -136,8 +136,8 @@ using namespace lcio;
   int lntracks; // number of tracks in lepton jet
   int lnmcparts; //true n daughters of lepton
   int lnmctracks; //true n daughter tracks of lepton
-  std::vector<int> jetNparts(3); //number of particles per any jet
-  std::vector<int> jetNtracks(3); //number of tracks per any jet
+  std::vector<int> jetNparts; //number of particles per any jet
+  std::vector<int> jetNtracks; //number of tracks per any jet
   int qnparts;
   int qntracks;
   int qmcparts;

@@ -203,8 +203,8 @@ bool WWAnalysis::allChildrenAreSimulation(MCParticle* p){
 void WWAnalysis::exploreDaughterParticles(MCParticle* p , std::vector<MCParticle*>& FSP){
 	if(p->isCreatedInSimulation()) return;
 
-	std::cout<<p->id()<<" ";
-	std::cout<<p->getPDG()<<" -> ";
+	//std::cout<<p->id()<<" ";
+	//std::cout<<p->getPDG()<<" -> ";
 	std::vector<MCParticle*> d = p->getDaughters();
 	
 	for(int i=0; i< d.size(); i++){
@@ -212,11 +212,11 @@ void WWAnalysis::exploreDaughterParticles(MCParticle* p , std::vector<MCParticle
 		//this is an initial final state particle
 			FSP.push_back(d.at(i));
 		}
-		if( (! d.at(i)->isCreatedInSimulation()) ){//&& (d.at(i)->getCharge() != 0) ){
-			std::cout<< "( "<< d.at(i)->id()<<" "<<d.at(i)->getPDG() <<" "<< d.at(i)->isDecayedInTracker()<<" "<< d.at(i)->isDecayedInCalorimeter()<<" ) ";
-		}
+		//if( (! d.at(i)->isCreatedInSimulation()) ){//&& (d.at(i)->getCharge() != 0) ){
+		//	std::cout<< "( "<< d.at(i)->id()<<" "<<d.at(i)->getPDG() <<" "<< d.at(i)->isDecayedInTracker()<<" "<< d.at(i)->isDecayedInCalorimeter()<<" ) ";
+		//}
 	}
-	std::cout<<std::endl;
+	//std::cout<<std::endl;
 	for(int i=0; i<d.size(); i++){
 		exploreDaughterParticles(d.at(i), FSP);
 	}

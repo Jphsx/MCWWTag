@@ -200,7 +200,7 @@ bool WWAnalysis::allChildrenAreSimulation(MCParticle* p){
 }
 //recursive function to go through and look at the decay chain of a particle
 //look at specifically charged particles
-void WWAnalysis::exploreDaughterTracks(MCParticle* p , std::vector<MCParticle*>& FSP){
+void WWAnalysis::exploreDaughterParticles(MCParticle* p , std::vector<MCParticle*>& FSP){
 	if(p->isCreatedInSimulation()) return;
 
 	std::cout<<p->id()<<" ";
@@ -218,14 +218,10 @@ void WWAnalysis::exploreDaughterTracks(MCParticle* p , std::vector<MCParticle*>&
 	}
 	std::cout<<std::endl;
 	for(int i=0; i<d.size(); i++){
-		exploreDaughterTracks(d.at(i), FSP);
+		exploreDaughterParticles(d.at(i), FSP);
 	}
 		
 }
-//look at all particles
-/*void WWAnalysis::exploreDaughterParticles(){
-
-}*/
 //looks at the number of charged particles/ total particles in the lepton identified jet
 //looks at the number of charged particles/ total particles produced directly from the true lepton
 void WWAnalysis::getJetMultiplicities(){
@@ -250,15 +246,23 @@ void WWAnalysis::getJetMultiplicities(){
   //find the lepton and look at what it directly produces
 
     std::vector<MCParticle*> lmcFSP{};
+    std::vector<MCParticle*> q1FSP{};
+    std::vector<MCParticle*> q2FSP{};
 
   
   for(int i=0; i<daughters.size(); i++){
-	if(daughters.at(i)->getPDG() == lpdg){
+	int pdg = daughters.at(i)->getPDG();
+	if(pdg == lpdg){
 		//found the lepton
 		exploreDaughterTracks(daughters.at(i), lmcFSP );
-		std::vector<MCParticle*> ldaughters = daughters.at(i)->getDaughters();
-		for(int j=0; j<ldaughters.size(); j++){
-			std::cout<< " l daughters "<< ldaughters.at(j)->getPDG();
+	}
+	else if( abs(pdg) != 12 || abs(pdg) != 14 || abs(pdg) != 16 ){
+		//found a quark
+		if(q1FSP.size()==0){
+			exploreDaughterTracks( daughters.at(i), q1FSP );
+		}
+		else{
+			exploreDaughterTracks( daughters.at(i), q2FSP );
 		}
 	}
 	
@@ -267,6 +271,20 @@ void WWAnalysis::getJetMultiplicities(){
 	std::cout<<"lfsp ";
   for(int i=0; i<lmcFSP.size(); i++){
 	std::cout<<lmcFSP.at(i)->getPDG()<<" ";
+  }
+
+  std::cout<<std::endl;
+
+  std::cout<<"q1fsp ";
+  for(int i=0; i<q1FSP.size(); i++){
+	std::cout<<q1FSP.at(i)->getPDG()<<" ";
+  }
+
+  std::cout<<std::endl;
+ 
+  std::cout<<"q2fsp ";
+  for(int i=0; i<q2FSP.size(); i++){
+	std::cout<<q2FSP.at(i)->getPDG()<<" ";
   }
 
   std::cout<<std::endl;

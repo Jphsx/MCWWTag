@@ -316,14 +316,14 @@ void WWAnalysis::getJetMultiplicities(){
   int countjetparts=0;
   int countjettracks=0;
   //temp vectors
-   std::vector<int> nparts(3);
-   std::vector<int> ntrks(3);
+   std::vector<int> nparts(_jets.size());
+   std::vector<int> ntrks(_jets.size());
   //loop over all jets
-  for(int i=0; i<3; i++){
+  for(int i=0; i<_jets.size(); i++){
 	std::vector<ReconstructedParticle*> p = _jets.at(i)->getParticles();
 	countjetparts = p.size();
 	for(int j=0; j<p.size(); j++){
-		if(p.at(i)->getCharge() != 0){
+		if(p.at(j)->getCharge() != 0){
 			countjettracks++;
 		}
 	}

@@ -381,7 +381,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 				}//end max reset
 			}//end charge condition
 		}//end jet particles
-		if(maxindex = -1) { std::cout<<"continuing"<<std::endl; continue;} //no tracks in this jet
+		if(maxindex == -1) { std::cout<<"continuing"<<std::endl; continue;} //no tracks in this jet
 		//look at track of this particle
 		std::vector<Track*> t = d.at(maxindex)->getTracks();
 		std::cout<<"jet "<<i<<"jet t size "<< t.size()<< std::endl;

@@ -374,13 +374,13 @@ void WWAnalysis::analyzeLeadingTracks(){
 			if(d.at(j)->getCharge() !=0){
 				mom = d.at(j)->getMomentum();
 				p = sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2] );
-				if( p> maxP){
+				if( p > maxP){
 					maxP = p;
 					maxindex=j;
 				}//end max reset
 			}//end charge condition
 		}//end jet particles
-
+		if(maxindex = -1) continue; //no tracks in this jet
 		//look at track of this particle
 		std::vector<Track*> t = d.at(maxindex)->getTracks();
 		std::cout<<"jet "<<i<<std::endl;
@@ -392,6 +392,9 @@ void WWAnalysis::analyzeLeadingTracks(){
 			std::cout<<t.at(j)->getTanLambda()<<" ";
 		} 
 		std::cout<<std::endl;
+		//reset maxindex and max p new jet
+		maxP = -9999;
+		maxindex= -1;
 	}//end jet loop
 }
 /* classify the the event based on the type of lepton in MCParticle info, also set the true charge for that lepton */

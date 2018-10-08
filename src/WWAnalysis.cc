@@ -383,7 +383,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 		if(maxindex = -1) continue; //no tracks in this jet
 		//look at track of this particle
 		std::vector<Track*> t = d.at(maxindex)->getTracks();
-		std::cout<<"jet "<<i<<std::endl;
+		std::cout<<"jet "<<i<<"jet t size "<< t.size()<< std::endl;
 		for(int j=0; j<t.size(); j++){
 			std::cout<<t.at(j)->getD0()<<" ";
 			std::cout<<t.at(j)->getPhi()<<" ";

@@ -91,18 +91,18 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 		minjetNtracksTau[i] = new TH1D(("minjetNtracksTau"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Tau Event",50,0.5,25.5);
 
 		//some jet leading track parameters
-		ljetleadingd0Muon[i] = new TH1D(("ljetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of lepton jet in muon event",20,-0.01,0.01);
+		ljetleadingd0Muon[i] = new TH1D(("ljetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of lepton jet in muon event",100,-0.008,0.008);
 		ljetleadingptMuon[i] = new TH1D(("ljetleadingptMuon"+cutnum).c_str(), "pt of the leading track of lepton jet in muon event", 20,0.0, 40.0);
 		ljetd0relerrMuon[i] = new TH1D(("ljetd0relerrMuon"+cutnum).c_str(),"#delta d0 /d0 of leading track of lepton jet in muon event",20,0.0,0.1);
-		qjetleadingd0Muon[i] = new TH1D(("qjetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of q jet in muon event",20,-0.01,0.01);
+		qjetleadingd0Muon[i] = new TH1D(("qjetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of q jet in muon event",100,-0.01,0.01);
 		qjetleadingptMuon[i] = new TH1D(("qjetleadingptMuon"+cutnum).c_str(), "pt of the leading track of q jet in muon event", 20,0.0, 40.0);
 		qjetd0relerrMuon[i] = new TH1D(("qjetd0relerrMuon"+cutnum).c_str(),"#delta d0 /d0 of leading track of q jet in muon event",100,0.0,0.1);
-		ljetleadingd0Tau[i] = new TH1D(("ljetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of lepton jet in Tau event",20,-0.01,0.01);
+		ljetleadingd0Tau[i] = new TH1D(("ljetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of lepton jet in Tau event",100,-0.01,0.01);
 		ljetleadingptTau[i] = new TH1D(("ljetleadingptTau"+cutnum).c_str(), "pt of the leading track of lepton jet in Tau event", 20,0.0, 40.0);
 		ljetd0relerrTau[i] = new TH1D(("ljetd0relerrTau"+cutnum).c_str(),"#delta d0 /d0 of leading track of lepton jet in Tau event",20,0.0,0.1);
-		qjetleadingd0Tau[i] = new TH1D(("qjetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of q jet in Tau event",20,-0.01,0.01);
+		qjetleadingd0Tau[i] = new TH1D(("qjetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of q jet in Tau event",100,-0.01,0.01);
 		qjetleadingptTau[i] = new TH1D(("qjetleadingptTau"+cutnum).c_str(), "pt of the leading track of q jet in Tau event", 20,0.0, 40.0);
-		qjetd0relerrTau[i] = new TH1D(("qjetd0relerrTau"+cutnum).c_str(),"#delta d0 /d0 of leading track of q jet in Tau event",20,0.0,0.1);
+		qjetd0relerrTau[i] = new TH1D(("qjetd0relerrTau"+cutnum).c_str(),"#delta d0 /d0 of leading track of q jet in Tau event",100,0.0,0.01);
 		
 	
 		/* end init histograms */
@@ -198,6 +198,8 @@ int WWAnalysis::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
 	return indexofminjet;
 
 }
+//TODO vertex fitting for lepton id with tau
+//int WWAnalysis::idljet_vertexfit( std::vec
 /* identifies Lepton jet charge by taking the charge of the leading track from the jet */
 int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	//assign by leading track charge? or charge sum of reco parts?

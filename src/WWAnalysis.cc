@@ -363,48 +363,51 @@ void WWAnalysis::getJetMultiplicities(){
 }
 void WWAnalysis::analyzeLeadingTracks(){
 	ReconstructedParticle* leader;
-	std::vector<ReconstructedParticle*> d;
-	double maxP = -9999;
+	std::vector<Track*> d;
+	double minOm = 9999;
 	int maxindex= -1;
-	const double* mom;
+	double om;
+
+	const double c = 2.99792458e8; // m*s^-1        
+  	const double mm2m = 1e-3;
+  	const double eV2GeV = 1e-9;
+  	const double eB = BField*c*mm2m*eV2GeV;
+
 	for(int i=0; i< _jets.size(); i++){
-		d = _jets.at(i)->getParticles();
-		double p;
+		d = _jets.at(i)->getTracks();
 		for(int j=0; j< d.size(); j++){
-			if(d.at(j)->getCharge() !=0){
-				mom = d.at(j)->getMomentum();
-				p = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2] );
+		//	if(d.at(j)->getCharge() !=0){
+				om = d.at(j)->getOmega();
 			//	std::cout<<" p "<<p<<std::endl;
-				if( p > maxP){
-					maxP = p;
+				if( fabs(om) < minOm){
+					minOm = fabs(om);
 					maxindex=j;
 				}//end max reset
-			}//end charge condition
+		//	}//end charge condition
 		}//end jet particles
 		if(maxindex == -1) { continue;} //no tracks in this jet
 		//look at track of this particle
-		std::vector<Track*> t = d.at(maxindex)->getTracks();
-		std::cout<<"jet "<<i<<"jet t size "<< t.size()<< std::endl;
-		for(int j=0; j<t.size(); j++){
-			std::cout<<t.at(j)->getD0()<<" ";
-			std::cout<<t.at(j)->getPhi()<<" ";
-			std::cout<<t.at(j)->getOmega()<<" ";
-			std::cout<<t.at(j)->getZ0()<<" ";
-			std::cout<<t.at(j)->getTanLambda()<<" ";
-		} 
+	    Track* t = d.at(maxindex);
+		std::cout<<"jet "<<i<< std::endl;
+		
+			std::cout<<t->getD0()<<" ";
+			std::cout<<t->getPhi()<<" ";
+			std::cout<<t->getOmega()<<" ";
+			std::cout<<t->getZ0()<<" ";
+			std::cout<<t->getTanLambda()<<" ";
+		 
 		std::cout<<std::endl;
-
+    
 		if(i == ljet_index){
-			leadingptljet = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] );
-			//use t.at(0) assume there is always one track (not confirmed)
-			leadingd0ljet = t.at(0)->getD0();
-			leadingd0relerrljet = sqrt(t.at(0)->getCovMatrix()[0])/t.at(0)->getD0();
+			leadingptljet = eB/fabs(t->getOmega()) ;
+			leadingd0ljet = t->getD0();
+			leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/t->getD0();
 		}
 		else{
 			//we lazily just examing 1 q jet for now
-			leadingptqjet = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] );
-			leadingd0qjet = t.at(0)->getD0();
-			leadingd0relerrljet = sqrt(t.at(0)->getCovMatrix()[0])/t.at(0)->getD0();
+			leadingptqjet = eB/fabs(t->getOmega());
+			leadingd0qjet = t->getD0();
+			leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/t->getD0();
 		}
 		//reset maxindex and max p new jet
 		maxP = -9999;

@@ -374,14 +374,14 @@ void WWAnalysis::analyzeLeadingTracks(){
 			if(d.at(j)->getCharge() !=0){
 				mom = d.at(j)->getMomentum();
 				p = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2] );
-				std::cout<<" p "<<p<<std::endl;
+			//	std::cout<<" p "<<p<<std::endl;
 				if( p > maxP){
 					maxP = p;
 					maxindex=j;
 				}//end max reset
 			}//end charge condition
 		}//end jet particles
-		if(maxindex == -1) { std::cout<<"continuing"<<std::endl; continue;} //no tracks in this jet
+		if(maxindex == -1) { continue;} //no tracks in this jet
 		//look at track of this particle
 		std::vector<Track*> t = d.at(maxindex)->getTracks();
 		std::cout<<"jet "<<i<<"jet t size "<< t.size()<< std::endl;
@@ -393,10 +393,27 @@ void WWAnalysis::analyzeLeadingTracks(){
 			std::cout<<t.at(j)->getTanLambda()<<" ";
 		} 
 		std::cout<<std::endl;
+
+		if(i == lj_index){
+			leadingptljet = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] );
+			//use t.at(0) assume there is always one track (not confirmed)
+			leadingd0ljet = t.at(0)->getD0();
+			leadingd0relerrljet = sqrt(t.at(0)->getCovMatrix()[0])/t.at(0)->getD0();
+		}
+		else{
+			//we lazily just examing 1 q jet for now
+			leadingptqjet = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] );
+			leadingd0qjet = t.at(0)->getD0();
+			leadingd0relerrljet = sqrt(t.at(0)->getCovMatrix()[0])/t.at(0)->getD0();
+		}
 		//reset maxindex and max p new jet
 		maxP = -9999;
 		maxindex= -1;
 	}//end jet loop
+
+    
+
+ 
 }
 /* classify the the event based on the type of lepton in MCParticle info, also set the true charge for that lepton */
 /* also tallies the number of muon/electron/tau events */
@@ -635,7 +652,16 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	}
 	minjetNpartsMuon[histNumber]->Fill(lnparts);
 	minjetNtracksMuon[histNumber]->Fill(lntracks);
-		
+
+	//more jet details
+	ljetleadingd0Muon[histNumber]->Fill(leadingd0ljet);
+	ljetleadingptMuon[histNumber]->Fill(leadingptljet);
+	ljetd0relerrMuon[histNumber]->Fill(leadingd0relerrljet);
+	qjetleadingd0Muon[histNumber]->Fill(leadingd0qjet);
+	qjetleadingptMuon[histNumber]->Fill(leadingptqjet);
+	qjetleadingd0relerrMuon[histNumber]->Fill(leadingd0relerrqjet);
+
+
 }
 void WWAnalysis::FillTauHistos(int histNumber){
 
@@ -668,6 +694,13 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	}
 	minjetNpartsTau[histNumber]->Fill(lnparts);
 	minjetNtracksTau[histNumber]->Fill(lntracks);
+
+	ljetleadingd0Tau[histNumber]->Fill(leadingd0ljet);
+	ljetleadingptTau[histNumber]->Fill(leadingptljet);
+	ljetd0relerrTau[histNumber]->Fill(leadingd0relerrljet);
+	qjetleadingd0Tau[histNumber]->Fill(leadingd0qjet);
+	qjetleadingptTau[histNumber]->Fill(leadingptqjet);
+	qjetleadingd0relerrTau[histNumber]->Fill(leadingd0relerrqjet);
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {
@@ -685,7 +718,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
     //return the parent mcparticle that has the qqlnu decay
 	parent = classifyEvent(isTau, isMuon, trueq);
 
-     analyzeLeadingTracks();
+    
 	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton
 	ljet_index = identifyLeptonJet( _jets );
@@ -696,6 +729,8 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//assess jet multiplicity
 	//fill variables pertaining to leptonic jet numbers of particles
 	getJetMultiplicities(); 
+
+	analyzeLeadingTracks();
    
 
 	//check if the assessed charge matches the true charge of the lepton

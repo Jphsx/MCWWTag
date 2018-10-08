@@ -47,6 +47,7 @@ void WWAnalysis::init() {
          std::string cutnum(cuts);
 
 		/* init histograms */
+		//some general plots
 		WmassMuon[i] = new TH1D(("Wmassmuon"+cutnum).c_str(),"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
 		WmassTau[i] = new TH1D(("Wmasstau"+cutnum).c_str(),"W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
         qqmassMuon[i] = new TH1D(("qqmassmuon"+cutnum).c_str(),"qq Mass, with true #mu",100,50.0,120.0);
@@ -55,7 +56,8 @@ void WWAnalysis::init() {
 		WETau[i] = new TH1D(("WEtau"+cutnum).c_str(),"W^{#pm} Energy, with true #tau ",100, 25.0, 300.0 );
 		EtotalMuon[i] = new TH1D(("EtotalMuon"+cutnum).c_str(),"WW Total Energy, with true #mu",100,100,550); 
 		EtotalTau[i] = new TH1D(("EtotalTau"+cutnum).c_str(),"WW Total Energy, with true #tau",100,100,550);
-		//TH1D* Wm_cosTheta;
+		
+		//TGC stuff
 		LjetMassMuon[i]=new TH1D(("Ljetmassmuon"+cutnum).c_str(),"Mass of Lepton Jet with true #mu",100, 0.0 ,20.0 );
 		LjetMassTau[i]=new TH1D(("Ljetmasstau"+cutnum).c_str(),"Mass of Lepton Jet with true #tau",100, 0.0, 20.0 );
 
@@ -70,6 +72,7 @@ void WWAnalysis::init() {
 		phiLTau[i] = new TH1D(("phiLTau"+cutnum).c_str(), "azimuthal angle of CM Lepton in Tau event", 100,-pi,pi);
 		thetaHTau[i] = new TH1D(("thetaHTau"+cutnum).c_str(), "polar angle of CM quark in Tau event",100,0.0,pi);
 		phiHTau[i] = new TH1D(("phiHTau"+cutnum).c_str(),"azimuthal angle of CM quark in Tau event", 100,-pi,pi);
+
 
         
 	 //jet information histograms
@@ -86,9 +89,24 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
         jetNtracksTau[i] = new TH1D(("jetNtracksTau"+cutnum).c_str(), "Visible Tracks per Jet in Tau Event", 50,0.5,50.5);
 		minjetNpartsTau[i] = new TH1D(("minjetNpartsTau"+cutnum).c_str(), "Visible Particle of Jet with least Particles in Tau Event",50,0.5,25.5);
 		minjetNtracksTau[i] = new TH1D(("minjetNtracksTau"+cutnum).c_str(), "Visible Tracks of Jet with least Particlesin Tau Event",50,0.5,25.5);
+
+		//some jet leading track parameters
+		ljetleadingd0Muon[i] = new TH1D(("ljetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of lepton jet in muon event",100,-100.0,100.0);
+		ljetleadingptMuon[i] = new TH1D(("ljetleadingptMuon"+cutnum).c_str(), "pt of the leading track of lepton jet in muon event", 100,-100.0, 100.0);
+		ljetd0relerrMuon[i] = new TH1D(("ljetd0relerrMuon"+cutnum).c_str(),"#delta d0 /d0 of leading track of lepton jet in muon event",100,0.0,0.75);
+		qjetleadingd0Muon[i] = new TH1D(("qjetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of q jet in muon event",100,-100.0,100.0);
+		qjetleadingptMuon[i] = new TH1D(("qjetleadingptMuon"+cutnum).c_str(), "pt of the leading track of q jet in muon event", 100,-100.0, 100.0);
+		qjetd0relerrMuon[i] = new TH1D(("qjetd0relerrMuon"+cutnum).c_str(),"#delta d0 /d0 of leading track of q jet in muon event",100,0.0,0.75);
+		ljetleadingd0Tau[i] = new TH1D(("ljetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of lepton jet in Tau event",100,-100.0,100.0);
+		ljetleadingptTau[i] = new TH1D(("ljetleadingptTau"+cutnum).c_str(), "pt of the leading track of lepton jet in Tau event", 100,-100.0, 100.0);
+		ljetd0relerrTau[i] = new TH1D(("ljetd0relerrTau"+cutnum).c_str(),"#delta d0 /d0 of leading track of lepton jet in Tau event",100,0.0,0.75);
+		qjetleadingd0Tau[i] = new TH1D(("qjetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of q jet in Tau event",100,-100.0,100.0);
+		qjetleadingptTau[i] = new TH1D(("qjetleadingptTau"+cutnum).c_str(), "pt of the leading track of q jet in Tau event", 100,-100.0, 100.0);
+		qjetd0relerrTau[i] = new TH1D(("qjetd0relerrTau"+cutnum).c_str(),"#delta d0 /d0 of leading track of q jet in Tau event",100,0.0,0.75);
+		
 	
 		/* end init histograms */
-	}
+	
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {
@@ -299,7 +317,7 @@ void WWAnalysis::getJetMultiplicities(){
   int counttracks=0;
   for(int i=0; i<lmcFSP.size(); i++){
 		if( (abs(lmcFSP.at(i)->getPDG()) == 12) || (abs(lmcFSP.at(i)->getPDG()) == 14) || (abs(lmcFSP.at(i)->getPDG()) == 16)){
-			std::cout<<"neut skipped"<<std::endl;
+		//	std::cout<<"neut skipped"<<std::endl;
 			continue;
 		}
 		else{
@@ -310,7 +328,7 @@ void WWAnalysis::getJetMultiplicities(){
 			}
 			//count tracks and neutrals
 			countparts++;
-			std::cout<<"part counted"<<std::endl;
+		//f	std::cout<<"part counted"<<std::endl;
 		}
   }
 
@@ -342,6 +360,39 @@ void WWAnalysis::getJetMultiplicities(){
   jetNtracks = ntrks;
 
 
+}
+void WWAnalysis::analyzeLeadingTracks(){
+	ReconstructedParticle* leader;
+	std::vector<ReconstructedParticle*> d;
+	int maxP = -9999;
+	int maxindex= -1;
+	double* mom;
+	for(int i=0; i< _jets.size(); i++){
+		d = _jets.getParticles();
+		int p;
+		for(int j=0; j< d.size(); j++){
+			if(d.at(j)->getCharge() !=0){
+				mom = d.at(j)->getMomentum();
+				p = sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2] );
+				if( p> maxP){
+					maxP = p;
+					maxindex=j;
+				}//end max reset
+			}//end charge condition
+		}//end jet particles
+
+		//look at track of this particle
+		std::vector<Track*> t = d.at(maxindex)->getTracks();
+		std::cout<<"jet "<<i<<std::endl;
+		for(int j=0; j<t.size(); j++){
+			std::cout<<t.at(j)->getD0()<<" ";
+			std::cout<<t.at(j)->getPhi()<<" ";
+			std::cout<<t.at(j)->getOmega()<<" ";
+			std::cout<<t.at(j)->getZ0()<<" ";
+			std::cout<<t.at(j)->getTanLambda()<<" ";
+		} 
+		std::cout<<std::endl;
+	}//end jet loop
 }
 /* classify the the event based on the type of lepton in MCParticle info, also set the true charge for that lepton */
 /* also tallies the number of muon/electron/tau events */

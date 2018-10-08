@@ -138,6 +138,14 @@ using namespace lcio;
   int lnmctracks; //true n daughter tracks of lepton
   std::vector<int> jetNparts; //number of particles per any jet
   std::vector<int> jetNtracks; //number of tracks per any jet
+  int leadingptljet; //pt of the leading track in the lepton jet
+  int leadingd0ljet; //d0 of the leading track in the lepton jet
+  int leadingd0relerrljet; //relative error of d0 of leading track in lepton jet
+
+  int leadingptqjet; //pt of the leading track in a quark jet
+  int leadingd0qjet; //d0 of the leading track in a quark jet
+  int leadingd0relerrqjet; //relative error of d0 of leading track in lepton jet
+
   int qnparts;
   int qntracks;
   int qmcparts;
@@ -171,6 +179,13 @@ using namespace lcio;
     TH1D  *leptonMCNPartsMuon[ncuts+1], *leptonMCNTracksMuon[ncuts+1], *leptonMCNPartsTau[ncuts+1], *leptonMCNTracksTau[ncuts+1];
 	TH1D  *jetNpartsMuon[ncuts+1], *minjetNpartsMuon[ncuts+1], *jetNpartsTau[ncuts+1], *minjetNpartsTau[ncuts+1];
     TH1D  *jetNtracksMuon[ncuts+1], *minjetNtracksMuon[ncuts+1],  *jetNtracksTau[ncuts+1], *minjetNtracksTau[ncuts+1];
+
+    //lepton jet info
+	TH1D *ljetleadingd0Muon[ncuts+1], *ljetleadingd0Tau[ncuts+1], *ljetleadingptMuon[ncuts+1], *ljetleadingptTau[ncuts+1];
+    TH1D *ljetd0relerrMuon[ncuts+1], *ljetd0relerrTau[ncuts+1]; 
+    TH1D *qjetleadingd0Muon[ncuts+1], *qjetleadingd0Tau[ncuts+1], *qjetleadingptMuon[ncuts+1], *qjetleadingptTau[ncuts+1];
+    TH1D *qjetd0relerrMuon[ncuts+1], *qjetd0relerrTau[ncuts+1];
+
 	
  	/* end histograms */
 

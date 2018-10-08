@@ -659,7 +659,7 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	ljetd0relerrMuon[histNumber]->Fill(leadingd0relerrljet);
 	qjetleadingd0Muon[histNumber]->Fill(leadingd0qjet);
 	qjetleadingptMuon[histNumber]->Fill(leadingptqjet);
-	qjetleadingd0relerrMuon[histNumber]->Fill(leadingd0relerrqjet);
+	qjetd0relerrMuon[histNumber]->Fill(leadingd0relerrqjet);
 
 
 }
@@ -700,7 +700,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	ljetd0relerrTau[histNumber]->Fill(leadingd0relerrljet);
 	qjetleadingd0Tau[histNumber]->Fill(leadingd0qjet);
 	qjetleadingptTau[histNumber]->Fill(leadingptqjet);
-	qjetleadingd0relerrTau[histNumber]->Fill(leadingd0relerrqjet);
+	qjetd0relerrTau[histNumber]->Fill(leadingd0relerrqjet);
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {

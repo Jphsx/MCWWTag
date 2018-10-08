@@ -364,16 +364,16 @@ void WWAnalysis::getJetMultiplicities(){
 void WWAnalysis::analyzeLeadingTracks(){
 	ReconstructedParticle* leader;
 	std::vector<ReconstructedParticle*> d;
-	int maxP = -9999;
+	double maxP = -9999;
 	int maxindex= -1;
 	const double* mom;
 	for(int i=0; i< _jets.size(); i++){
 		d = _jets.at(i)->getParticles();
-		int p;
+		double p;
 		for(int j=0; j< d.size(); j++){
 			if(d.at(j)->getCharge() !=0){
 				mom = d.at(j)->getMomentum();
-				p = sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2] );
+				p = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2] );
 				if( p > maxP){
 					maxP = p;
 					maxindex=j;

@@ -77,7 +77,7 @@
                 <!--   standard output: full reconstruction keep all collections -->
                 <parameter name="LCIOOutputFile" type="string" > ./jets.slcio </parameter>
                 <parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
-                <parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit Cluster SimTrackerHit TrackerHitPlane TrackerHit ReconstructedParticle Vertex  </parameter> 
+                <parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit Cluster SimTrackerHit TrackerHitPlane TrackerHit Vertex  </parameter> 
     </processor>
 
 

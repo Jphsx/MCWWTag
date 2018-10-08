@@ -374,6 +374,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 			if(d.at(j)->getCharge() !=0){
 				mom = d.at(j)->getMomentum();
 				p = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2] );
+				std::cout<<" p "<<p<<std::endl;
 				if( p > maxP){
 					maxP = p;
 					maxindex=j;

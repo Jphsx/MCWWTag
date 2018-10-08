@@ -681,7 +681,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
     //return the parent mcparticle that has the qqlnu decay
 	parent = classifyEvent(isTau, isMuon, trueq);
 
-
+     analyzeLeadingTracks();
 	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton
 	ljet_index = identifyLeptonJet( _jets );
@@ -692,7 +692,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//assess jet multiplicity
 	//fill variables pertaining to leptonic jet numbers of particles
 	getJetMultiplicities(); 
-
+   
 
 	//check if the assessed charge matches the true charge of the lepton
 	if( trueq == lq){

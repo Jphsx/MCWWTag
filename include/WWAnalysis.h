@@ -67,6 +67,7 @@ using namespace lcio;
   void getJetMultiplicities();
   void exploreDaughterParticles(MCParticle* p, std::vector<MCParticle*>& FSP);
   bool allChildrenAreSimulation(MCParticle* p);
+  void analyzeLeadingTracks();
 
   //classify the type of lepton decay and retrieve the
   //mcparticles for qqlnu

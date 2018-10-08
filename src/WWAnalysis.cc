@@ -423,13 +423,13 @@ void WWAnalysis::analyzeLeadingTracks(){
 		if(i == ljet_index){
 			leadingptljet = eB/fabs(t->getOmega()) ;
 			leadingd0ljet = t->getD0();
-			leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/t->getD0();
+			leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
 		}
 		else{
 			//we lazily just examing 1 q jet for now
 			leadingptqjet = eB/fabs(t->getOmega());
 			leadingd0qjet = t->getD0();
-			leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/t->getD0();
+			leadingd0relerrqjet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
 		}
 		//reset maxindex and max p new jet
 		minOm = 9999;

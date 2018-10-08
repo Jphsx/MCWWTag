@@ -363,10 +363,10 @@ void WWAnalysis::getJetMultiplicities(){
 }
 void WWAnalysis::analyzeLeadingTracks(){
 	ReconstructedParticle* leader;
-	std::vector<ReconstructedParticle> d;
+	std::vector<ReconstructedParticle*> d;
 	std::vector<Track*> dt;
 	double maxPt = -9999;
-    doulbe minOm = 9999;
+    double minOm = 9999;
 	int maxindex= -1;
 	int maxtindex = -1;
 	double om;

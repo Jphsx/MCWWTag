@@ -106,7 +106,7 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 		
 	
 		/* end init histograms */
-	
+		}
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {

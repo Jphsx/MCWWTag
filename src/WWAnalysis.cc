@@ -371,6 +371,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 	const double c = 2.99792458e8; // m*s^-1        
   	const double mm2m = 1e-3;
   	const double eV2GeV = 1e-9;
+    const double BField = marlin::Global::GEAR->getBField().at(gear::Vector3D(0.,0.,0.)).z();
   	const double eB = BField*c*mm2m*eV2GeV;
 
 	for(int i=0; i< _jets.size(); i++){
@@ -410,7 +411,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 			leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/t->getD0();
 		}
 		//reset maxindex and max p new jet
-		maxP = -9999;
+		minOm = 9999;
 		maxindex= -1;
 	}//end jet loop
 

@@ -379,6 +379,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 		for(int j=0; j< d.size(); j++){
 		//	if(d.at(j)->getCharge() !=0){
 				om = d.at(j)->getOmega();
+				std::cout<<"om "<<om<<" "<<fabs(om)<<" "<<minOm<<std::endl;
 			//	std::cout<<" p "<<p<<std::endl;
 				if( fabs(om) < minOm){
 					minOm = fabs(om);
@@ -386,7 +387,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 				}//end max reset
 		//	}//end charge condition
 		}//end jet particles
-		if(maxindex == -1) { continue;} //no tracks in this jet
+		if(maxindex == -1) { std::cout<< "continuing" <<std::endl; continue;} //no tracks in this jet
 		//look at track of this particle
 	    Track* t = d.at(maxindex);
 		std::cout<<"jet "<<i<< std::endl;

@@ -366,9 +366,9 @@ void WWAnalysis::analyzeLeadingTracks(){
 	std::vector<ReconstructedParticle*> d;
 	int maxP = -9999;
 	int maxindex= -1;
-	double* mom;
+	const double* mom;
 	for(int i=0; i< _jets.size(); i++){
-		d = _jets.getParticles();
+		d = _jets.at(i)->getParticles();
 		int p;
 		for(int j=0; j< d.size(); j++){
 			if(d.at(j)->getCharge() !=0){

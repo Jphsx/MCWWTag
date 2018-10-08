@@ -363,10 +363,15 @@ void WWAnalysis::getJetMultiplicities(){
 }
 void WWAnalysis::analyzeLeadingTracks(){
 	ReconstructedParticle* leader;
-	std::vector<Track*> d;
-	double minOm = 9999;
+	std::vector<ReconstructedParticle> d;
+	std::vector<Track*> dt;
+	double maxPt = -9999;
+    doulbe minOm = 9999;
 	int maxindex= -1;
+	int maxtindex = -1;
 	double om;
+	const double* mom;
+	double pt;
 
 	const double c = 2.99792458e8; // m*s^-1        
   	const double mm2m = 1e-3;
@@ -375,21 +380,34 @@ void WWAnalysis::analyzeLeadingTracks(){
   	const double eB = BField*c*mm2m*eV2GeV;
 
 	for(int i=0; i< _jets.size(); i++){
-		d = _jets.at(i)->getTracks();
+		d = _jets.at(i)->getParticles();
 		for(int j=0; j< d.size(); j++){
-		//	if(d.at(j)->getCharge() !=0){
-				om = d.at(j)->getOmega();
-				std::cout<<"om "<<om<<" "<<fabs(om)<<" "<<minOm<<std::endl;
+			if(d.at(j)->getCharge() !=0){
+				mom = d.at(j)->getMomentum();
+				pt = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] );
+			//	std::cout<<"om "<<om<<" "<<fabs(om)<<" "<<minOm<<std::endl;
 			//	std::cout<<" p "<<p<<std::endl;
-				if( fabs(om) < minOm){
-					minOm = fabs(om);
+				if( pt > maxPt){
+					maxPt = pt;
 					maxindex=j;
 				}//end max reset
 		//	}//end charge condition
 		}//end jet particles
+
 		if(maxindex == -1) { std::cout<< "continuing" <<std::endl; continue;} //no tracks in this jet
+
+		//the maxpt track may have more than 1 associated tracks so pick out the one with highest pt
+		dt = d.at(maxindex)->getTracks();
+		for(int j=0; j< dt.size();j++){
+			om = dt.at(j)->getOmega();
+			if(fabs(om) < minOm){
+				minOm = fabs(om);
+				maxtindex=j;
+			}
+
+		}		
 		//look at track of this particle
-	    Track* t = d.at(maxindex);
+	    Track* t = dt.at(maxtindex);
 		std::cout<<"jet "<<i<< std::endl;
 		
 			std::cout<<t->getD0()<<" ";
@@ -414,6 +432,8 @@ void WWAnalysis::analyzeLeadingTracks(){
 		//reset maxindex and max p new jet
 		minOm = 9999;
 		maxindex= -1;
+		maxtindex = -1;
+		maxPt = -9999;
 	}//end jet loop
 
     

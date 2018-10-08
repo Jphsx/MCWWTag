@@ -139,13 +139,13 @@ using namespace lcio;
   int lnmctracks; //true n daughter tracks of lepton
   std::vector<int> jetNparts; //number of particles per any jet
   std::vector<int> jetNtracks; //number of tracks per any jet
-  int leadingptljet; //pt of the leading track in the lepton jet
-  int leadingd0ljet; //d0 of the leading track in the lepton jet
-  int leadingd0relerrljet; //relative error of d0 of leading track in lepton jet
+  double leadingptljet; //pt of the leading track in the lepton jet
+  double leadingd0ljet; //d0 of the leading track in the lepton jet
+  double leadingd0relerrljet; //relative error of d0 of leading track in lepton jet
 
-  int leadingptqjet; //pt of the leading track in a quark jet
-  int leadingd0qjet; //d0 of the leading track in a quark jet
-  int leadingd0relerrqjet; //relative error of d0 of leading track in lepton jet
+  double leadingptqjet; //pt of the leading track in a quark jet
+  double leadingd0qjet; //d0 of the leading track in a quark jet
+  double leadingd0relerrqjet; //relative error of d0 of leading track in lepton jet
 
   int qnparts;
   int qntracks;

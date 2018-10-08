@@ -394,7 +394,7 @@ void WWAnalysis::analyzeLeadingTracks(){
 		} 
 		std::cout<<std::endl;
 
-		if(i == lj_index){
+		if(i == ljet_index){
 			leadingptljet = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] );
 			//use t.at(0) assume there is always one track (not confirmed)
 			leadingd0ljet = t.at(0)->getD0();

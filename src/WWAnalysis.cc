@@ -493,14 +493,14 @@ void WWAnalysis::analyzeLeadingTracks(){
 		std::cout<<std::endl;
     
 		if(i == ljet_index){
-			leadingptljet = eB/fabs(t->getOmega()) ;
+			leadingptljet = maxtP ;
 			leadingd0ljet = t->getD0();
 		//	leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
 			leadingd0relerrljet = fabs(t->getD0())/sqrt(t->getCovMatrix()[0]);
 		}
 		else{
 			//we lazily just examing 1 q jet for now
-			leadingptqjet = eB/fabs(t->getOmega());
+			leadingptqjet = maxtP;
 			leadingd0qjet = t->getD0();
 		//	leadingd0relerrqjet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
 			leadingd0relerrqjet = fabs(t->getD0())/sqrt(t->getCovMatrix()[0]);

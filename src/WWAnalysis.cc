@@ -820,7 +820,23 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//fill base histograms and produce histos with sequential cuts hist0 is always no cuts
 	FillHistos(0);
 	//cut #1 trueq == lq, lepton sign is correctly assessed
-	if(trueq == lq){
+//	if(trueq == lq){
+//		FillHistos(1);
+//	}
+	//cut #1 require polar angle of q's or lepton to be > cos(theta)=0.995
+	bool PolarAngleRequirementMet = true;
+	for(int i=0; i<4; i++){
+		if( abs(_MCfpdg[i]) == 12 || abs(_MCfpdg[i]) == 14 || abs(_MCfpdg[i]) == 16 ){
+		//dont worry about neutrino angle
+			continue;	
+		} 
+		if( _MCf[i].CosTheta() > 0.995 ){
+			//a particle has failed break out
+			PolarAngleRequirementMet = false;
+			break;
+		}
+	}
+	if(PolarAngleRequirementMet){
 		FillHistos(1);
 	}
 

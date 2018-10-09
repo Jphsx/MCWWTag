@@ -6,7 +6,9 @@
 #include "gear/BField.h"
 #include "lcio.h"
 #include "TFile.h"
+#include "TTree.h"
 #include "TH1D.h"
+#include "TString.h"
 #include <vector>
 #include <algorithm>
 #include "TLorentzVector.h"
@@ -71,7 +73,9 @@ using namespace lcio;
 
   //classify the type of lepton decay and retrieve the
   //mcparticles for qqlnu
-  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq);
+//  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq);
+  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLorentzVector* (&_MCf)[4], int (&_MCfpdg)[4]);
+//  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, int (&_MCfpdg)[4]);
 
   //populate local datastructures (TLVS)
   void populateTLVs(int lindex);
@@ -86,6 +90,17 @@ using namespace lcio;
   void FillTauHistos(int histNumber);
 
   protected:
+
+//TTree
+  TTree* _tree;
+  int _nRun;
+  int _nEvt;
+//  float _xsec;
+//  TString *_Process;
+
+  TLorentzVector* _MCf[4];
+  int _MCfpdg[4];
+
 //event number
   int nEvt{};
 
@@ -117,7 +132,6 @@ using namespace lcio;
   int muonqmatch=0;
   int tauqmatch=0;
   
-
   //vector to hold the particles for the event
   std::vector<MCParticle*> _mcpartvec{};
   std::vector<ReconstructedParticle*> _jets{};

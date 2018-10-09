@@ -35,7 +35,12 @@ void WWAnalysis::init() {
   streamlog_out(DEBUG) << "   init called  " << std::endl;
   // usually a good idea to
   printParameters() ;
+
+  _nRun = 0;
+  _nEvt = 0;
+
   nEvt = 0;
+
 	
 	file = new TFile("file.root","RECREATE");
 	double pi = 3.1416;
@@ -50,7 +55,7 @@ void WWAnalysis::init() {
 		//some general plots
 		WmassMuon[i] = new TH1D(("Wmassmuon"+cutnum).c_str(),"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
 		WmassTau[i] = new TH1D(("Wmasstau"+cutnum).c_str(),"W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
-        qqmassMuon[i] = new TH1D(("qqmassmuon"+cutnum).c_str(),"qq Mass, with true #mu",100,50.0,120.0);
+                qqmassMuon[i] = new TH1D(("qqmassmuon"+cutnum).c_str(),"qq Mass, with true #mu",100,50.0,120.0);
 		qqmassTau[i] = new TH1D(("qqmasstau"+cutnum).c_str(),"qq Mass, with true #tau",100,50.0,120.0);
 		WEMuon[i] = new TH1D(("WEmuon"+cutnum).c_str(),"W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
 		WETau[i] = new TH1D(("WEtau"+cutnum).c_str(),"W^{#pm} Energy, with true #tau ",100, 25.0, 300.0 );
@@ -107,6 +112,27 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	
 		/* end init histograms */
 		}
+// TTree similar to ttbar.cc to start with
+
+     _tree = new TTree("tree", "tree");
+     _tree->Branch("runNumber", &_nRun, "runNumber/I");
+     _tree->Branch("eventNumber", &_nEvt, "eventNumber/I");
+//     _tree->Branch("crossSection", &_xsec, "crossSection/F");
+//     _Process = new TString();
+//     _tree->Branch("Process","TString",&_Process,16000,0);
+     _tree->Branch("isMuon", &isMuon, "isMuon/O");
+     _tree->Branch("isTau", &isTau, "isTau/O");
+     _tree->Branch("leptonCharge", &trueq,"leptonCharge/I");
+
+     for(int i = 0 ; i < 4 ; i++)
+       {
+	 _MCf[i] = new TLorentzVector();
+	 std::stringstream name;
+	 name << "MCf" << i;
+	 _tree->Branch(name.str().c_str(),"TLorentzVector",&_MCf[i],16000,0);
+	 name << "_PDG";
+	 _tree->Branch(name.str().c_str(), &_MCfpdg[i], (name.str()+"/I").c_str());
+       }
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {
@@ -437,15 +463,14 @@ void WWAnalysis::analyzeLeadingTracks(){
 		maxtindex = -1;
 		maxPt = -9999;
 	}//end jet loop
-
-    
-
  
 }
 /* classify the the event based on the type of lepton in MCParticle info, also set the true charge for that lepton */
 /* also tallies the number of muon/electron/tau events */
 /* also retrieves the mcparticle which has daughters qqlnu */
-MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
+MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLorentzVector* (&_MCf)[4], int (&_MCfpdg)[4]){
+
+//MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq, int (&_MCfpdg)[4]){
 	
 	for(int i=0; i<_mcpartvec.size(); i++){
 		std::vector<int> parentpdgs{};
@@ -483,7 +508,18 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq){
 			}
 			std::cout<<std::endl;
 
-	
+			for(int j=0; j<daughters.size(); j++){
+				std::cout<<daughters.at(j)->getPDG()<<" " 
+                                                                    << daughters.at(j)->getMomentum()[0] << " "
+                                                                    << daughters.at(j)->getMomentum()[1] << " "
+                                                                    << daughters.at(j)->getMomentum()[2] << " "
+                                                                    << daughters.at(j)->getEnergy() << " " << std::endl;
+                            TLorentzVector mcVec(TVector3(daughters.at(j)->getMomentum()),daughters.at(j)->getEnergy());
+                            *_MCf[j] = mcVec;
+                            _MCfpdg[j] = daughters.at(j)->getPDG();
+			}
+
+
 
  		 	if (std::find(daughterpdgs.begin(),daughterpdgs.end(), 11) != daughterpdgs.end() ||
 				std::find(daughterpdgs.begin(),daughterpdgs.end(), -11) != daughterpdgs.end() ){
@@ -732,6 +768,11 @@ void WWAnalysis::FillTauHistos(int histNumber){
 
 void WWAnalysis::processEvent( LCEvent * evt ) {
 
+  _nEvt++;
+ // Get Process name and cross section
+ //  *_Process = evt->getParameters().getStringVal("Process");
+ // _xsec = evt->getParameters().getFloatVal("CrossSection_fb");
+
  FindMCParticles(evt);
  FindJets(evt);
  std::cout << "======================================== event " << nEvt << std::endl ;
@@ -742,10 +783,10 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	isMuon = false;
 
 	//from the MCParticles find what type of semileptonic decay is present
-    //return the parent mcparticle that has the qqlnu decay
-	parent = classifyEvent(isTau, isMuon, trueq);
+        //return the parent mcparticle that has the qqlnu decay
+//	parent = classifyEvent(isTau, isMuon, trueq, _MCf[0], _MCfpdg[0]);
+	parent = classifyEvent(isTau, isMuon, trueq, _MCf, _MCfpdg);
 
-    
 	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton
 	ljet_index = identifyLeptonJet( _jets );
@@ -758,7 +799,6 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	getJetMultiplicities(); 
 
 	analyzeLeadingTracks();
-   
 
 	//check if the assessed charge matches the true charge of the lepton
 	if( trueq == lq){
@@ -784,7 +824,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 		FillHistos(1);
 	}
 
-
+  _tree->Fill();
 
  nEvt++;
 }

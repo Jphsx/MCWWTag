@@ -830,7 +830,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 		//dont worry about neutrino angle
 			continue;	
 		} 
-		if( _MCf[i]->CosTheta() > 0.995 ){
+		if( fabs(_MCf[i]->CosTheta()) > 0.995 ){
 			//a particle has failed break out
 			PolarAngleRequirementMet = false;
 			break;

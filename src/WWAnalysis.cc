@@ -53,8 +53,8 @@ void WWAnalysis::init() {
 
 		/* init histograms */
 		//some general plots
-		WmassMuon[i] = new TH1D(("Wmassmuon"+cutnum).c_str(),"W^{#pm} Mass, with true #mu",100, 50.0, 120.0 );
-		WmassTau[i] = new TH1D(("Wmasstau"+cutnum).c_str(),"W^{#pm} Mass, with true #tau",100, 50.0, 120.0 );
+		WmassMuon[i] = new TH1D(("Wmassmuon"+cutnum).c_str(),"W^{#pm} Mass from l #nu, with true #mu",100, 50.0, 120.0 );
+		WmassTau[i] = new TH1D(("Wmasstau"+cutnum).c_str(),"W^{#pm} Mass from l #nu, with true #tau",100, 50.0, 120.0 );
                 qqmassMuon[i] = new TH1D(("qqmassmuon"+cutnum).c_str(),"qq Mass, with true #mu",100,50.0,120.0);
 		qqmassTau[i] = new TH1D(("qqmasstau"+cutnum).c_str(),"qq Mass, with true #tau",100,50.0,120.0);
 		WEMuon[i] = new TH1D(("WEmuon"+cutnum).c_str(),"W^{#pm} Energy, with true #mu",100, 25.0, 300.0);
@@ -97,18 +97,19 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 
 		//some jet leading track parameters
 		ljetleadingd0Muon[i] = new TH1D(("ljetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of lepton jet in muon event",50,-0.1,0.1);
-		ljetleadingptMuon[i] = new TH1D(("ljetleadingptMuon"+cutnum).c_str(), "pt of the leading track of lepton jet in muon event", 100,0.0, 200.0);
-		ljetd0relerrMuon[i] = new TH1D(("ljetd0relerrMuon"+cutnum).c_str(),"#delta d0 /d0 of leading track of lepton jet in muon event",20,0.0,1);
+		ljetleadingptMuon[i] = new TH1D(("ljetleadingptMuon"+cutnum).c_str(), "p of the leading track of lepton jet in muon event", 100,0.0, 200.0);
+		ljetd0relerrMuon[i] = new TH1D(("ljetd0relerrMuon"+cutnum).c_str(),"d0/ #delta d0  of leading track of lepton jet in muon event",20,0.0,100);
 		qjetleadingd0Muon[i] = new TH1D(("qjetleadingd0Muon"+cutnum).c_str(), "d0 of the leading track of q jet in muon event",50,-0.1,0.1);
-		qjetleadingptMuon[i] = new TH1D(("qjetleadingptMuon"+cutnum).c_str(), "pt of the leading track of q jet in muon event", 100,0.0, 200.0);
-		qjetd0relerrMuon[i] = new TH1D(("qjetd0relerrMuon"+cutnum).c_str(),"#delta d0 /d0 of leading track of q jet in muon event",100,0.0,1);
+		qjetleadingptMuon[i] = new TH1D(("qjetleadingptMuon"+cutnum).c_str(), "p of the leading track of q jet in muon event", 100,0.0, 200.0);
+		qjetd0relerrMuon[i] = new TH1D(("qjetd0relerrMuon"+cutnum).c_str(),"d0/ #delta d0  of leading track of q jet in muon event",100,0.0,100);
 		ljetleadingd0Tau[i] = new TH1D(("ljetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of lepton jet in Tau event",50,-.1,.1);
-		ljetleadingptTau[i] = new TH1D(("ljetleadingptTau"+cutnum).c_str(), "pt of the leading track of lepton jet in Tau event", 100,0.0, 200.0);
-		ljetd0relerrTau[i] = new TH1D(("ljetd0relerrTau"+cutnum).c_str(),"#delta d0 /d0 of leading track of lepton jet in Tau event",100,0.0,1);
+		ljetleadingptTau[i] = new TH1D(("ljetleadingptTau"+cutnum).c_str(), "p of the leading track of lepton jet in Tau event", 100,0.0, 200.0);
+		ljetd0relerrTau[i] = new TH1D(("ljetd0relerrTau"+cutnum).c_str(),"d0/ #delta d0  of leading track of lepton jet in Tau event",100,0.0,100);
 		qjetleadingd0Tau[i] = new TH1D(("qjetleadingd0Tau"+cutnum).c_str(), "d0 of the leading track of q jet in Tau event",50,-.1,.1);
-		qjetleadingptTau[i] = new TH1D(("qjetleadingptTau"+cutnum).c_str(), "pt of the leading track of q jet in Tau event", 100,0.0, 200.0);
-		qjetd0relerrTau[i] = new TH1D(("qjetd0relerrTau"+cutnum).c_str(),"#delta d0 /d0 of leading track of q jet in Tau event",100,0.0,1);
-		
+		qjetleadingptTau[i] = new TH1D(("qjetleadingptTau"+cutnum).c_str(), "p of the leading track of q jet in Tau event", 100,0.0, 200.0);
+		qjetd0relerrTau[i] = new TH1D(("qjetd0relerrTau"+cutnum).c_str(),"d0/ #delta d0  of leading track of q jet in Tau event",100,0.0,100);
+	
+		psiljetmcl[i] = new TH1D(("psiljetmcl"+cutnum).c_str(),"angle between the lepton jet and the true lepton",100,-1.0,1.0);	
 	
 		/* end init histograms */
 		}
@@ -224,6 +225,35 @@ int WWAnalysis::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
 	return indexofminjet;
 
 }
+int WWAnalysis::identifyLeptonJet_bySeparation(std::vector<ReconstructedParticle*> jets){
+
+	double pi = 3.14159;
+	TVector3 j1(jets.at(0)->getMomentum()[0],jets.at(0)->getMomentum()[1], jets.at(0)->getMomentum()[2]);
+	TVector3 j2(jets.at(1)->getMomentum()[0],jets.at(1)->getMomentum()[1], jets.at(1)->getMomentum()[2]);
+	TVector3 j3(jets.at(2)->getMomentum()[0],jets.at(2)->getMomentum()[1], jets.at(2)->getMomentum()[2]);
+
+        double psi12 = acos(j1.Dot(j2)/ ( j1.Mag() * j2.Mag() ));
+	double psi13 = acos(j1.Dot(j3)/ ( j1.Mag() * j3.Mag() ));
+	double psi23 = acos(j2.Dot(j3)/ ( j2.Mag() * j3.Mag() ));
+
+	if(psi12<0) psi12=psi12+2*pi;
+	if(psi13<0) psi13=psi13+2*pi;
+	if(psi23<0) psi23=psi23+2*pi;
+	
+	std::vector<double> angles{ psi12, psi13, psi23};
+	std::vector<double> excludedjet{ 3, 2, 1 };
+	//what angle is the smallest?
+	double min = 999;
+	int minindex= -1;
+	for(int i=0; i<angles.size(); i++){
+		if(angles.at(i) < min){
+			min = angles.at(i);
+			minindex = i;
+		}
+	}
+	
+	return (excludedjet.at(minindex) -1);
+}
 //TODO vertex fitting for lepton id with tau
 //int WWAnalysis::idljet_vertexfit( std::vec
 /* identifies Lepton jet charge by taking the charge of the leading track from the jet */
@@ -249,6 +279,20 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	//return totalcharge;
 	return leadingcharge;
 
+}
+void WWAnalysis::getAngleOfljetandMCLepton(){
+	TVector3 ljet( _jets.at(ljet_index)->getMomentum()[0], _jets.at(ljet_index)->getMomentum()[1], _jets.at(ljet_index)->getMomentum()[2] ); 
+	
+	int mclindex;
+	for(int i=0; i<4; i++){
+		if( abs(_MCfpdg[i]) == 13 || abs(_MCfpdg[i])== 15){
+			mclindex = i;
+		}
+	}
+	TVector3 mcl( _MCf[mclindex]->Px(), _MCf[mclindex]->Py(), _MCf[mclindex]->Pz() );
+
+	psi_mcl_ljet = ljet.Dot(mcl)/( ljet.Mag() * mcl.Mag());
+	
 }
 bool WWAnalysis::allChildrenAreSimulation(MCParticle* p){
 	std::vector<MCParticle*> d = p->getDaughters();
@@ -393,13 +437,13 @@ void WWAnalysis::analyzeLeadingTracks(){
 	ReconstructedParticle* leader;
 	std::vector<ReconstructedParticle*> d;
 	std::vector<Track*> dt;
-	double maxPt = -9999;
-    double minOm = 9999;
+	double maxP = -9999;
+    double maxtP = -9999;
 	int maxindex= -1;
 	int maxtindex = -1;
-	double om;
+	double tp;
 	const double* mom;
-	double pt;
+	double p;
 
 	const double c = 2.99792458e8; // m*s^-1        
   	const double mm2m = 1e-3;
@@ -412,11 +456,11 @@ void WWAnalysis::analyzeLeadingTracks(){
 		for(int j=0; j< d.size(); j++){
 			if(d.at(j)->getCharge() !=0){
 				mom = d.at(j)->getMomentum();
-				pt = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] );
+				p = std::sqrt( mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
 			//	std::cout<<"om "<<om<<" "<<fabs(om)<<" "<<minOm<<std::endl;
 			//	std::cout<<" p "<<p<<std::endl;
-				if( pt > maxPt){
-					maxPt = pt;
+				if( p > maxP){
+					maxP = p;
 					maxindex=j;
 				}//end max reset
 			}//end charge condition
@@ -427,9 +471,11 @@ void WWAnalysis::analyzeLeadingTracks(){
 		//the maxpt track may have more than 1 associated tracks so pick out the one with highest pt
 		dt = d.at(maxindex)->getTracks();
 		for(int j=0; j< dt.size();j++){
-			om = dt.at(j)->getOmega();
-			if(fabs(om) < minOm){
-				minOm = fabs(om);
+			double p_t = abs(dt.at(j)->getOmega())*eB;
+			double p_z = p_t*dt.at(j)->getTanLambda();
+			tp = std::sqrt(p_t*p_t + p_z*p_z);
+			if(tp > maxtP){
+				maxtP = tp;
 				maxtindex=j;
 			}
 
@@ -449,19 +495,21 @@ void WWAnalysis::analyzeLeadingTracks(){
 		if(i == ljet_index){
 			leadingptljet = eB/fabs(t->getOmega()) ;
 			leadingd0ljet = t->getD0();
-			leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
+		//	leadingd0relerrljet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
+			leadingd0relerrljet = fabs(t->getD0())/sqrt(t->getCovMatrix()[0]);
 		}
 		else{
 			//we lazily just examing 1 q jet for now
 			leadingptqjet = eB/fabs(t->getOmega());
 			leadingd0qjet = t->getD0();
-			leadingd0relerrqjet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
+		//	leadingd0relerrqjet = sqrt(t->getCovMatrix()[0])/fabs(t->getD0());
+			leadingd0relerrqjet = fabs(t->getD0())/sqrt(t->getCovMatrix()[0]);
 		}
 		//reset maxindex and max p new jet
-		minOm = 9999;
+		maxtP = -9999;
 		maxindex= -1;
 		maxtindex = -1;
-		maxPt = -9999;
+		maxP = -9999;
 	}//end jet loop
  
 }
@@ -686,7 +734,7 @@ void WWAnalysis::FillHistos(int histNumber){
 }
 void WWAnalysis::FillMuonHistos(int histNumber){
 
-	WmassMuon[histNumber]->Fill( Wqq->M() );
+//	WmassMuon[histNumber]->Fill( Wqq->M() );
 	WmassMuon[histNumber]->Fill(Wl->M() );
 	qqmassMuon[histNumber]->Fill(Wqq->M() );
 	WEMuon[histNumber]->Fill(Wqq->E() );
@@ -725,10 +773,11 @@ void WWAnalysis::FillMuonHistos(int histNumber){
 	qjetd0relerrMuon[histNumber]->Fill(leadingd0relerrqjet);
 
 
+	 psiljetmcl[histNumber]->Fill(psi_mcl_ljet);
 }
 void WWAnalysis::FillTauHistos(int histNumber){
 
-	WmassTau[histNumber]->Fill( Wqq->M() );
+//	WmassTau[histNumber]->Fill( Wqq->M() );
 	WmassTau[histNumber]->Fill( Wl->M() );
 	qqmassTau[histNumber]->Fill( Wqq->M() );
 	WETau[histNumber]->Fill( Wqq->E() );
@@ -764,6 +813,9 @@ void WWAnalysis::FillTauHistos(int histNumber){
 	qjetleadingd0Tau[histNumber]->Fill(leadingd0qjet);
 	qjetleadingptTau[histNumber]->Fill(leadingptqjet);
 	qjetd0relerrTau[histNumber]->Fill(leadingd0relerrqjet);
+
+	 psiljetmcl[histNumber]->Fill(psi_mcl_ljet);
+
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {
@@ -789,7 +841,11 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton
-	ljet_index = identifyLeptonJet( _jets );
+//	ljet_index = identifyLeptonJet( _jets );
+	//try using the most separated jet as the lepton jet
+	ljet_index = identifyLeptonJet_bySeparation(_jets);
+
+	getAngleOfljetandMCLepton();
 
 	//get the charge of the lepton jet
 	lq = getLeptonJetCharge( _jets.at(ljet_index) );

@@ -63,6 +63,9 @@ using namespace lcio;
 
   // lepton jet functions
   int identifyLeptonJet( std::vector<ReconstructedParticle*> jets);
+  int identifyLeptonJet_bySeparation(std::vector<ReconstructedParticle*> jets);
+  void getAngleOfljetandMCLepton();
+
   int getLeptonJetCharge( ReconstructedParticle* ljet );
 
   //jet analysis helpers
@@ -161,6 +164,8 @@ using namespace lcio;
   double leadingd0qjet; //d0 of the leading track in a quark jet
   double leadingd0relerrqjet; //relative error of d0 of leading track in lepton jet
 
+  double psi_mcl_ljet;
+
   int qnparts;
   int qntracks;
   int qmcparts;
@@ -201,7 +206,7 @@ using namespace lcio;
     TH1D *qjetleadingd0Muon[ncuts+1], *qjetleadingd0Tau[ncuts+1], *qjetleadingptMuon[ncuts+1], *qjetleadingptTau[ncuts+1];
     TH1D *qjetd0relerrMuon[ncuts+1], *qjetd0relerrTau[ncuts+1];
 
-	
+    TH1D *psiljetmcl[ncuts+1];	
  	/* end histograms */
 
 };

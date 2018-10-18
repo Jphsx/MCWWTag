@@ -1,0 +1,20 @@
+scripts and macros
+
+MakeHistograms.sh 
+assumes existence of file_LR.root and file_RL.root containing the TTree from Marlin runs on WW, and 
+makes histograms from those tree variables relating to MC 4-fermion info.
+
+Output histograms are in out_LR.root and out_RL.root.
+
+MakePlots.sh makes plots contrasting LR with RL beam polarizations
+
+MakeFourPlots.sh makes plots contrasting u,d,l,v fermion characteristics.
+
+
+Graham W. Wilson
+
+
+
+
+
+

@@ -13,6 +13,7 @@
 #include <algorithm>
 #include "TLorentzVector.h"
 #include "TVector3.h"
+#include "tauUtils.h"
 
 #include <iostream>
 #include <fstream>

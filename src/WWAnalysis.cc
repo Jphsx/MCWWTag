@@ -635,8 +635,6 @@ MCParticle* WWAnalysis::getMClepton(MCParticle* parent){
 void WWAnalysis::classifyTauDecay(MCParticle* mctau){
 
   int mcdecmode;
-//	std::vector<MCParticle*> temp{};
-//	temp.push_back(mctau);
    mcdecmode = tauUtils::getMCdecayMode( mctau );
    //print decay mode?
 	std::cout<<"Tau decay mode: ";

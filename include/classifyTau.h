@@ -5,6 +5,7 @@
 #include "EVENT/ReconstructedParticle.h"
 #include "TString.h"
 #include <iostream>
+#include <cassert>
 using namespace lcio;
 class classifyTau {
 

@@ -869,8 +869,9 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 
 	//classify tau decay
-	classifyTauDecay(getMClepton(parent));
-
+	if(isTau){
+		classifyTauDecay(getMClepton(parent));
+	}
 	
 	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton

@@ -134,6 +134,8 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	 name << "_PDG";
 	 _tree->Branch(name.str().c_str(), &_MCfpdg[i], (name.str()+"/I").c_str());
        }
+
+	_tree->Branch("tauDecayMode",&tauDecayMode,"tauDecayMode/I");
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {
@@ -639,7 +641,8 @@ void WWAnalysis::classifyTauDecay(MCParticle* mctau){
    //print decay mode?
 	std::cout<<"Tau decay mode: ";
 	std::cout<<classifyTau::getTauDecLab( mcdecmode )<<std::endl;
-		
+	tauDecayMode = mcdecmode;
+
 
 }
 /* populate the tlvs based on the identified lepton jet */

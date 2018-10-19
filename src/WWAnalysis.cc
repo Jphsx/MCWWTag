@@ -614,6 +614,23 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLo
 	return NULL;
 
 }
+/* return the lepton mcparticle */
+MCParticle* WWAnalysis::getMClepton(MCParticle* parent){
+	
+ 	std::vector<MCParticle*> d{};
+	d = parent->getDaughters();
+	int pdg; 
+	int lindex = -1;
+	for(int i=0; i<d.size(); i++){
+		pdg = d.at(i)->getPDG();
+		if( abs(pdg) == 11 || abs(pdg) == 13 || abs(pdg) == 15 ){
+			lindex = i;
+		}
+	}
+	
+	return 	d.at(lindex);
+
+}
 /* classify the tau decay mode using the tau utils */
 void WWAnalysis::classifyTauDecay(MCParticle* mctau){
 
@@ -851,7 +868,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 
 	//classify tau decay
-	classifyTauDecay();
+	classifyTauDecay(getMClepton(parent));
 
 	
 	//now assess jets

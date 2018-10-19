@@ -24,6 +24,6 @@ static int getMCdecayMode( std::vector < EVENT::MCParticle* > mcps );
   static TString getTauDecLab( int code );
 	private:
 
-} 
+} ;
 
 #endif

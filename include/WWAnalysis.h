@@ -67,6 +67,7 @@ using namespace lcio;
   int identifyLeptonJet_bySeparation(std::vector<ReconstructedParticle*> jets);
   void getAngleOfljetandMCLepton();
   void classifyTauDecay(MCParticle* mctau);
+  MCParticle* getMClepton(MCParticle* parent);
 
   int getLeptonJetCharge( ReconstructedParticle* ljet );
 

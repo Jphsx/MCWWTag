@@ -136,6 +136,7 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
        }
 
 	_tree->Branch("tauDecayMode",&tauDecayMode,"tauDecayMode/I");
+	_tree->Branch("tauTrackMult",&lnmctracks,"tauTrackMult/I");
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {

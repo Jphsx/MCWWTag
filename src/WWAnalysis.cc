@@ -614,6 +614,16 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLo
 	return NULL;
 
 }
+/* classify the tau decay mode using the tau utils */
+void WWAnalysis::classifyTauDecay(MCParticle* mctau){
+
+  int mcdecmode;
+   mcdecmode = tauUtils::getMCdecayMode( mctau );
+   //print decay mode?
+	std::cout<<"Tau decay mode: ";
+	std::cout<<tauUtils::getTauDecLab( mcdecmode )<<std::endl;
+
+}
 /* populate the tlvs based on the identified lepton jet */
 void WWAnalysis::populateTLVs(int lindex){
 
@@ -839,6 +849,11 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 //	parent = classifyEvent(isTau, isMuon, trueq, _MCf[0], _MCfpdg[0]);
 	parent = classifyEvent(isTau, isMuon, trueq, _MCf, _MCfpdg);
 
+
+	//classify tau decay
+	classifyTauDecay();
+
+	
 	//now assess jets
 	//keep the index on _jets of the jet we consider to be the lepton
 //	ljet_index = identifyLeptonJet( _jets );

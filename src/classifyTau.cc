@@ -1,6 +1,8 @@
 
 
 #include "classifyTau.h"
+using std::cout;
+using std::endl;
 
 std::vector < MCParticle* > classifyTau::getstablemctauDaughters( MCParticle* mctau ) {
   return getmctauDaughters ( mctau, true );

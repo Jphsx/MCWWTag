@@ -1,0 +1,85 @@
+<!--#############################################################-->
+<!--#                                                           #-->
+<!--#     Example steering file for Marlin                      #-->
+<!--#  reads and writes tracks to/from flat from with lcio      #-->
+<!--#                                                      	#-->
+<!--#                                                           #-->
+<!--#         			                                #--> 
+<!--#                                                           #-->
+<!--#############################################################-->
+
+
+<marlin>
+	<execute>
+	<processor name="MyFastJetProcessor" />
+<!--	<processor name="mytruejet"/> -->
+   	<processor name="MyWWAnalysis"/>
+   <processor name="MyLCIOOutputProcessor"/> 
+ 	</execute>
+
+	<global>
+		<parameter name="LCIOInputFiles"> /pnfs/desy.de/ilc/prod/ilc/mc-opt-3/ild/dst-merged/500-TDR_ws/4f_WW_semileptonic/ILD_l5_o1_v02/v02-00-01/rv02-00-01.sv02-00-01.mILD_l5_o1_v02.E500-TDR_ws.I250018.P4f_ww_sl.eL.pR.n001.d_dstm_10318_0.slcio </parameter>
+<!--		<parameter name="LCIOInputFiles"> /pnfs/desy.de/ilc/prod/ilc/mc-opt-3/ild/dst-merged/500-TDR_ws/4f_WW_semileptonic/ILD_l5_o1_v02/v02-00-01/rv02-00-01.sv02-00-01.mILD_l5_o1_v02.E500-TDR_ws.I250020.P4f_ww_sl.eR.pL.n001.d_dstm_10318_0.slcio </parameter> -->
+   		<parameter name="SkipNEvents" value="0" />
+   		<parameter name="MaxRecordNumber" value="0" /> <!-- 0 is all events -->
+   		<parameter name="SupressCheck" value="false" />
+   		<parameter name="GearXMLFile" value="gear_ILD_l5_v02_dd4hep.xml" />
+   		<parameter name="Verbosity"    options= "DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> DEBUG </parameter>
+ 	</global>
+	
+	  <!-- Jet clustering here -->
+  <processor name="MyFastJetProcessor" type="FastJetProcessor">
+    <!--Using the FastJet library to identify jets-->
+    <!--a list of all reconstructed particles we are searching for jets in.-->
+    <parameter name="recParticleIn" type="string" lcioInType="ReconstructedParticle"> PandoraPFOs </parameter>
+    <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
+    <!-- <parameter name="Verbosity" type="string">DEBUG5 </parameter> -->
+    <!--The identified jets-->
+    <parameter name="jetOut" type="string" lcioOutType="ReconstructedParticle"> FastJets </parameter>
+    <!--Store the list of particles that were clustered into jets in the recParticleOut collection-->
+    <parameter name="storeParticlesInJets" type="bool"> true </parameter>
+    <!--a list of all reconstructed particles used to make jets. If no value specified collection is not created-->
+    <parameter name="recParticleOut" type="string" lcioOutType="ReconstructedParticle"> PFOsFromFastJet </parameter>
+    <!--Selects the algorithm and its parameters. E.g. 'kt_algorithm 0.7' or 'ee_kt_algorithm'. For a full list of supported algorithms, see the logfile after execution.-->
+    <parameter name="algorithm" type="StringVec"> ee_kt_algorithm </parameter>
+    <!--One of 'Inclusive <minPt>', 'InclusiveIterativeNJets <nrJets> <minE>', 'ExclusiveNJets <nrJets>', 'ExclusiveYCut <yCut>'. Note: not all modes are available for all algorithms.-->
+    <parameter name="clusteringMode" type="StringVec"> ExclusiveNJets 3  </parameter>
+    <!--The recombination scheme used when merging 2 particles. Usually there is no need to use anything else than 4-Vector addition: E_scheme-->
+    <parameter name="recombinationScheme" type="string"> E_scheme </parameter>
+  </processor>
+
+  <processor name="mytruejet" type="TrueJet">
+ <!-- These are the defaults, probably exactly what you need. -->
+  	<parameter name="MCParticleCollection" type="string" lcioInType="MCParticle">MCParticle</parameter>
+  	<parameter name="RecoParticleCollection" type="string"  lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
+  	<parameter name="RecoMCTruthLinkName" type="string" lcioInType="LCRelation"> RecoMCTruthLink </parameter>
+  	<parameter name="TrueJets" type="string"  lcioOutType="ReconstructedParticle">TrueJets</parameter>
+  	<parameter name="FinalColourNeutrals" type="string"  lcioOutType="ReconstructedParticle">FinalColourNeutrals</parameter>
+  	<parameter name="InitialColourNeutrals" type="string"  lcioOutType="ReconstructedParticle">InitialColourNeutrals</parameter>
+  	<parameter name="TrueJetPFOLink" type="string" lcioOutType="LCRelation"> TrueJetPFOLink </parameter>
+  	<parameter name="TrueJetMCParticleLink" type="string" lcioOutType="LCRelation">TrueJetMCParticleLink </parameter>
+  	<parameter name="InitialElementonLink" type="string" lcioOutType="LCRelation">InitialElementonLink</parameter>
+  	<parameter name="InitialElementonLink" type="string" lcioOutType="LCRelation">InitialElementonLink</parameter>
+  	<parameter name="InitialColourNeutralLink" type="string" lcioOutType="LCRelation">InitialColourNeutralLink</parameter>
+ 	<parameter name="InitialColourNeutralLink" type="string" lcioOutType="LCRelation">InitialColourNeutralLink</parameter>
+  
+  </processor>
+
+
+	<processor name="MyWWAnalysis" type="WWAnalysis">   
+
+		<!-- input/output collection names -->
+		<parameter name="McParticleCollectionName" value="MCParticle" />
+		<parameter name="InputJetCollectionName" value="FastJets" />
+		
+ 	</processor>
+
+   <processor name="MyLCIOOutputProcessor" type="LCIOOutputProcessor">
+                <!--   standard output: full reconstruction keep all collections -->
+                <parameter name="LCIOOutputFile" type="string" > ./jets.slcio </parameter>
+                <parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
+                <parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit Cluster SimTrackerHit TrackerHitPlane TrackerHit Vertex  </parameter> 
+    </processor>
+
+
+</marlin>

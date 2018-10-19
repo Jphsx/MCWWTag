@@ -1,6 +1,6 @@
 #ifndef _TAUDECAY_
 #define _TAUDECAY_
-
+#include "lcio.h"
 #include "EVENT/MCParticle.h"
 #include "EVENT/ReconstructedParticle.h"
 #include "TString.h"

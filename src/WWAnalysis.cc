@@ -28,6 +28,18 @@ WWAnalysis::WWAnalysis() : Processor("WWAnalysis") {
 			     	_inputJetCollectionName,
 			      	inputJetCollectionName);
 
+	//parameters for running in backgrounds: #fermions, # leptons
+	registerProcessorParameter("NFermions",
+								"number of fermions in event",
+								_nfermions,
+								(int)4);
+
+	registerProcessorParameter("Nleptons",
+								"number of leptons in event",
+								_nleptons,
+								(int) 2);
+   
+
 }
 
 void WWAnalysis::init() {
@@ -139,11 +151,18 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	_tree->Branch("lepTrackMult",&lnmctracks,"lepTrackMult/I");
 	_tree->Branch("lepPFOMult",&lnmcparts,"lepPFOMult/I");
 
+	
+
      
 	//variables from daniels code
 	_tree->Branch("tauDaughters",&taudaughters,"tauDaughters/I");
 	_tree->Branch("tauChargedDaughters",&tauChargedDaughters,"tauChargedDaughters/I");
     _tree->Branch("tauNeutralDaughters",&tauNeutrals,"tauNeutralDaughters/I");
+
+	//jet vars
+	_tree->Branch("nJets",&_nJets, "nJets/i");
+     _tree->Branch("yMinus",&_yMinus, "yMinus/F");
+     _tree->Branch("yPlus",&_yPlus, "yPlus/F");
 
 }
 
@@ -218,6 +237,14 @@ bool WWAnalysis::FindJets( LCEvent* evt ) {
 
    
 	return collectionFound;
+}
+/* Evaluates jet collection variables for the TTree */
+void WWAnalysis::EvaluateJetVariables( LCEvent* evt, std::vector<ReconstructedParticle*> jets, unsigned int& nJets, float& yMinus, float& yPlus){
+        nJets = _jets.size();
+        yMinus = evt->getCollection(_inputJetCollectionName)->getParameters().getFloatVal( "y_{n-1,n}" );
+        yPlus  = evt->getCollection(_inputJetCollectionName)->getParameters().getFloatVal( "y_{n,n+1}" );
+//        yMinus = 0.0f;
+//        yPlus  = 0.0f;
 }
 /* identifies the lepton jet with the minimum particle multiplicity */
 int WWAnalysis::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
@@ -294,17 +321,22 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 void WWAnalysis::getAngleOfljetandMCLepton(){
 	TVector3 ljet( _jets.at(ljet_index)->getMomentum()[0], _jets.at(ljet_index)->getMomentum()[1], _jets.at(ljet_index)->getMomentum()[2] ); 
 	
-	int mclindex;
+	int mclindex = -1;
 	for(int i=0; i<4; i++){
 		if( abs(_MCfpdg[i]) == 13 || abs(_MCfpdg[i])== 15){
 			mclindex = i;
 		}
 	}
-	TVector3 mcl( _MCf[mclindex]->Px(), _MCf[mclindex]->Py(), _MCf[mclindex]->Pz() );
-
-	psi_mcl_ljet = ljet.Dot(mcl)/( ljet.Mag() * mcl.Mag());
+	 if(mclindex!=-1){
+           TVector3 mcl( _MCf[mclindex]->Px(), _MCf[mclindex]->Py(), _MCf[mclindex]->Pz() );
+	   psi_mcl_ljet = ljet.Dot(mcl)/( ljet.Mag() * mcl.Mag());
+        }
+        else{
+           psi_mcl_ljet = -1.0;    // Set default value of -1 if no muon or tau found
+        }
 	
 }
+
 bool WWAnalysis::allChildrenAreSimulation(MCParticle* p){
 	std::vector<MCParticle*> d = p->getDaughters();
 	bool flag = true;
@@ -625,6 +657,63 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLo
 	return NULL;
 
 }
+/* deal with 2f backgrounds */
+MCParticle* WWAnalysis::classifyEvent2fermion( TLorentzVector* (&_MCf)[nferm], int (&_MCfpdg)[nferm]){
+	
+	for(int i=0; i<_mcpartvec.size(); i++){
+		std::vector<int> parentpdgs{};
+		std::vector<int> daughterpdgs{};
+		std::vector<MCParticle*> mcparents{};
+		std::vector<MCParticle*> daughters{};
+		daughters = _mcpartvec.at(i)->getDaughters();
+		for(int j = 0; j<daughters.size(); j++){
+			daughterpdgs.push_back(daughters.at(j)->getPDG());
+			
+		}
+		//allowed quarks
+		std::vector<int> quarks{ 1, 2, 3, 4, 5, -1, -2, -3, -4, -5};
+		std::vector<int> leptons{11, 12, 13, 14, 15, 16, -11, -12, -13, -14, -15, -16};
+		//we require exactly 2 elements from leptons and 2 from quarks
+		int lep=0;
+		int qrk=0;
+
+		//categorize the event for plotting
+		for(int k=0; k<quarks.size(); k++){
+			qrk += std::count(daughterpdgs.begin(),daughterpdgs.end(),quarks.at(k));
+		}
+		for(int k=0; k<leptons.size(); k++){
+			lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
+		}
+
+		if( (qrk+lep) == 2 ){
+			//found the proper set 
+			for(int j=0; j<parentpdgs.size(); j++){
+				std::cout<<parentpdgs.at(j)<<" ";
+			}
+			std::cout<< " -> "<<_mcpartvec.at(i)->getPDG()<<" -> ";
+			for(int j=0; j<daughters.size(); j++){
+				std::cout<<daughters.at(j)->getPDG()<<" ";
+			}
+			std::cout<<std::endl;
+
+			for(int j=0; j<daughters.size(); j++){
+				std::cout<<daughters.at(j)->getPDG()<<" " 
+                                                                    << daughters.at(j)->getMomentum()[0] << " "
+                                                                    << daughters.at(j)->getMomentum()[1] << " "
+                                                                    << daughters.at(j)->getMomentum()[2] << " "
+                                                                    << daughters.at(j)->getEnergy() << " " << std::endl;
+                            TLorentzVector mcVec(TVector3(daughters.at(j)->getMomentum()),daughters.at(j)->getEnergy());
+                            *_MCf[j] = mcVec;
+                            _MCfpdg[j] = daughters.at(j)->getPDG();
+			}
+			return mcpartvec.at(i);
+		}
+		
+	}
+	return NULL:
+
+
+}
 /* return the lepton mcparticle */
 MCParticle* WWAnalysis::getMClepton(MCParticle* parent){
 	
@@ -880,6 +969,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
  FindMCParticles(evt);
  FindJets(evt);
+ EvaluateJetVariables(evt, _jets, _nJets, _yMinus, _yPlus);
  std::cout << "======================================== event " << nEvt << std::endl ;
 
 
@@ -890,8 +980,13 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//from the MCParticles find what type of semileptonic decay is present
         //return the parent mcparticle that has the qqlnu decay
 //	parent = classifyEvent(isTau, isMuon, trueq, _MCf[0], _MCfpdg[0]);
-	parent = classifyEvent(isTau, isMuon, trueq, _MCf, _MCfpdg);
-
+	//separate signal and bg
+	if(_nfermions == 4){
+		parent = classifyEvent(isTau, isMuon, trueq, _MCf, _MCfpdg);
+	}
+	if(_fermions == 2 ){
+		parent = classifyEvent2fermion( _MCf, _MCfpdg );
+	}
 
 	//classify tau decay
 	if(isTau){

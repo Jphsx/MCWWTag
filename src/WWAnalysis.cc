@@ -143,6 +143,7 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	//variables from daniels code
 	_tree->Branch("tauDaughters",&taudaughters,"tauDaughters/I");
 	_tree->Branch("tauChargedDaughters",&tauChargedDaughters,"tauChargedDaughters/I");
+    _tree->Branch("tauNeutralDaughters",&tauNeutrals,"tauNeutralDaughters/I");
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {
@@ -660,6 +661,8 @@ void WWAnalysis::classifyTauDecay(MCParticle* mctau){
 		}
 	}
 	tauChargedDaughters = countcharge;
+
+	tauNeutrals = tauDaughters - tauChargedDaughters;
 
 
 }

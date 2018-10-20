@@ -1035,7 +1035,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 //	}
 	//cut #1 require polar angle of q's or lepton to be > cos(theta)=0.995
 	bool PolarAngleRequirementMet = true;
-	for(int i=0; i<4; i++){
+	for(int i=0; i<_nfermions; i++){
 		if( abs(_MCfpdg[i]) == 12 || abs(_MCfpdg[i]) == 14 || abs(_MCfpdg[i]) == 16 ){
 		//dont worry about neutrino angle
 			continue;	

@@ -692,9 +692,9 @@ MCParticle* WWAnalysis::classifyEvent2fermion( TLorentzVector* (&_MCf)[nferm], i
 		for(int k=0; k<quarks.size(); k++){
 			qrk += std::count(daughterpdgs.begin(),daughterpdgs.end(),quarks.at(k));
 		}
-		for(int k=0; k<leptons.size(); k++){
-			lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
-		}
+		//for(int k=0; k<leptons.size(); k++){
+		//	lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
+		//}
 
 		if( (qrk+lep) == 2 ){
 			//found the proper set 

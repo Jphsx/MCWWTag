@@ -137,6 +137,12 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 
 	_tree->Branch("tauDecayMode",&tauDecayMode,"tauDecayMode/I");
 	_tree->Branch("lepTrackMult",&lnmctracks,"lepTrackMult/I");
+	_tree->Branch("lepPFOMult",&lnmcparts,"lepPFOMult/I");
+
+     
+	//variables from daniels code
+	_tree->Branch("tauDaughters",&taudaughters,"tauDaughters/I");
+	_tree->Branch("tauChargedDaughters",&tauChargedDaughters,"tauChargedDaughters/I");
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {
@@ -643,6 +649,17 @@ void WWAnalysis::classifyTauDecay(MCParticle* mctau){
 	std::cout<<"Tau decay mode: ";
 	std::cout<<classifyTau::getTauDecLab( mcdecmode )<<std::endl;
 	tauDecayMode = mcdecmode;
+
+
+	int countcharge=0;
+	std::vector<MCParticle*> d = classifyTau::getstablemctauDaughters( mctau );
+	taudaughters = d.size();
+	for(unsigned int =0; i<d.size(); i++){
+		if(d.at(i)->getCharge() != 0){
+			countcharge++;
+		}
+	}
+	tauChargedDaughters = countcharge;
 
 
 }

@@ -119,8 +119,10 @@ using namespace lcio;
  //the true lepton charge
   int trueq;
 
- //tau decay mode
+ //tau decay mode daniels code variables
   int tauDecayMode=-1;
+  int taudaughters=-1;
+  int tauChargedDaughters=-1;
 
 //Lepton Jet variables
  //index of the identified lepton on jet vector

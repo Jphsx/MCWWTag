@@ -123,6 +123,7 @@ using namespace lcio;
   int tauDecayMode=-1;
   int taudaughters=-1;
   int tauChargedDaughters=-1;
+  int tauNeutrals = -1;
 
 //Lepton Jet variables
  //index of the identified lepton on jet vector

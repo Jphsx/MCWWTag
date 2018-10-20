@@ -144,6 +144,7 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	_tree->Branch("tauDaughters",&taudaughters,"tauDaughters/I");
 	_tree->Branch("tauChargedDaughters",&tauChargedDaughters,"tauChargedDaughters/I");
     _tree->Branch("tauNeutralDaughters",&tauNeutrals,"tauNeutralDaughters/I");
+
 }
 
 void WWAnalysis::processRunHeader( LCRunHeader* run) {

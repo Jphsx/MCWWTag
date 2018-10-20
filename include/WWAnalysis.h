@@ -121,7 +121,7 @@ using namespace lcio;
   bool isTau;
   bool isMuon;
  //the true lepton charge
-  int trueq;
+  int trueq=-3;
 
  //tau decay mode daniels code variables
   int tauDecayMode=-1;

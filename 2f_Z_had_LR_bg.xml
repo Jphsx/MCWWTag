@@ -71,7 +71,7 @@
 		<parameter name="McParticleCollectionName" value="MCParticle" />
 		<parameter name="InputJetCollectionName" value="FastJets" />
 		<parameter name="NFermions" value="2" />
-		<parameter name="Nlepton" value="0" />
+		<parameter name="Nleptons" value="0" />
 		
  	</processor>
 

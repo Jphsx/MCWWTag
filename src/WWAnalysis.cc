@@ -672,7 +672,7 @@ MCParticle* WWAnalysis::classifyEvent2fermion( TLorentzVector* (&_MCf)[nferm], i
 		}
 		//allowed quarks
 		std::vector<int> quarks{ 1, 2, 3, 4, 5, -1, -2, -3, -4, -5};
-		std::vector<int> leptons{11, 12, 13, 14, 15, 16, -11, -12, -13, -14, -15, -16};
+	//	std::vector<int> leptons{11, 12, 13, 14, 15, 16, -11, -12, -13, -14, -15, -16};
 		//we require exactly 2 elements from leptons and 2 from quarks
 		int lep=0;
 		int qrk=0;

@@ -1012,6 +1012,9 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	ljet_index = identifyLeptonJet_bySeparation(_jets);
 
 	std::cout<<"hi"<<std::endl;
+	std::cout<<"print ljet index"<<std::endl;
+	std::cout<<ljet_index<<std::endl;
+	std::cout<<"hi"<<std::endl;
 	getAngleOfljetandMCLepton();
 
 	std::cout<<"hi"<<std::endl;

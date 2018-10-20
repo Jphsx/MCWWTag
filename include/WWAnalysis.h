@@ -83,6 +83,7 @@ using namespace lcio;
   //mcparticles for qqlnu
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq);
   MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLorentzVector* (&_MCf)[nferm], int (&_MCfpdg)[nferm]);
+  MCParticle* classifyEvent2fermion( TLorentzVector* (&_MCf)[nferm], int (&_MCfpdg)[nferm]);
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, int (&_MCfpdg)[4]);
 
   //populate local datastructures (TLVS)

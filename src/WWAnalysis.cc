@@ -599,7 +599,7 @@ MCParticle* WWAnalysis::classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLo
 			lep += std::count(daughterpdgs.begin(),daughterpdgs.end(),leptons.at(k));
 		}
 
-		if( qrk == (_nfermion-_nlepton) && lep == _nlepton){
+		if( qrk == (_nfermions-_nleptons) && lep == _nleptons){
 			//found the proper set 
 			for(int j=0; j<parentpdgs.size(); j++){
 				std::cout<<parentpdgs.at(j)<<" ";

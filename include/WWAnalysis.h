@@ -20,7 +20,7 @@
 
 #define ncuts 1 
 //if we change nferm we need to recompile and also change _nfermion and _nleptons in xml
-#define nferm 4
+#define nferm 2
 
 using namespace lcio;
 

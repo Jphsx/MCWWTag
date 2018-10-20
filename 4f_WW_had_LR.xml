@@ -70,6 +70,8 @@
 		<!-- input/output collection names -->
 		<parameter name="McParticleCollectionName" value="MCParticle" />
 		<parameter name="InputJetCollectionName" value="FastJets" />
+		<parameter name="NFermions" value="4" />
+		<parameter name="Nlepton" value="0" />
 		
  	</processor>
 

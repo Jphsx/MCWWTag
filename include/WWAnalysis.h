@@ -18,7 +18,8 @@
 #include <iostream>
 #include <fstream>
 
-#define ncuts 1
+#define ncuts 1 
+#define nferm 4
 
 using namespace lcio;
 
@@ -76,11 +77,12 @@ using namespace lcio;
   void exploreDaughterParticles(MCParticle* p, std::vector<MCParticle*>& FSP);
   bool allChildrenAreSimulation(MCParticle* p);
   void analyzeLeadingTracks();
+  void EvaluateJetVariables( LCEvent* evt, std::vector<ReconstructedParticle*> jets, unsigned int& nJets, float& yMinus, float& yPlus); 
 
   //classify the type of lepton decay and retrieve the
   //mcparticles for qqlnu
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq);
-  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLorentzVector* (&_MCf)[4], int (&_MCfpdg)[4]);
+  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLorentzVector* (&_MCf)[nferm], int (&_MCfpdg)[nferm]);
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, int (&_MCfpdg)[4]);
 
   //populate local datastructures (TLVS)
@@ -169,9 +171,15 @@ using namespace lcio;
   double leadingd0ljet; //d0 of the leading track in the lepton jet
   double leadingd0relerrljet; //relative error of d0 of leading track in lepton jet
 
+
   double leadingptqjet; //pt of the leading track in a quark jet
   double leadingd0qjet; //d0 of the leading track in a quark jet
   double leadingd0relerrqjet; //relative error of d0 of leading track in lepton jet
+
+	//jet y variabls
+  unsigned int _nJets;
+  float _yMinus;
+  float _yPlus;
 
   //opening angle between the lepton jet and mc lepton
   double psi_mcl_ljet;
@@ -185,6 +193,10 @@ using namespace lcio;
 
 
 	int   _printing{};
+
+	//input background//number of fermions or leptons
+	int _nfermions{};
+	int _nleptons{};
 
   //input collections
   std::string _inputMcParticleCollectionName{};

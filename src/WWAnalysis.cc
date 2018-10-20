@@ -654,7 +654,7 @@ void WWAnalysis::classifyTauDecay(MCParticle* mctau){
 	int countcharge=0;
 	std::vector<MCParticle*> d = classifyTau::getstablemctauDaughters( mctau );
 	taudaughters = d.size();
-	for(unsigned int =0; i<d.size(); i++){
+	for(unsigned int i =0; i<d.size(); i++){
 		if(d.at(i)->getCharge() != 0){
 			countcharge++;
 		}

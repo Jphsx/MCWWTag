@@ -706,11 +706,11 @@ MCParticle* WWAnalysis::classifyEvent2fermion( TLorentzVector* (&_MCf)[nferm], i
                             *_MCf[j] = mcVec;
                             _MCfpdg[j] = daughters.at(j)->getPDG();
 			}
-			return mcpartvec.at(i);
+			return _mcpartvec.at(i);
 		}
 		
 	}
-	return NULL:
+	return NULL;
 
 
 }
@@ -984,7 +984,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	if(_nfermions == 4){
 		parent = classifyEvent(isTau, isMuon, trueq, _MCf, _MCfpdg);
 	}
-	if(_fermions == 2 ){
+	if(_nfermions == 2 ){
 		parent = classifyEvent2fermion( _MCf, _MCfpdg );
 	}
 

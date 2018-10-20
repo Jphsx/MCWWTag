@@ -137,7 +137,7 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
      _tree->Branch("isTau", &isTau, "isTau/O");
      _tree->Branch("leptonCharge", &trueq,"leptonCharge/I");
 
-     for(int i = 0 ; i < 4 ; i++)
+     for(int i = 0 ; i < nferm ; i++)
        {
 	 _MCf[i] = new TLorentzVector();
 	 std::stringstream name;

@@ -304,7 +304,7 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 	for(int i=0; i<jetparts.size(); i++){
 		//method 1
 		totalcharge += jetparts.at(i)->getCharge();
-
+		if(jetparts.at(i)->getCharge() != 0){
 		//method 2
 		const double* p = jetparts.at(i)->getMomentum();
 		double P = std::sqrt( p[0]*p[0] + p[1]*p[1] + p[2]*p[2] );
@@ -312,6 +312,7 @@ int WWAnalysis::getLeptonJetCharge( ReconstructedParticle* ljet ){
 			maxP = P;
 			leadingcharge = jetparts.at(i)->getCharge(); 
 		}
+		}//end req charge particle
 	}
 
 	//return totalcharge;
@@ -999,17 +1000,22 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//try using the most separated jet as the lepton jet
 	ljet_index = identifyLeptonJet_bySeparation(_jets);
 
+	std::cout<<"hi"<<std::endl;
 	getAngleOfljetandMCLepton();
 
+	std::cout<<"hi"<<std::endl;
 	//get the charge of the lepton jet
 	lq = getLeptonJetCharge( _jets.at(ljet_index) );
 
+	std::cout<<"hi"<<std::endl;
 	//assess jet multiplicity
 	//fill variables pertaining to leptonic jet numbers of particles
 	getJetMultiplicities(); 
 
+	std::cout<<"hi"<<std::endl;
 	analyzeLeadingTracks();
 
+	std::cout<<"hi"<<std::endl;
 	//check if the assessed charge matches the true charge of the lepton
 	if( trueq == lq){
 		std::cout<<" got correct lepton charge "<<std::endl;
@@ -1021,6 +1027,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 		std::cout<<" charge wrong "<<std::endl;
 	}
 
+	std::cout<<"hi"<<std::endl;
 	//build up all the different tlvs for calculation
   	populateTLVs(ljet_index);
 

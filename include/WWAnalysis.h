@@ -106,8 +106,8 @@ using namespace lcio;
 //  float _xsec;
 //  TString *_Process;
 
-  TLorentzVector* _MCf[4];
-  int _MCfpdg[4];
+  TLorentzVector* _MCf[nferm];
+  int _MCfpdg[nferm];
 
 //event number
   int nEvt{};

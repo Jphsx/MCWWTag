@@ -663,7 +663,7 @@ void WWAnalysis::classifyTauDecay(MCParticle* mctau){
 	}
 	tauChargedDaughters = countcharge;
 
-	tauNeutrals = tauDaughters - tauChargedDaughters;
+	tauNeutrals = taudaughters - tauChargedDaughters;
 
 
 }

@@ -1212,12 +1212,12 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 		if( totaltracks > 10 ){
 			FillHistos(2);
 			if( total_Pt > 7.0 ){
-				FillHisto(3);
+				FillHistos(3);
 				if( total_M	> 80.0 && total_M < 500.0 ){
 					FillHistos(4);
 					if(_yMinus > -9.5 ){
 						FillHistos(5);
-						if(_yPlus>-12 && _yplus< -2.9){
+						if(_yPlus>-12 && _yPlus< -2.9){
 							FillHistos(6);
 
 								if(trueq == lq){

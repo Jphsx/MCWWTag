@@ -247,11 +247,10 @@ using namespace lcio;
     TH1D *ljetd0relerrMuon[ncuts+1], *ljetd0relerrTau[ncuts+1]; 
     TH1D *qjetleadingd0Muon[ncuts+1], *qjetleadingd0Tau[ncuts+1], *qjetleadingptMuon[ncuts+1], *qjetleadingptTau[ncuts+1];
     TH1D *qjetd0relerrMuon[ncuts+1], *qjetd0relerrTau[ncuts+1];
-
-   // TH1D *psiljetmcl[ncuts+1];	
+	
 	    TH1D *psiljetmclMuon[ncuts+1], *psiljetmclTau[ncuts+1];
 
-
+   
 	TH1D* htotaltracks;
 	TH1D* htotalPt;
 	TH1D* htotalE;

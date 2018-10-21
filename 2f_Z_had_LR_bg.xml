@@ -76,7 +76,7 @@
 		<parameter name="InputJetCollectionName" value="FastJets" />
 		<parameter name="NFermions" value="2" />
 		<parameter name="Nleptons" value="0" />
-		<parameter name="Normalization" value="1.06611" />
+		<parameter name="Normalization" value="1.06611" />  
 		
  	</processor>
 

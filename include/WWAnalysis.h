@@ -103,6 +103,7 @@ using namespace lcio;
   void FillHistos(int histNumber);
   void FillMuonHistos(int histNumber);
   void FillTauHistos(int histNumber);
+  void fillEventSelectionHistos(double w){
 
   protected:
 

@@ -1096,6 +1096,7 @@ void WWAnalysis::fillEventSelectionHistos(double w){
 	htotalM->Fill( total_M ,w);
 	hym->Fill( _yMinus ,w);
 	hyp->Fill( _yPlus ,w);
+
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {
@@ -1112,6 +1113,8 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
  FindTracks(evt);
  FindPFOs(evt);
 	EvaluateEventSelectionVariables(totaltracks,total_Pt,total_E,total_M);
+
+	fillEventSelectionHistos(weight);
 
  std::cout << "======================================== event " << nEvt << std::endl ;
 
@@ -1142,25 +1145,22 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//try using the most separated jet as the lepton jet
 	ljet_index = identifyLeptonJet_bySeparation(_jets);
 
-	std::cout<<"hi"<<std::endl;
-	std::cout<<"print ljet index"<<std::endl;
-	std::cout<<ljet_index<<std::endl;
-	std::cout<<"hi"<<std::endl;
+	
 	getAngleOfljetandMCLepton();
 
-	std::cout<<"hi"<<std::endl;
+
 	//get the charge of the lepton jet
 	lq = getLeptonJetCharge( _jets.at(ljet_index) );
 
-	std::cout<<"hi"<<std::endl;
+
 	//assess jet multiplicity
 	//fill variables pertaining to leptonic jet numbers of particles
 	getJetMultiplicities(); 
 
-	std::cout<<"hi"<<std::endl;
+
 	analyzeLeadingTracks();
 
-	std::cout<<"hi"<<std::endl;
+
 	//check if the assessed charge matches the true charge of the lepton
 	if( trueq == lq){
 		std::cout<<" got correct lepton charge "<<std::endl;

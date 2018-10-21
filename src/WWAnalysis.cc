@@ -350,8 +350,8 @@ bool WWAnalysis::FindJets( LCEvent* evt ) {
 /* Evaluates jet collection variables for the TTree */
 void WWAnalysis::EvaluateJetVariables( LCEvent* evt, std::vector<ReconstructedParticle*> jets, unsigned int& nJets, float& yMinus, float& yPlus){
         nJets = _jets.size();
-        yMinus = log( evt->getCollection(_inputJetCollectionName)->getParameters().getFloatVal( "y_{n-1,n}" ));
-        yPlus  = log(evt->getCollection(_inputJetCollectionName)->getParameters().getFloatVal( "y_{n,n+1}" ));
+        yMinus = std::log( evt->getCollection(_inputJetCollectionName)->getParameters().getFloatVal( "y_{n-1,n}" ));
+        yPlus  = std::log(evt->getCollection(_inputJetCollectionName)->getParameters().getFloatVal( "y_{n,n+1}" ));
 //        yMinus = 0.0f;
 //        yPlus  = 0.0f;
 }

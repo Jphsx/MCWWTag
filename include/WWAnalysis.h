@@ -103,6 +103,7 @@ using namespace lcio;
   void FillHistos(int histNumber);
   void FillMuonHistos(int histNumber);
   void FillTauHistos(int histNumber);
+  void fillEventSelectionHistos(double w);
 
   protected:
 
@@ -201,6 +202,8 @@ using namespace lcio;
   int qmctracks;
 
 	//event selection variables
+	//EVENT SELECTION WEIGHT
+	double weight{};//defined in xml
 	int totaltracks{};
 		//total 4 vector sum variables
 	double total_Pt{};
@@ -247,7 +250,17 @@ using namespace lcio;
     TH1D *qjetleadingd0Muon[ncuts+1], *qjetleadingd0Tau[ncuts+1], *qjetleadingptMuon[ncuts+1], *qjetleadingptTau[ncuts+1];
     TH1D *qjetd0relerrMuon[ncuts+1], *qjetd0relerrTau[ncuts+1];
 
-    TH1D *psiljetmclMuon[ncuts+1], *psiljetmclTau[ncuts+1];	
+
+    TH1D *psiljetmclMuon[ncuts+1], *psiljetmclTau[ncuts+1];
+
+
+	TH1D* htotaltracks;
+	TH1D* htotalPt;
+	TH1D* htotalE;
+	TH1D* htotalM;
+	TH1D* hym;
+	TH1D* hyp;
+
  	/* end histograms */
 
-};
+

@@ -341,7 +341,7 @@ void WWAnalysis::EvaluateJetVariables( LCEvent* evt, std::vector<ReconstructedPa
 //        yPlus  = 0.0f;
 }
 //count tracks and calculate four vector stuff
-void WWAnalysis::EvaluateEventSelectionVariables(int& _totaltracks,int& _total_Pt,int& _total_E, int& _total_M){
+void WWAnalysis::EvaluateEventSelectionVariables(int& _totaltracks,double& _total_Pt,double& _total_E, double& _total_M){
 	
 	_totaltracks = _trackvec.size();
 	TLorentzVector v;

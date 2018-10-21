@@ -151,8 +151,8 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	htotalPt = new TH1D("htotalPt","total pt;P_{t} [GeV]; Events Per Bin",100,0,100);
 	htotalE = new TH1D("htotalE","Total Visible Energy; Energy [GeV]; Events Per Bin",100,0,650);	
 	htotalM = new TH1D("htotalM","Total Mass; Mass [GeV]; Events Per Bin",100,0,650);
-	hym = new TH1D("htotalym","y-;log y-;Events Per Bin",100,0,1.5);
-	hyp = new TH1D("hyp","y+;log y+; Events Per Bin",100,0,0.015);
+	hym = new TH1D("htotalym","y-;log y-;Events Per Bin",100,-15.0,0);
+	hyp = new TH1D("hyp","y+;log y+; Events Per Bin",100,-15,0);
 
 
 // TTree similar to ttbar.cc to start with

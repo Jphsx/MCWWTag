@@ -250,6 +250,9 @@ using namespace lcio;
 	
 	    TH1D *psiljetmclMuon[ncuts+1], *psiljetmclTau[ncuts+1];
 
+	int ljetmatchmctau;
+	int ljetmatchmcmuon;
+
      
 	TH1D* htotaltracks;
 	TH1D* htotalPt;

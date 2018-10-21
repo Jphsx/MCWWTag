@@ -64,7 +64,7 @@
   
   </processor>
 
-   
+    
 	<processor name="MyWWAnalysis" type="WWAnalysis">   
 
 		<!-- input/output collection names -->

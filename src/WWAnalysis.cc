@@ -1213,12 +1213,14 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 			FillHistos(2);
 			if( total_Pt > 7.0 ){
 				FillHistos(3);
-				if( total_M	> 80.0 && total_M < 500.0 ){
+				if(total_E < 500.0){
 					FillHistos(4);
+				if( total_M	> 80.0 && total_M < 500.0 ){
+					FillHistos(5);
 					if(_yMinus > -9.5 ){
-						FillHistos(5);
+						FillHistos(6);
 						if(_yPlus>-12 && _yPlus< -2.9){
-							FillHistos(6);
+							FillHistos(7);
 
 								if(trueq == lq){
 			std::cout<<"got correct charge"<<std::endl;
@@ -1238,7 +1240,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 			
 				}
 					
-			}
+			} }
 				
 		}
 	} 

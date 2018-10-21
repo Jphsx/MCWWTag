@@ -140,7 +140,8 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 		qjetleadingptTau[i] = new TH1D(("qjetleadingptTau"+cutnum).c_str(), "p of the leading track of q jet in Tau event", 100,0.0, 200.0);
 		qjetd0relerrTau[i] = new TH1D(("qjetd0relerrTau"+cutnum).c_str(),"d0/ #delta d0  of leading track of q jet in Tau event",100,0.0,100);
 	
-		psiljetmcl[i] = new TH1D(("psiljetmcl"+cutnum).c_str(),"angle between the lepton jet and the true lepton",100,-1.0,1.0);	
+		psiljetmclMuon[i]= new TH1D(("psiljetmclMuon"+cutnum).c_str(),"angle between the lepton jet and the true lepton muon",100,-1.0,1.0);
+		psiljetmclTau[i]= new TH1D(("psiljetmclTau"+cutnum).c_str(),"angle between the lepton jet and the true lepton muon",100,-1.0,1.0);	
 	
 		/* end init histograms */
 		}
@@ -1212,7 +1213,7 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 			std::cout<<"jet loose match"<<std::endl;
 			if(isTau) ljetmatchmctau++;
 			if(isMuon) ljetmatchmcmuon++;
-
+		}
 	}
 
   _tree->Fill();

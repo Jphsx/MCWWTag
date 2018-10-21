@@ -62,6 +62,8 @@ using namespace lcio;
  //collection gathering
   bool FindMCParticles( LCEvent* evt );
   bool FindJets( LCEvent* evt ) ;
+  bool FindPFOs( LCEvent* evt ) ;
+  bool FindTracks( LCEvent* evt );
 
 
   // lepton jet functions

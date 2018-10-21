@@ -28,6 +28,21 @@ WWAnalysis::WWAnalysis() : Processor("WWAnalysis") {
 			     	_inputJetCollectionName,
 			      	inputJetCollectionName);
 
+	//input track and particle collections:
+	std::string inputParticleCollectionName = "x";
+  	registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
+			     	"InputParticleCollectionName" , 
+			     	"Input Particle Collection Name "  ,
+			     	_inputParticleCollectionName,
+			      	inputParticleCollectionName);
+
+ 	std::string inputTrackCollectionName = "x";
+  	registerInputCollection( LCIO::TRACK,
+				"InputTrackCollectionName" ,
+				"Input Track Collection Name " ,
+				_inputTrackCollectionName,
+				inputTrackCollectionName);
+
 	//parameters for running in backgrounds: #fermions, # leptons
 	registerProcessorParameter("NFermions",
 								"number of fermions in event",
@@ -169,7 +184,80 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 void WWAnalysis::processRunHeader( LCRunHeader* run) {
   streamlog_out(MESSAGE) << " processRunHeader "  << run->getRunNumber() << std::endl ;
 }
+/*****************
+locate the pfo collection with specified name
+populated the global pfo vectors with particles from that collection for this event
+******************/
+bool treeFitter::FindPFOs( LCEvent* evt ) {
 
+	bool collectionFound = false;
+
+  	// clear old global pfovector
+	_pfovec.clear();
+  	typedef const std::vector<std::string> StringVec ;
+  	StringVec* strVec = evt->getCollectionNames() ;
+	
+	//iterate over collections, find the matching name
+  	for(StringVec::const_iterator itname=strVec->begin(); itname!=strVec->end(); itname++){
+     
+		//if found print name and number of elements
+    		if(*itname==_inputParticleCollectionName){ 
+			LCCollection* collection = evt->getCollection(*itname);
+			std::cout<< "Located Pfo Collection "<< *itname<< " with "<< collection->getNumberOfElements() << " elements " <<std::endl;
+			collectionFound = true;
+
+ 			//add the collection elements to the global vector
+      			for(int i=0; i<collection->getNumberOfElements(); i++){
+				ReconstructedParticle* recoPart = dynamic_cast<ReconstructedParticle*>(collection->getElementAt(i));
+				_pfovec.push_back(recoPart);
+      			}
+    		}
+  	}
+	
+	if(!collectionFound){
+		std::cout<<"Pfo Collection "<< _inputParticleCollectionName << "not found"<<std::endl;
+	}
+
+   
+	return collectionFound;
+}
+/*****************
+locate the track collection with specified name
+populate the global track vectors with tracks from the collection for this event
+******************/
+bool treeFitter::FindTracks( LCEvent* evt ) {
+
+	bool collectionFound = false;
+
+	// clear old global track vector
+ 	_trackvec.clear();
+  	typedef const std::vector<std::string> StringVec ;
+  	StringVec* strVec = evt->getCollectionNames() ;
+
+	//iterate over collections, find the matching name
+ 	for(StringVec::const_iterator itname=strVec->begin(); itname!=strVec->end(); itname++){   
+
+		//if found print name and number of elements 
+    		if(*itname==_inputTrackCollectionName){
+      			LCCollection* collection = evt->getCollection(*itname);
+      			std::cout<< "Located Track Collection "<< *itname<< " with "<< collection->getNumberOfElements() << " elements " <<std::endl;
+     		
+			collectionFound = true;
+		
+			//add the collection elements to the global vector
+      			for(int i=0; i<collection->getNumberOfElements(); i++){
+				Track* track = dynamic_cast<Track*>(collection->getElementAt(i));
+				_trackvec.push_back(track);
+      			}
+    		}
+  	}
+
+  	if(!collectionFound){
+		std::cout<<"Track Collection "<< _inputTrackCollectionName << "not found"<<std::endl;
+	}
+
+  	return collectionFound;
+}
 bool WWAnalysis::FindMCParticles( LCEvent* evt ){
    
 	bool collectionFound = false;

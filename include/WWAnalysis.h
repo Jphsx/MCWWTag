@@ -89,6 +89,9 @@ using namespace lcio;
   MCParticle* classifyEvent2fermion( TLorentzVector* (&_MCf)[nferm], int (&_MCfpdg)[nferm]);
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, int (&_MCfpdg)[4]);
 
+	//event selection variables
+	void EvaluateEventSelectionVariables(int& _totaltracks,int& _total_Pt,int& _total_E, int& _total_M);
+
   //populate local datastructures (TLVS)
   void populateTLVs(int lindex);
   void populateCMTLVs();
@@ -197,6 +200,12 @@ using namespace lcio;
   int qmcparts;
   int qmctracks;
 
+	//event selection variables
+	int totaltracks{};
+		//total 4 vector sum variables
+	double total_Pt{};
+	double total_E{};
+	double total_M{};
 
 	int   _printing{};
 

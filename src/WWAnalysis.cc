@@ -1004,7 +1004,9 @@ void WWAnalysis::FillHistos(int histNumber){
 	if(isMuon){
 		FillMuonHistos(histNumber);
 	}
-	htotalTracks->Fill( _trackvec.size(), weight);
+
+	htotalTracks[histNumber]->Fill( _trackvec.size(), weight);
+
 }
 void WWAnalysis::FillMuonHistos(int histNumber){
 

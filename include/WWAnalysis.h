@@ -18,7 +18,7 @@
 #include <iostream>
 #include <fstream>
 
-#define ncuts 1 
+#define ncuts 7
 //if we change nferm we need to recompile and also change _nfermion and _nleptons in xml
 #define nferm 2
 
@@ -186,7 +186,7 @@ using namespace lcio;
   double leadingd0qjet; //d0 of the leading track in a quark jet
   double leadingd0relerrqjet; //relative error of d0 of leading track in lepton jet
 
-	//jet y variabls
+	//jet y variabls //log jet variables
   unsigned int _nJets;
   float _yMinus;
   float _yPlus;
@@ -250,6 +250,7 @@ using namespace lcio;
 	
 	    TH1D *psiljetmclMuon[ncuts+1], *psiljetmclTau[ncuts+1];
 
+	TH1D *htotalTracks[ncuts+1];
 	int ljetmatchmctau;
 	int ljetmatchmcmuon;
 

@@ -323,7 +323,7 @@ void WWAnalysis::getAngleOfljetandMCLepton(){
 	TVector3 ljet( _jets.at(ljet_index)->getMomentum()[0], _jets.at(ljet_index)->getMomentum()[1], _jets.at(ljet_index)->getMomentum()[2] ); 
 	
 	int mclindex = -1;
-	for(int i=0; i<4; i++){
+	for(int i=0; i<nferm; i++){
 		if( abs(_MCfpdg[i]) == 13 || abs(_MCfpdg[i])== 15){
 			mclindex = i;
 		}

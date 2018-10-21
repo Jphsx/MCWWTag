@@ -147,7 +147,7 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 		}
 
 	//EVENT SELECTION histogroms
-	htotaltracks = new TH1D("htotaltracks","total tracks;Number of Charged PFOs;Events Per Bin",100,0,140);
+	htotaltracks = new TH1D("htotaltracks","total tracks;Number of Charged PFOs;Events Per Bin",141,-0.5,140);
 	htotalPt = new TH1D("htotalPt","total pt;P_{t} [GeV]; Events Per Bin",100,0,100);
 	htotalE = new TH1D("htotalE","Total Visible Energy; Energy [GeV]; Events Per Bin",100,0,650);	
 	htotalM = new TH1D("htotalM","Total Mass; Mass [GeV]; Events Per Bin",100,0,650);

@@ -1091,7 +1091,7 @@ void WWAnalysis::FillTauHistos(int histNumber){
 }
 void WWAnalysis::fillEventSelectionHistos(double w){
 
-	htotaltracks->Fill( totaltracks,w);
+	htotaltracks->Fill( totaltracks, w);
 	htotalPt->Fill( total_Pt ,w);
 	htotalE->Fill( total_E ,w);
 	htotalM->Fill( total_M ,w);

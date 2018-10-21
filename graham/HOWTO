@@ -1,0 +1,23 @@
+Justin's current set up builds this code as part of MarlinKinfitProcessors.
+
+So.
+
+cd ../../MarlinKinfitProcessors
+
+
+mkdir build
+cd build
+cmake -C $ILCSOFT/ILCSoft.cmake ..
+
+# Then various ways ..
+make
+make -j4 install
+make 2>my.err 1>my.log
+
+
+Also need
+
+vertexInfo.cc
+tauUtils.cc
+tauInfo.cc
+particleInfo.cc

@@ -188,7 +188,7 @@ void WWAnalysis::processRunHeader( LCRunHeader* run) {
 locate the pfo collection with specified name
 populated the global pfo vectors with particles from that collection for this event
 ******************/
-bool treeFitter::FindPFOs( LCEvent* evt ) {
+bool WWAnalysis::FindPFOs( LCEvent* evt ) {
 
 	bool collectionFound = false;
 
@@ -225,7 +225,7 @@ bool treeFitter::FindPFOs( LCEvent* evt ) {
 locate the track collection with specified name
 populate the global track vectors with tracks from the collection for this event
 ******************/
-bool treeFitter::FindTracks( LCEvent* evt ) {
+bool WWAnalysis::FindTracks( LCEvent* evt ) {
 
 	bool collectionFound = false;
 

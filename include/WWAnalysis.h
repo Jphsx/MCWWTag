@@ -153,6 +153,8 @@ using namespace lcio;
   //vector to hold the particles for the event
   std::vector<MCParticle*> _mcpartvec{};
   std::vector<ReconstructedParticle*> _jets{};
+  std::vector<Track*> _trackvec{};
+  std::vector<ReconstructedParticle*> _pfovec{};
   
   //useful structures for calculation/ readability
   std::vector<TLorentzVector*> jets{};

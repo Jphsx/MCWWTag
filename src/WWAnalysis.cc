@@ -1191,10 +1191,10 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 	//cut #1 require polar angle of q's or lepton to be > cos(theta)=0.995
 	bool PolarAngleRequirementMet = true;
 	for(int i=0; i<_nfermions; i++){
-		//if( abs(_MCfpdg[i]) == 12 || abs(_MCfpdg[i]) == 14 || abs(_MCfpdg[i]) == 16 ){
+		if( abs(_MCfpdg[i]) == 12 || abs(_MCfpdg[i]) == 14 || abs(_MCfpdg[i]) == 16 ){
 		//dont worry about neutrino angle
-		//	continue;	
-	//	} 
+			continue;	
+		} 
 		if( fabs(_MCf[i]->CosTheta()) > 0.995 ){
 			//a particle has failed break out
 			PolarAngleRequirementMet = false;
@@ -1205,7 +1205,20 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 
 	if(PolarAngleRequirementMet){
 		FillHistos(1);
-		if(trueq == lq){
+	
+		//continue cutflow
+		if( totaltracks > 10 ){
+			FillHistos(2);
+			if( total_Pt > 7.0 ){
+				FillHisto(3);
+				if( total_M	> 80.0 && total_M < 500.0 ){
+					FillHistos(4);
+					if(_yMinus > -9.5 ){
+						FillHistos(5);
+						if(_yPlus>-12 && _yplus< -2.9){
+							FillHistos(6);
+
+								if(trueq == lq){
 			std::cout<<"got correct charge"<<std::endl;
 			if(isTau) tauqmatch++;
 			if(isMuon) muonqmatch++;
@@ -1218,17 +1231,6 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
 			if(isTau) ljetmatchmctau++;
 			if(isMuon) ljetmatchmcmuon++;
 		}
-		//continue cutflow
-		if( totaltracks > 10 ){
-			FillHistos(2);
-			if( total_Pt > 7.0 ){
-				FillHisto(3);
-				if( total_M	> 80.0 && total_M < 500.0 ){
-					FillHistos(4);
-					if(_yMinus > -9.5 ){
-						FillHistos(5);
-						if(_yPlus>-12 && _yplus< -2.9){
-							FillHistos(6);
 						}
 					}
 			

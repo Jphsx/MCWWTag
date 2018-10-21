@@ -178,6 +178,12 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	_tree->Branch("nJets",&_nJets, "nJets/i");
      _tree->Branch("yMinus",&_yMinus, "yMinus/F");
      _tree->Branch("yPlus",&_yPlus, "yPlus/F");
+	
+	
+	_tree->Branch("totaltracks",&totaltracks,"totaltracks/I");
+	_tree->Branch("total_Pt",&total_Pt,"total_Pt/D");
+	_tree->Branch("total_E",&total_E,"total_E/D");
+	_tree->Branch("total_M",&total_M,"total_M/D");
 
 }
 
@@ -333,6 +339,21 @@ void WWAnalysis::EvaluateJetVariables( LCEvent* evt, std::vector<ReconstructedPa
         yPlus  = evt->getCollection(_inputJetCollectionName)->getParameters().getFloatVal( "y_{n,n+1}" );
 //        yMinus = 0.0f;
 //        yPlus  = 0.0f;
+}
+//count tracks and calculate four vector stuff
+void EvaluateEventSelectionVariables(int& _totaltracks,int& _total_Pt,int& _total_E, int& _total_M){
+	
+	_totaltracks = _trackvec.size();
+	TLorentzVector v;
+	TLorentzVector p;
+	for(int i=0; i<_pfovec.size(); i++){
+		p.SetXYZM(_pfovec.at(i)->getMomentum()[0], _pfovec.at(i)->getMomentum()[1],_pfovec.at(i)->getMomentum()[2], _pfovec.at(i)->getMass() );
+		v += p;
+	}
+	_total_Pt = v.Pt();
+	_total_E = v.E();
+	_total_M = v.M();
+
 }
 /* identifies the lepton jet with the minimum particle multiplicity */
 int WWAnalysis::identifyLeptonJet( std::vector<ReconstructedParticle*> jets){
@@ -1059,6 +1080,11 @@ void WWAnalysis::processEvent( LCEvent * evt ) {
  FindMCParticles(evt);
  FindJets(evt);
  EvaluateJetVariables(evt, _jets, _nJets, _yMinus, _yPlus);
+
+ FindTracks(evt);
+ FindPFOs(evt);
+	EvaluateEventSelectionVariables(totaltracks,total_Pt,total_E,total_M);
+
  std::cout << "======================================== event " << nEvt << std::endl ;
 
 

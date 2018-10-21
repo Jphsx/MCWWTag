@@ -13,11 +13,14 @@
 #include <algorithm>
 #include "TLorentzVector.h"
 #include "TVector3.h"
-
+#include "classifyTau.h"
+#include <math.h>
 #include <iostream>
 #include <fstream>
 
-#define ncuts 1
+#define ncuts 7
+//if we change nferm we need to recompile and also change _nfermion and _nleptons in xml
+#define nferm 4
 
 using namespace lcio;
 
@@ -59,12 +62,16 @@ using namespace lcio;
  //collection gathering
   bool FindMCParticles( LCEvent* evt );
   bool FindJets( LCEvent* evt ) ;
+  bool FindPFOs( LCEvent* evt ) ;
+  bool FindTracks( LCEvent* evt );
 
 
   // lepton jet functions
   int identifyLeptonJet( std::vector<ReconstructedParticle*> jets);
   int identifyLeptonJet_bySeparation(std::vector<ReconstructedParticle*> jets);
   void getAngleOfljetandMCLepton();
+  void classifyTauDecay(MCParticle* mctau);
+  MCParticle* getMClepton(MCParticle* parent);
 
   int getLeptonJetCharge( ReconstructedParticle* ljet );
 
@@ -73,12 +80,17 @@ using namespace lcio;
   void exploreDaughterParticles(MCParticle* p, std::vector<MCParticle*>& FSP);
   bool allChildrenAreSimulation(MCParticle* p);
   void analyzeLeadingTracks();
+  void EvaluateJetVariables( LCEvent* evt, std::vector<ReconstructedParticle*> jets, unsigned int& nJets, float& yMinus, float& yPlus); 
 
   //classify the type of lepton decay and retrieve the
   //mcparticles for qqlnu
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq);
-  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLorentzVector* (&_MCf)[4], int (&_MCfpdg)[4]);
+  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, TLorentzVector* (&_MCf)[nferm], int (&_MCfpdg)[nferm]);
+  MCParticle* classifyEvent2fermion( TLorentzVector* (&_MCf)[nferm], int (&_MCfpdg)[nferm]);
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, int (&_MCfpdg)[4]);
+
+	//event selection variables
+	void EvaluateEventSelectionVariables(int& _totaltracks,double& _total_Pt,double& _total_E, double& _total_M);
 
   //populate local datastructures (TLVS)
   void populateTLVs(int lindex);
@@ -91,6 +103,7 @@ using namespace lcio;
   void FillHistos(int histNumber);
   void FillMuonHistos(int histNumber);
   void FillTauHistos(int histNumber);
+  void fillEventSelectionHistos(double w);
 
   protected:
 
@@ -101,8 +114,8 @@ using namespace lcio;
 //  float _xsec;
 //  TString *_Process;
 
-  TLorentzVector* _MCf[4];
-  int _MCfpdg[4];
+  TLorentzVector* _MCf[nferm];
+  int _MCfpdg[nferm];
 
 //event number
   int nEvt{};
@@ -114,7 +127,13 @@ using namespace lcio;
   bool isTau;
   bool isMuon;
  //the true lepton charge
-  int trueq;
+  int trueq=-3;
+
+ //tau decay mode daniels code variables
+  int tauDecayMode=-1;
+  int taudaughters=-1;
+  int tauChargedDaughters=-1;
+  int tauNeutrals = -1;
 
 //Lepton Jet variables
  //index of the identified lepton on jet vector
@@ -138,6 +157,8 @@ using namespace lcio;
   //vector to hold the particles for the event
   std::vector<MCParticle*> _mcpartvec{};
   std::vector<ReconstructedParticle*> _jets{};
+  std::vector<Track*> _trackvec{};
+  std::vector<ReconstructedParticle*> _pfovec{};
   
   //useful structures for calculation/ readability
   std::vector<TLorentzVector*> jets{};
@@ -160,25 +181,44 @@ using namespace lcio;
   double leadingd0ljet; //d0 of the leading track in the lepton jet
   double leadingd0relerrljet; //relative error of d0 of leading track in lepton jet
 
+
   double leadingptqjet; //pt of the leading track in a quark jet
   double leadingd0qjet; //d0 of the leading track in a quark jet
   double leadingd0relerrqjet; //relative error of d0 of leading track in lepton jet
 
+	//jet y variabls //log jet variables
+  unsigned int _nJets;
+  float _yMinus;
+  float _yPlus;
+
+  //opening angle between the lepton jet and mc lepton
   double psi_mcl_ljet;
-  int ljetmatchmctau=0;
-  int ljetmatchmcmuon=0;
 
   int qnparts;
   int qntracks;
   int qmcparts;
   int qmctracks;
 
+	//event selection variables
+	//EVENT SELECTION WEIGHT
+	double weight{};//defined in xml
+	int totaltracks{};
+		//total 4 vector sum variables
+	double total_Pt{};
+	double total_E{};
+	double total_M{};
 
 	int   _printing{};
+
+	//input background//number of fermions or leptons
+	int _nfermions{};
+	int _nleptons{};
 
   //input collections
   std::string _inputMcParticleCollectionName{};
   std::string _inputJetCollectionName{};
+  std::string _inputParticleCollectionName{};
+  std::string _inputTrackCollectionName{};
 
 
   /* histograms split between muon/tau true events */
@@ -207,8 +247,20 @@ using namespace lcio;
     TH1D *ljetd0relerrMuon[ncuts+1], *ljetd0relerrTau[ncuts+1]; 
     TH1D *qjetleadingd0Muon[ncuts+1], *qjetleadingd0Tau[ncuts+1], *qjetleadingptMuon[ncuts+1], *qjetleadingptTau[ncuts+1];
     TH1D *qjetd0relerrMuon[ncuts+1], *qjetd0relerrTau[ncuts+1];
+	
+	    TH1D *psiljetmclMuon[ncuts+1], *psiljetmclTau[ncuts+1];
 
-    TH1D *psiljetmclMuon[ncuts+1], *psiljetmclTau[ncuts+1];	
+	TH1D *htotalTracks[ncuts+1];
+	int ljetmatchmctau;
+	int ljetmatchmcmuon;
+
+     
+	TH1D* htotaltracks;
+	TH1D* htotalPt;
+	TH1D* htotalE;
+	TH1D* htotalM;
+	TH1D* hym;
+	TH1D* hyp;
  	/* end histograms */
 
 };

@@ -90,7 +90,7 @@ using namespace lcio;
 //  MCParticle* classifyEvent(bool& isTau, bool& isMuon, int& trueq, int (&_MCfpdg)[4]);
 
 	//event selection variables
-	void EvaluateEventSelectionVariables(int& _totaltracks,int& _total_Pt,int& _total_E, int& _total_M);
+	void EvaluateEventSelectionVariables(int& _totaltracks,double& _total_Pt,double& _total_E, double& _total_M);
 
   //populate local datastructures (TLVS)
   void populateTLVs(int lindex);

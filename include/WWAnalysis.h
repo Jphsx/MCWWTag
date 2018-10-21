@@ -203,6 +203,8 @@ using namespace lcio;
   //input collections
   std::string _inputMcParticleCollectionName{};
   std::string _inputJetCollectionName{};
+  std::string _inputParticleCollectionName{};
+  std::string _inputTrackCollectionName{};
 
 
   /* histograms split between muon/tau true events */

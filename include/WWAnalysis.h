@@ -199,6 +199,8 @@ using namespace lcio;
   int qmctracks;
 
 	//event selection variables
+	//EVENT SELECTION WEIGHT
+	double weight{};//defined in xml
 	int totaltracks{};
 		//total 4 vector sum variables
 	double total_Pt{};
@@ -246,6 +248,13 @@ using namespace lcio;
     TH1D *qjetd0relerrMuon[ncuts+1], *qjetd0relerrTau[ncuts+1];
 
     TH1D *psiljetmcl[ncuts+1];	
+
+	TH1D* htotaltracks;
+	TH1D* htotalPt;
+	TH1D* htotalE;
+	TH1D* htotalM;
+	TH1D* hym;
+	TH1D* hyp;
  	/* end histograms */
 
 };

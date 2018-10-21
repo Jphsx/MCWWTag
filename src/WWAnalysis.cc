@@ -54,6 +54,10 @@ WWAnalysis::WWAnalysis() : Processor("WWAnalysis") {
 								_nleptons,
 								(int) 2);
    
+	registerProcessorParameter("Normalization",
+								"event normalization bg/signal"
+								weight,
+								(double) 1.0);
 
 }
 
@@ -140,6 +144,16 @@ minjetNpartsMuon[i] = new TH1D(("minjetNpartsMuon"+cutnum).c_str(), "Visible Par
 	
 		/* end init histograms */
 		}
+
+	//EVENT SELECTION histogroms
+	htotaltracks = new TH1D("htotaltracks","total tracks;Number of Charged PFOs;Events Per Bin",100,0,140);
+	htotalPt = new TH1D("htotalPt","total pt;P_{t} [GeV]; Events Per Bin",100,0,100);
+	htotalE = new TH1D("htotalE","Total Visible Energy; Energy [GeV]; Events Per Bin",100,0,650);	
+	htotalM = new TH1D("htotalM","Total Mass; Mass [GeV]; Events Per Bin",100,0,650);
+	hym = new TH1D("htotalym","y-;log y-;Events Per Bin",100,0,1.5);
+	hyp = new TH1D("hyp","y+;log y+; Events Per Bin",100,0,0.015);
+
+
 // TTree similar to ttbar.cc to start with
 
      _tree = new TTree("tree", "tree");
@@ -343,16 +357,21 @@ void WWAnalysis::EvaluateJetVariables( LCEvent* evt, std::vector<ReconstructedPa
 //count tracks and calculate four vector stuff
 void WWAnalysis::EvaluateEventSelectionVariables(int& _totaltracks,double& _total_Pt,double& _total_E, double& _total_M){
 	
-	_totaltracks = _trackvec.size();
+	//_totaltracks = _trackvec.size();
+	int ntrk= 0;
 	TLorentzVector v;
 	TLorentzVector p;
 	for(int i=0; i<_pfovec.size(); i++){
 		p.SetXYZM(_pfovec.at(i)->getMomentum()[0], _pfovec.at(i)->getMomentum()[1],_pfovec.at(i)->getMomentum()[2], _pfovec.at(i)->getMass() );
 		v += p;
+		if(_pfovec.at(i)->getCharge() != 0){
+			ntrk++;
+		}
 	}
 	_total_Pt = v.Pt();
 	_total_E = v.E();
 	_total_M = v.M();
+	_totaltracks = ntrk;
 
 }
 /* identifies the lepton jet with the minimum particle multiplicity */
@@ -1068,6 +1087,15 @@ void WWAnalysis::FillTauHistos(int histNumber){
 
 	 psiljetmcl[histNumber]->Fill(psi_mcl_ljet);
 
+}
+void WWAnalysis::fillEventSelectionHistos(double w){
+
+	htotaltracks->Fill( totaltracks,w);
+	htotalPt->Fill( total_Pt ,w);
+	htotalE->Fill( total_E ,w);
+	htotalM->Fill( total_M ,w);
+	hym->Fill( _yMinus ,w);
+	hyp->Fill( _yPlus ,w);
 }
 
 void WWAnalysis::processEvent( LCEvent * evt ) {
